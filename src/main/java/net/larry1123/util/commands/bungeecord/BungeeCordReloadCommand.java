@@ -13,7 +13,7 @@ import java.util.List;
 
 public class BungeeCordReloadCommand implements Command {
 
-    private final CommandData command = new CommandData(new String[]{"reload"}, new String[]{"canary.super.canaryutil.bungeecord.reload", "canary.command.super.canaryutil.bungeecord.reload"}, "TODO reload", "TODO reload");
+    private final CommandData command = new CommandData(new String[] {"reload"}, new String[] {"canary.super.canaryutil.bungeecord.reload", "canary.command.super.canaryutil.bungeecord.reload"}, "TODO reload", "TODO reload");
     private final LocaleHelper translator = Translator.getInstance();
     private final UtilCommands utilcommands;
     private boolean loaded = false;
@@ -65,7 +65,7 @@ public class BungeeCordReloadCommand implements Command {
      * {@inheritDoc}
      */
     @Override
-    public boolean isloaded() {
+    public boolean isLoaded() {
         return loaded;
     }
 
@@ -73,7 +73,7 @@ public class BungeeCordReloadCommand implements Command {
      * {@inheritDoc}
      */
     @Override
-    public void setloadded(boolean loadedness) {
+    public void setLoaded(boolean loadedness) {
         loaded = loadedness;
     }
 

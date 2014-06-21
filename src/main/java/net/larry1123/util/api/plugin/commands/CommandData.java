@@ -8,13 +8,12 @@ public class CommandData {
     private final String[] permissions;
     private final String description;
     private final String toolTip;
+    private final UUID commandID = UUID.randomUUID();
     private String parent = "";
     private String helpLookup = "";
     private String[] searchTerms = {" "};
     private int min = 1;
     private int max = -1;
-
-    private final UUID commandID = UUID.randomUUID();
 
     public CommandData(String[] aliases, String[] permissions, String description, String toolTip) {
         this.aliases = aliases;
@@ -33,6 +32,15 @@ public class CommandData {
     }
 
     /**
+     * The parent command, for creating sub-command structures
+     *
+     * @return String of the Parent chain
+     */
+    public String getParent() {
+        return parent;
+    }
+
+    /**
      * Sets the Parent to another command by CommandData UID + Parent Chain
      *
      * @param parent CommandData to set as parent
@@ -40,57 +48,10 @@ public class CommandData {
     public void setParent(CommandData parent) {
         if (parent.getParent().equals("")) {
             setParent("" + parent.getCommandUID());
-        } else {
+        }
+        else {
             setParent(parent.getParent() + "." + parent.getCommandUID());
         }
-    }
-
-    /**
-     * xplicitly define a name with which the command will be registered
-     * at the help system. If this is empty (default), all aliases will be registered.
-     * Otherwise only this name will be registered. <br>
-     * Use it for registering sub-command helps to avoid name conflicts
-     *
-     * @param helpLookup
-     */
-    public void setHelpLookup(String helpLookup) {
-        this.helpLookup = helpLookup;
-    }
-
-    /**
-     * Set specific terms for looking up this command in help search
-     *
-     * @param searchTerms String[] holding the Terms
-     */
-    public void setSearchTerms(String[] searchTerms) {
-        this.searchTerms = searchTerms;
-    }
-
-    /**
-     * Set the min amount of parameters
-     *
-     * @param min Min amount of parameters
-     */
-    public void setMin(int min) {
-        this.min = min;
-    }
-
-    /**
-     * Set the max amounts of parameters.
-     *
-     * @param max The max amounts of parameters. -1 for infinite amount
-     */
-    public void setMax(int max) {
-        this.max = max;
-    }
-
-    /**
-     * The parent command, for creating sub-command structures
-     *
-     * @return String of the Parent chain
-     */
-    public String getParent() {
-        return parent;
     }
 
     /**
@@ -106,12 +67,33 @@ public class CommandData {
     }
 
     /**
+     * xplicitly define a name with which the command will be registered
+     * at the help system. If this is empty (default), all aliases will be registered.
+     * Otherwise only this name will be registered. <br>
+     * Use it for registering sub-command helps to avoid name conflicts
+     *
+     * @param helpLookup
+     */
+    public void setHelpLookup(String helpLookup) {
+        this.helpLookup = helpLookup;
+    }
+
+    /**
      * Specifies specific terms for looking up this command in help search
      *
      * @return
      */
     public String[] getSearchTerms() {
         return searchTerms;
+    }
+
+    /**
+     * Set specific terms for looking up this command in help search
+     *
+     * @param searchTerms String[] holding the Terms
+     */
+    public void setSearchTerms(String[] searchTerms) {
+        this.searchTerms = searchTerms;
     }
 
     /**
@@ -124,12 +106,30 @@ public class CommandData {
     }
 
     /**
+     * Set the min amount of parameters
+     *
+     * @param min Min amount of parameters
+     */
+    public void setMin(int min) {
+        this.min = min;
+    }
+
+    /**
      * The max amounts of parameters.
      *
      * @return
      */
     public int getMax() {
         return max;
+    }
+
+    /**
+     * Set the max amounts of parameters.
+     *
+     * @param max The max amounts of parameters. -1 for infinite amount
+     */
+    public void setMax(int max) {
+        this.max = max;
     }
 
     /**

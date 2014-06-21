@@ -12,14 +12,13 @@ import static net.larry1123.util.CanaryUtil.getPlugin;
 
 public class BaseCommand implements Command {
 
-    private final CommandData command = new CommandData(new String[]{"canaryutil"}, new String[]{"canary.super.canaryutil", "canary.command.super.canaryutil"}, "TODO", "TODO");
+    private final CommandData command = new CommandData(new String[] {"canaryutil"}, new String[] {"canary.super.canaryutil", "canary.command.super.canaryutil"}, "TODO", "TODO");
     private final LocaleHelper translator = Translator.getInstance();
     private final UtilCommands utilcommands;
     private boolean loaded = false;
 
     public BaseCommand(UtilCommands utilCommands) {
         utilcommands = utilCommands;
-        command.setMax(1);
     }
 
     /**
@@ -50,20 +49,7 @@ public class BaseCommand implements Command {
      * {@inheritDoc}
      */
     @Override
-    public void execute(MessageReceiver caller, String[] parameters) {
-        caller.message(getPlugin().getName() + " By: " + getPlugin().getAuthor());
-    }
-
-    @Override
-    public List<String> tabComplete(MessageReceiver messageReceiver, String[] args) {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isloaded() {
+    public boolean isLoaded() {
         return loaded;
     }
 
@@ -71,8 +57,24 @@ public class BaseCommand implements Command {
      * {@inheritDoc}
      */
     @Override
-    public void setloadded(boolean loadedness) {
+    public void setLoaded(boolean loadedness) {
         loaded = loadedness;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void execute(MessageReceiver caller, String[] parameters) {
+        caller.message(getPlugin().getName() + " By: " + getPlugin().getAuthor());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<String> tabComplete(MessageReceiver messageReceiver, String[] args) {
+        return null;
     }
 
 }

@@ -1,26 +1,28 @@
 package net.larry1123.util.config;
 
+import net.larry1123.elec.util.config.ConfigBase;
+import net.larry1123.elec.util.config.ConfigField;
+import net.larry1123.elec.util.config.ConfigFile;
 import net.larry1123.util.CanaryUtil;
+import net.visualillusionsent.utils.PropertiesFile;
 
 public class BungeeCordConfig implements ConfigBase {
 
-    private final boolean enableDefult = false;
-    private final long pollTimeDefult = 1000;
-    private final String serverNameDefult = "Server";
-
     private final ConfigFile configManager;
+    private PropertiesFile propertiesFile;
 
-    @ConfigField(comments = {"This sets if the Util will try to talk to a BungeeCord server or not", "Test"})
-    private boolean BungeeCord_enabled = enableDefult;
+    @ConfigField(name = "BungeeCord-enabled", comments = "This sets if the Util will try to talk to a BungeeCord server or not")
+    private boolean BungeeCord_enabled = false;
 
-    @ConfigField(comments = "This sets how many ticks between when the Util will send packets to BungeeCord")
-    private long BungeeCord_pollTime = pollTimeDefult;
+    @ConfigField(name = "BungeeCord-pollTime", comments = "This sets how many ticks between when the Util will send packets to BungeeCord")
+    private long BungeeCord_pollTime = 1000;
 
-    @ConfigField(comments = "This is only used if BungeeCord is disabled, and as a default if no players have yet connected")
-    private String BungeeCord_ServerName = serverNameDefult;
+    @ConfigField(name = "BungeeCord-ServerName", comments = "This is only used if BungeeCord is disabled, and as a default if no players have yet connected")
+    private String BungeeCord_ServerName = "Server";
 
     BungeeCordConfig(String plugin) {
-        configManager = UtilConfigManager.getConfig().getPluginConfig(this, plugin, "BungeeCord");
+        this.propertiesFile = UtilConfigManager.getConfig().getPluginPropertiesFile(plugin, "BungeeCord");
+        configManager = UtilConfigManager.getConfig().getPluginConfig(this);
     }
 
     /**
@@ -50,26 +52,6 @@ public class BungeeCordConfig implements ConfigBase {
     }
 
     /**
-     * Gets what the Name of this Server is.
-     *
-     * @return Gets the Server's Name
-     */
-    public String getServerName() {
-        return BungeeCord_ServerName;
-    }
-
-    /**
-     * Will Enable or disable BungeeCord Functions
-     *
-     * @param state true to start, false to stop
-     */
-    public void setIsEnabled(boolean state) {
-        BungeeCord_enabled = state;
-        configManager.save(); // Time to Save
-        CanaryUtil.getCustomPacket().reloadBungeeCord();
-    }
-
-    /**
      * Sets the wait between Polling a BungeeCord Server
      *
      * @param time the number of ms to wait
@@ -78,6 +60,15 @@ public class BungeeCordConfig implements ConfigBase {
         BungeeCord_pollTime = time;
         configManager.save(); // Time to Save
         CanaryUtil.getCustomPacket().reloadBungeeCord();
+    }
+
+    /**
+     * Gets what the Name of this Server is.
+     *
+     * @return Gets the Server's Name
+     */
+    public String getServerName() {
+        return BungeeCord_ServerName;
     }
 
     /**
@@ -92,4 +83,19 @@ public class BungeeCordConfig implements ConfigBase {
         CanaryUtil.getCustomPacket().reloadBungeeCord();
     }
 
+    /**
+     * Will Enable or disable BungeeCord Functions
+     *
+     * @param state true to start, false to stop
+     */
+    public void setIsEnabled(boolean state) {
+        BungeeCord_enabled = state;
+        configManager.save(); // Time to Save
+        CanaryUtil.getCustomPacket().reloadBungeeCord();
+    }
+
+    @Override
+    public PropertiesFile getPropertiesFile() {
+        return propertiesFile;
+    }
 }

@@ -6,9 +6,9 @@ import net.canarymod.tasks.ServerTask;
 import net.canarymod.tasks.ServerTaskManager;
 import net.canarymod.tasks.TaskOwner;
 import net.larry1123.util.CanaryUtil;
-import net.larry1123.util.api.plugin.hooks.BungeeCordPollHook;
+import net.larry1123.util.api.abstracts.RemoteServer;
+import net.larry1123.util.api.plugin.hooks.bungeecord.BungeeCordPollHook;
 import net.larry1123.util.config.UtilConfigManager;
-import net.larry1123.util.customPacket.RemoteServer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -27,6 +27,14 @@ public class UpdateBungeeInfo extends ServerTask {
      * Current Updater
      */
     private static UpdateBungeeInfo tickSystem;
+
+    private UpdateBungeeInfo(TaskOwner owner, long delay) {
+        this(owner, delay, true);
+    }
+
+    private UpdateBungeeInfo(TaskOwner owner, long delay, boolean continuous) {
+        super(owner, delay, continuous);
+    }
 
     /**
      * Starts the updater polling if the config will allow
@@ -59,20 +67,13 @@ public class UpdateBungeeInfo extends ServerTask {
                 ServerTaskManager.removeTask(tickSystem);
             }
             startUpdater();
-        } else {
+        }
+        else {
             if (tickSystem != null) {
                 ServerTaskManager.removeTask(tickSystem);
                 tickSystem = null;
             }
         }
-    }
-
-    private UpdateBungeeInfo(TaskOwner owner, long delay) {
-        this(owner, delay, true);
-    }
-
-    private UpdateBungeeInfo(TaskOwner owner, long delay, boolean continuous) {
-        super(owner, delay, continuous);
     }
 
     /**
@@ -118,7 +119,8 @@ public class UpdateBungeeInfo extends ServerTask {
             out = new DataOutputStream(b);
             try {
                 out.writeUTF("IP");
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 // Can't happen man
             }
             Canary.channels().sendCustomPayloadToPlayer("BungeeCord", b.toByteArray(), player);
@@ -133,7 +135,8 @@ public class UpdateBungeeInfo extends ServerTask {
         out = new DataOutputStream(b);
         try {
             out.writeUTF("GetServers");
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             // Can't happen man
         }
         Canary.channels().sendCustomPayloadToPlayer("BungeeCord", b.toByteArray(), player);
@@ -148,7 +151,8 @@ public class UpdateBungeeInfo extends ServerTask {
         try {
             out.writeUTF("PlayerList");
             out.writeUTF(server.getServerName());
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             // Can't happen man
         }
         Canary.channels().sendCustomPayloadToPlayer("BungeeCord", b.toByteArray(), player);
@@ -163,7 +167,8 @@ public class UpdateBungeeInfo extends ServerTask {
         try {
             out.writeUTF("PlayerCount");
             out.writeUTF(server.getServerName());
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             // Can't happen man
         }
         Canary.channels().sendCustomPayloadToPlayer("BungeeCord", b.toByteArray(), player);
@@ -177,7 +182,8 @@ public class UpdateBungeeInfo extends ServerTask {
         out = new DataOutputStream(b);
         try {
             out.writeUTF("GetServer");
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             // Can't happen man
         }
         Canary.channels().sendCustomPayloadToPlayer("BungeeCord", b.toByteArray(), player);

@@ -3,6 +3,7 @@ package net.larry1123.util.customPacket;
 import net.canarymod.Canary;
 import net.canarymod.api.OfflinePlayer;
 import net.canarymod.api.entity.living.humanoid.Player;
+import net.larry1123.util.api.abstracts.RemoteServer;
 import net.larry1123.util.config.UtilConfigManager;
 
 import java.io.ByteArrayOutputStream;
@@ -20,17 +21,13 @@ public class BungeeCord {
 
     private static final HashMap<OfflinePlayer, String> IPs = new HashMap<OfflinePlayer, String>();
     private static final HashMap<RemoteServer, Integer> serverPlayerCount = new HashMap<RemoteServer, Integer>();
-    private static LinkedList<RemoteServer> serverList = new LinkedList<RemoteServer>();
     private static final HashMap<RemoteServer, LinkedList<OfflinePlayer>> playerList = new HashMap<RemoteServer, LinkedList<OfflinePlayer>>();
+    private static LinkedList<RemoteServer> serverList = new LinkedList<RemoteServer>();
     private static RemoteServer currentServer = RemoteServer.getServer(UtilConfigManager.getConfig().getBungeeCordConfig().getServerName());
 
     public BungeeCord() {
         Canary.channels().registerListener(getPlugin(), "BungeeCord", lis);
         Canary.hooks().registerListener(lis, getPlugin());
-    }
-
-    public void unregChannelListener() {
-        Canary.channels().unregisterListeners(getPlugin());
     }
 
     /**
@@ -46,22 +43,6 @@ public class BungeeCord {
                 IPs.put(Canary.getServer().getOfflinePlayer(player.getName()), Ip);
                 player.message(Ip);
             }
-        }
-    }
-
-    /**
-     * Gets the Real IP of a Player
-     * This will work with both BungeeCord Enabled or disabled
-     * This will also work if the Player is not connected to the BungeeCord Server
-     *
-     * @param player Player Class
-     * @return The IP of the Player
-     */
-    public String getRealPlayerIp(Player player) {
-        if (IPs.get(Canary.getServer().getOfflinePlayer(player.getName())) != null) {
-            return IPs.get(Canary.getServer().getOfflinePlayer(player.getName()));
-        } else {
-            return player.getIP();
         }
     }
 
@@ -90,26 +71,6 @@ public class BungeeCord {
                 return;
             }
             serverPlayerCount.put(server, players);
-        }
-    }
-
-    /**
-     * Gets the last known amount of players on the given Server
-     * Will return -1 if the server is Offline
-     *
-     * @param server What Server to check
-     * @return Player Count for given Server
-     */
-    public int getServerPlayerCount(RemoteServer server) {
-        if (currentServer != server) {
-            Integer count = serverPlayerCount.get(server);
-            if (count != null) {
-                return count;
-            } else {
-                return -1;
-            }
-        } else {
-            return Canary.getServer().getNumPlayersOnline();
         }
     }
 
@@ -148,7 +109,8 @@ public class BungeeCord {
                     }
                 }
 
-            } else {
+            }
+            else {
 
                 // Adds players that are known to be on other servers to the all list!
                 for (OfflinePlayer player : playerList.get(server)) {
@@ -160,20 +122,6 @@ public class BungeeCord {
                 }
             }
         }
-    }
-
-    /**
-     * Gets a OfflinePlayer LinkedList of Players for the given Server or a empty List
-     *
-     * @param server What Server to check
-     * @return LinkedList of OfflinePlayers for the given Server
-     */
-    public LinkedList<OfflinePlayer> getServerPlayerList(RemoteServer server) {
-        LinkedList<OfflinePlayer> ren = new LinkedList<OfflinePlayer>();
-        if (playerList.get(server) != null) {
-            ren = playerList.get(server);
-        }
-        return ren;
     }
 
     /**
@@ -194,15 +142,6 @@ public class BungeeCord {
     }
 
     /**
-     * Gets a LinkedList<String> of the last known list of currently Online Servers
-     *
-     * @return List of Online Servers
-     */
-    public LinkedList<RemoteServer> getServerList() {
-        return serverList;
-    }
-
-    /**
      * For use from the Listener only
      *
      * @param server Server to update
@@ -217,12 +156,81 @@ public class BungeeCord {
         }
     }
 
+    public void unregChannelListener() {
+        Canary.channels().unregisterListeners(getPlugin());
+    }
+
+    /**
+     * Gets the Real IP of a Player
+     * This will work with both BungeeCord Enabled or disabled
+     * This will also work if the Player is not connected to the BungeeCord Server
+     *
+     * @param player Player Class
+     *
+     * @return The IP of the Player
+     */
+    public String getRealPlayerIp(Player player) {
+        if (IPs.get(Canary.getServer().getOfflinePlayer(player.getName())) != null) {
+            return IPs.get(Canary.getServer().getOfflinePlayer(player.getName()));
+        }
+        else {
+            return player.getIP();
+        }
+    }
+
+    /**
+     * Gets the last known amount of players on the given Server
+     * Will return -1 if the server is Offline
+     *
+     * @param server What Server to check
+     *
+     * @return Player Count for given Server
+     */
+    public int getServerPlayerCount(RemoteServer server) {
+        if (currentServer != server) {
+            Integer count = serverPlayerCount.get(server);
+            if (count != null) {
+                return count;
+            }
+            else {
+                return -1;
+            }
+        }
+        else {
+            return Canary.getServer().getNumPlayersOnline();
+        }
+    }
+
+    /**
+     * Gets a OfflinePlayer LinkedList of Players for the given Server or a empty List
+     *
+     * @param server What Server to check
+     *
+     * @return LinkedList of OfflinePlayers for the given Server
+     */
+    public LinkedList<OfflinePlayer> getServerPlayerList(RemoteServer server) {
+        LinkedList<OfflinePlayer> ren = new LinkedList<OfflinePlayer>();
+        if (playerList.get(server) != null) {
+            ren = playerList.get(server);
+        }
+        return ren;
+    }
+
+    /**
+     * Gets a LinkedList<String> of the last known list of currently Online Servers
+     *
+     * @return List of Online Servers
+     */
+    public LinkedList<RemoteServer> getServerList() {
+        return serverList;
+    }
+
     /**
      * Gets the name for this server
      *
      * @return The Name for this Server
      */
-    public RemoteServer getCurrentServerName() {
+    public RemoteServer getCurrentServer() {
         return currentServer;
     }
 
@@ -234,10 +242,11 @@ public class BungeeCord {
      *
      * @param player Player Object of who to send to a new server
      * @param server What server to send to
+     *
      * @return true if the packet was sent, false if the packet was not sent
      */
-    public boolean sendPlayertoServer(Player player, RemoteServer server) {
-        if (!serverList.contains(server) || currentServer == server || server == all) {
+    public boolean sendPlayerToServer(Player player, RemoteServer server) {
+        if (!server.isServerOnline() || server.isCurrentServer() || server == all) {
             return false;
         }
         ByteArrayOutputStream b = new ByteArrayOutputStream();
@@ -246,7 +255,8 @@ public class BungeeCord {
             out.writeUTF("Connect");
             // May add check of if this server is known to be online before trying to send packet
             out.writeUTF(server.getServerName());
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             return false;
             // Can't happen man
             // But lets return just in case it does
@@ -263,10 +273,11 @@ public class BungeeCord {
      * @param server     What server to send to.
      * @param subCnannel What channel to send over
      * @param data       What data to pass
+     *
      * @return true if the packet was sent, false if the packet was not sent
      */
     public boolean sendMessageToServer(RemoteServer server, String subCnannel, String data) {
-        if (!serverList.contains(server) || currentServer.equals(server)) {
+        if (!server.isServerOnline() || server.isCurrentServer()) {
             return false;
         }
         ByteArrayOutputStream b = new ByteArrayOutputStream();
@@ -276,7 +287,8 @@ public class BungeeCord {
             out.writeUTF(server.getServerName());
             out.writeShort(data.length());
             out.writeUTF(data);
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             return false;
             // Can't happen man
             // But lets return just in case it does
@@ -299,10 +311,11 @@ public class BungeeCord {
      * @param server
      * @param subCnannel
      * @param data
+     *
      * @return
      */
     public boolean sendMessageToServerAsAllPlayers(RemoteServer server, String subCnannel, String data) {
-        if (!serverList.contains(server) || currentServer == server) {
+        if (!server.isServerOnline() || server.isCurrentServer()) {
             return false;
         }
         if (Canary.getServer().getNumPlayersOnline() == 0) {
@@ -316,7 +329,8 @@ public class BungeeCord {
             out.writeUTF(server.getServerName());
             out.writeShort(data.length());
             out.writeUTF(data);
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             return false;
             // Can't happen man
             // But lets return just in case it does
@@ -339,10 +353,11 @@ public class BungeeCord {
      * @param subCnannel
      * @param data
      * @param player
+     *
      * @return
      */
     public boolean sendMessageToServerAsPlayer(RemoteServer server, String subCnannel, String data, Player player) {
-        if (!serverList.contains(server) || currentServer.equals(server)) {
+        if (!server.isServerOnline() || server.isCurrentServer()) {
             return false;
         }
         ByteArrayOutputStream b = new ByteArrayOutputStream();
@@ -353,7 +368,8 @@ public class BungeeCord {
             out.writeUTF(server.getServerName());
             out.writeShort(data.length());
             out.writeUTF(data);
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             return false;
             // Can't happen man
             // But lets return just in case it does

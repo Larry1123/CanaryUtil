@@ -1,12 +1,12 @@
 package net.larry1123.util.commands;
 
 import net.canarymod.commandsys.CommandDependencyException;
+import net.larry1123.elec.util.factorys.FactoryManager;
 import net.larry1123.util.CanaryUtil;
 import net.larry1123.util.api.plugin.commands.Command;
 import net.larry1123.util.commands.bungeecord.BungeeCordCommand;
 import net.larry1123.util.commands.bungeecord.BungeeCordReloadCommand;
 import net.larry1123.util.commands.bungeecord.BungeeCordSetCommand;
-import net.larry1123.util.logger.EELogger;
 
 import static net.larry1123.util.CanaryUtil.getPlugin;
 
@@ -45,11 +45,16 @@ public class UtilCommands {
     private void regCommand(Command command) {
         try {
             CanaryUtil.commands().registerCommand(command, getPlugin());
-            command.setloadded(true);
-        } catch (CommandDependencyException e) {
-            EELogger.getLogger("CanaryUtil").logCustom("Commands", "Failed to add command: " + command.getCommandData().getAliases()[0], e);
-            command.setloadded(false);
+            command.setLoaded(true);
         }
+        catch (CommandDependencyException e) {
+            FactoryManager.getFactoryManager().getEELoggerFactory().getLogger("CanaryUtil").logCustom("Commands", "Failed to add command: " + command.getCommandData().getAliases()[0], e);
+            command.setLoaded(false);
+        }
+    }
+
+    public void reloadUtilCommandRepair() {
+        // TODO
     }
 
 }

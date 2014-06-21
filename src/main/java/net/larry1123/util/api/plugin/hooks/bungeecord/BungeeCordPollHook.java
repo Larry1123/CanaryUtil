@@ -1,4 +1,4 @@
-package net.larry1123.util.api.plugin.hooks;
+package net.larry1123.util.api.plugin.hooks.bungeecord;
 
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.hook.Hook;

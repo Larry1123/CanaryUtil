@@ -3,6 +3,7 @@ package net.larry1123.util;
 import net.canarymod.commandsys.CommandOwner;
 import net.canarymod.tasks.ServerTaskManager;
 import net.canarymod.tasks.TaskOwner;
+import net.larry1123.elec.util.factorys.FactoryManager;
 import net.larry1123.util.api.plugin.UtilPlugin;
 import net.larry1123.util.api.plugin.commands.Commands;
 import net.larry1123.util.commands.UtilCommands;
@@ -12,15 +13,19 @@ import net.larry1123.util.task.FileSpliterUpdater;
 
 public class CanaryUtil extends UtilPlugin implements TaskOwner, CommandOwner {
 
-    private static CanaryUtil plugin;
-    private static CustomPacket customPacket;
     private static final Commands commands = new Commands();
 
     static {
-        EEUtils.setLoggerSettings(UtilConfigManager.getConfig().getLoggerConfig());
+        FactoryManager.getFactoryManager().getEELoggerFactory().setLoggerSettings(UtilConfigManager.getConfig().getLoggerConfig());
     }
 
+    private static CanaryUtil plugin;
+    private static CustomPacket customPacket;
     private UtilCommands commandsManager;
+
+    public CanaryUtil() {
+        plugin = this;
+    }
 
     /**
      * Warning may return Null if the Util is not enabled yet!!!!
@@ -42,21 +47,6 @@ public class CanaryUtil extends UtilPlugin implements TaskOwner, CommandOwner {
         return commands;
     }
 
-    public CanaryUtil() {
-        plugin = this;
-    }
-
-    /**
-     * Plugin Disable Method
-     */
-    @Override
-    public void disable() {
-        // Stop Tasks!
-        ServerTaskManager.removeTasksForPlugin(this);
-        // Log that the plugin was Disabled
-        getLogger().info("Plugin Disabled");
-    }
-
     /**
      * Plugin Enable Method
      */
@@ -72,6 +62,17 @@ public class CanaryUtil extends UtilPlugin implements TaskOwner, CommandOwner {
         getLogger().info("Plugin Enabled");
         // Hey everything worked lets return true so Canary knows that too
         return true;
+    }
+
+    /**
+     * Plugin Disable Method
+     */
+    @Override
+    public void disable() {
+        // Stop Tasks!
+        ServerTaskManager.removeTasksForPlugin(this);
+        // Log that the plugin was Disabled
+        getLogger().info("Plugin Disabled");
     }
 
 }

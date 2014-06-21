@@ -14,6 +14,16 @@ public class CustomPacket {
      */
     private BungeeCord bungeecord;
 
+    public CustomPacket() {
+        if (config.getBungeeCordConfig().isEnabled()) {
+            bungeecord = new BungeeCord();
+            UpdateBungeeInfo.startUpdater();
+        }
+        else {
+            new BungeeCordless();
+        }
+    }
+
     /**
      * Gets the Currently running BungeeCord manager, may be the online or offline version
      *
@@ -21,15 +31,6 @@ public class CustomPacket {
      */
     public BungeeCord getBungeeCord() {
         return bungeecord;
-    }
-
-    public CustomPacket() {
-        if (config.getBungeeCordConfig().isEnabled()) {
-            bungeecord = new BungeeCord();
-            UpdateBungeeInfo.startUpdater();
-        } else {
-            new BungeeCordless();
-        }
     }
 
     /**
@@ -41,7 +42,8 @@ public class CustomPacket {
                 bungeecord = new BungeeCord();
             }
             UpdateBungeeInfo.reloadUpdater();
-        } else {
+        }
+        else {
             if (!(bungeecord instanceof BungeeCordless)) {
                 new BungeeCordless();
             }

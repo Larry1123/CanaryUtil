@@ -12,7 +12,7 @@ import static net.larry1123.util.CanaryUtil.getPlugin;
 
 public class VersionCommand implements Command {
 
-    private final CommandData command = new CommandData(new String[]{"help"}, new String[]{"canary.super.canaryutil.help", "canary.command.super.canaryutil.help"}, "TODO", "TODO");
+    private final CommandData command = new CommandData(new String[] {"help"}, new String[] {"canary.super.canaryutil.help", "canary.command.super.canaryutil.help"}, "TODO", "TODO");
     private final LocaleHelper translator = Translator.getInstance();
     private final UtilCommands utilcommands;
     private boolean loaded = false;
@@ -63,7 +63,7 @@ public class VersionCommand implements Command {
      * {@inheritDoc}
      */
     @Override
-    public boolean isloaded() {
+    public boolean isLoaded() {
         return loaded;
     }
 
@@ -71,7 +71,7 @@ public class VersionCommand implements Command {
      * {@inheritDoc}
      */
     @Override
-    public void setloadded(boolean loadedness) {
+    public void setLoaded(boolean loadedness) {
         loaded = loadedness;
     }
 

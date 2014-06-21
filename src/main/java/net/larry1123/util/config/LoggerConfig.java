@@ -1,12 +1,19 @@
 package net.larry1123.util.config;
 
-import net.larry1123.util.logger.FileSplits;
-import net.larry1123.util.logger.LoggerSettings;
+import net.larry1123.elec.util.config.ConfigBase;
+import net.larry1123.elec.util.config.ConfigField;
+import net.larry1123.elec.util.config.ConfigFile;
+import net.larry1123.elec.util.logger.FileSplits;
+import net.larry1123.elec.util.logger.LoggerSettings;
 import net.larry1123.util.task.FileSpliterUpdater;
+import net.visualillusionsent.utils.PropertiesFile;
+
+import java.util.logging.Logger;
 
 public class LoggerConfig implements ConfigBase, LoggerSettings {
 
     private final ConfigFile configManager;
+    private PropertiesFile propertiesFile;
 
     @ConfigField(name = "Logger-Path", comments = "This defines where the log files will be placed.")
     private String logger_Path = "pluginlogs/";
@@ -24,7 +31,8 @@ public class LoggerConfig implements ConfigBase, LoggerSettings {
     private boolean pasteSend = true;
 
     public LoggerConfig(String plugin) {
-        configManager = UtilConfigManager.getConfig().getPluginConfig(this, plugin, "Logger");
+        this.propertiesFile = UtilConfigManager.getConfig().getPluginPropertiesFile(plugin, "Logger");
+        configManager = UtilConfigManager.getConfig().getPluginConfig(this);
     }
 
     /**
@@ -79,6 +87,14 @@ public class LoggerConfig implements ConfigBase, LoggerSettings {
      * {@inheritDoc}
      */
     @Override
+    public void setFileSplit(FileSplits fileSplit) {
+        // TODO
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getCurrentSplit() {
         return currentSplit;
     }
@@ -106,7 +122,8 @@ public class LoggerConfig implements ConfigBase, LoggerSettings {
         }
         if (!logFileType.equals("")) {
             return this.logFileType;
-        } else {
+        }
+        else {
             return "log";
         }
     }
@@ -123,8 +140,18 @@ public class LoggerConfig implements ConfigBase, LoggerSettings {
      * {@inheritDoc}
      */
     @Override
-    public String getParentLogger() {
+    public Logger getParentLogger() {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setParentLogger(Logger logger) {}
+
+    @Override
+    public PropertiesFile getPropertiesFile() {
+        return propertiesFile;
+    }
 }

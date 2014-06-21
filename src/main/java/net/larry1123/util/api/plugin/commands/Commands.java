@@ -19,19 +19,20 @@ public class Commands {
      * @param translator localehelper for translating meta info
      * @param execute    Class holding method to execute Command when called
      * @param force      If Command will override an other command
+     *
      * @throws CommandDependencyException
      */
     public void registerCommand(CommandData data, CommandOwner owner, LocaleHelper translator, final CommandExecute execute, boolean force) throws CommandDependencyException {
         CanaryCommand ccommand = new CanaryCommand(new CommandCommand(data), owner, translator) {
 
             @Override
-            protected void execute(MessageReceiver caller, String[] parameters) {
-                execute.execute(caller, parameters);
+            protected List<String> tabComplete(MessageReceiver messageReceiver, String[] args) {
+                return execute.tabComplete(messageReceiver, args);
             }
 
             @Override
-            protected List<String> tabComplete(MessageReceiver messageReceiver, String[] args) {
-                return execute.tabComplete(messageReceiver, args);
+            protected void execute(MessageReceiver caller, String[] parameters) {
+                execute.execute(caller, parameters);
             }
 
         };
@@ -43,23 +44,26 @@ public class Commands {
      *
      * @param command Command pack
      * @param owner   Command owner
+     *
      * @throws CommandDependencyException
      */
     public void registerCommand(Command command, CommandOwner owner) throws CommandDependencyException {
         registerCommand(command.getCommandData(), owner, command.getTranslator(), command, command.isForced());
-        command.setloadded(true);
+        command.setLoaded(true);
     }
 
     /**
      * Will unregister a given Command
      *
      * @param data The Command's data pack
+     *
      * @return true if the command was removed, false otherwise.
      */
     public boolean unregisterCommand(CommandData data) {
         if (!data.getParent().equals("")) {
             return Canary.commands().unregisterCommand(data.getParent() + "." + data.getCommandUID());
-        } else {
+        }
+        else {
             return Canary.commands().unregisterCommand("" + data.getCommandUID());
         }
     }
@@ -68,13 +72,15 @@ public class Commands {
      * Will unregister a given Command
      *
      * @param command The Command pack to remove
+     *
      * @return true if the command was removed, false otherwise.
      */
     public boolean unregisterCommand(Command command) {
         if (unregisterCommand(command.getCommandData())) {
-            command.setloadded(true);
+            command.setLoaded(true);
             return true;
-        } else {
+        }
+        else {
             return false;
         }
     }

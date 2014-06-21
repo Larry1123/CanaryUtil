@@ -11,7 +11,7 @@ import java.util.List;
 
 public class BungeeCordCommand implements Command {
 
-    private final String[] aliases = new String[]{"bungeecord", "cord"};
+    private final String[] aliases = new String[] {"bungeecord", "cord"};
 
     private final CommandData command;
     private final LocaleHelper translator = Translator.getInstance();
@@ -20,12 +20,7 @@ public class BungeeCordCommand implements Command {
 
     public BungeeCordCommand(UtilCommands utilCommands) {
         utilcommands = utilCommands;
-        command = new CommandData(
-                aliases,
-                new String[]{"canary.super.canaryutil.bungeecord", "canary.command.super.canaryutil.bungeecord"},
-                "TODO",
-                "/" + utilcommands.baseCommand.getCommandData().getAliases()[0] + " " + aliases[0] + " <set|reload>"
-        );
+        command = new CommandData(aliases, new String[] {"canary.super.canaryutil.bungeecord", "canary.command.super.canaryutil.bungeecord"}, "TODO", "/" + utilcommands.baseCommand.getCommandData().getAliases()[0] + " " + aliases[0] + " <set|reload>");
         command.setParent(utilcommands.baseCommand.getCommandData());
         command.setMax(1);
     }
@@ -71,7 +66,7 @@ public class BungeeCordCommand implements Command {
      * {@inheritDoc}
      */
     @Override
-    public boolean isloaded() {
+    public boolean isLoaded() {
         return loaded;
     }
 
@@ -79,7 +74,7 @@ public class BungeeCordCommand implements Command {
      * {@inheritDoc}
      */
     @Override
-    public void setloadded(boolean loadedness) {
+    public void setLoaded(boolean loadedness) {
         loaded = loadedness;
     }
 

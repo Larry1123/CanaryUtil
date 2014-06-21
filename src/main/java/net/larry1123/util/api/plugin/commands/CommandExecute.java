@@ -18,7 +18,8 @@ public interface CommandExecute {
      * Called when a AutoComplete is asked for
      *
      * @param messageReceiver the {@link net.canarymod.chat.MessageReceiver} using tabComplete
-     * @param args the current arguments of the command
+     * @param args            the current arguments of the command
+     *
      * @return list of possible completions
      */
     public List<String> tabComplete(MessageReceiver messageReceiver, String[] args);

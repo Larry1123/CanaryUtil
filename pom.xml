@@ -1,17 +1,17 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>net.larry1123</groupId>
     <artifactId>CanaryUtil</artifactId>
-    <version>0.3.2-SNAPSHOT</version>
+    <version>0.3.3-SNAPSHOT</version>
     <inceptionYear>2013</inceptionYear>
 
     <properties>
-        <build.number></build.number>
+        <build.number/>
         <EEutil.groupID>net.larry1123</EEutil.groupID>
         <EEutil.name>EEUtils</EEutil.name>
-        <EEutil.version>1.2.5</EEutil.version>
+        <EEutil.version>1.3.0-SNAPSHOT</EEutil.version>
         <canary.lib.version>1.0-RC-4-SNAPSHOT</canary.lib.version>
     </properties>
 
@@ -53,6 +53,19 @@
         <system>GitHub</system>
         <url>https://github.com/Larry1123/CanaryUtil/issues</url>
     </issueManagement>
+
+    <distributionManagement>
+        <repository>
+            <id>repo1123</id>
+            <name>Release Repository</name>
+            <url>http://repo.larry1123.net/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>repo1123</id>
+            <name>Snapshot Repository</name>
+            <url>http://repo.larry1123.net/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <build>
         <defaultGoal>clean install</defaultGoal>
@@ -96,11 +109,11 @@
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                         </manifest>
                         <manifestEntries>
-                            <Implementation-Title>EEUtils</Implementation-Title>
+                            <Implementation-Title>${project.name}</Implementation-Title>
                             <Implementation-Version>${project.version}</Implementation-Version>
                             <Implementation-Vendor>Larry1123</Implementation-Vendor>
                             <Implementation-Vendor-Id>net.larry1123</Implementation-Vendor-Id>
-                            <Specification-Title>EEUtils</Specification-Title>
+                            <Specification-Title>${project.name}</Specification-Title>
                             <Specification-Vendor>Larry1123</Specification-Vendor>
                             <Specification-Vendor-Id>net.larry1123</Specification-Vendor-Id>
                             <Sealed>true</Sealed>
@@ -131,7 +144,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <finalName>${project.artifactId}-${project.version}</finalName>
+                    <finalName>${project.artifactId}-${project.version}-shaded</finalName>
                     <artifactSet>
                         <includes>
                             <include>net.larry1123:EEUtils</include>
@@ -166,7 +179,7 @@
                             <javaApiLinks>
                                 <property>
                                     <name>api_1.7</name>
-                                    <value>http://download.java.net/jdk7/docs/api/</value>
+                                    <fieldValue>http://download.java.net/jdk7/docs/api/</fieldValue>
                                 </property>
                             </javaApiLinks>
                             <links>
@@ -226,19 +239,18 @@
 
     <repositories>
         <repository>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-                <checksumPolicy>ignore</checksumPolicy>
-            </releases>
+            <id>repo1123</id>
+            <name>Larry1123's Repo</name>
+            <url>http://repo.larry1123.net/content/groups/public/</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
-                <checksumPolicy>ignore</checksumPolicy>
+                <checksumPolicy>warn</checksumPolicy>
             </snapshots>
-            <id>Repo1123</id>
-            <name>Larry1123's Repo</name>
-            <url>http://ci.larry1123.net/plugin/repository/everything</url>
+            <releases>
+                <enabled>true</enabled>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
         </repository>
     </repositories>
 

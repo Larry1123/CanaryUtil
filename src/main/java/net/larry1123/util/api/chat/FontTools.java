@@ -12,9 +12,9 @@ import java.util.Random;
  */
 public class FontTools extends TextFormat {
 
+    public static final char colorChar = '\u00A7';
     private static final ArrayList<String> colorList = new ArrayList<String>();
     private static final ArrayList<String> fontList = new ArrayList<String>();
-
     private static final String Black = BLACK;
     private static final String Navy = DARK_BLUE;
     private static final String Green = GREEN;
@@ -66,18 +66,36 @@ public class FontTools extends TextFormat {
     }
 
     /**
-     * Adds a random Color to each Char in a string.
+     * Adds a random color to each character in a string.
      *
      * @param string
+     *
      * @return Randomly Colored String
      */
     public static String CharRandomColor(String string) {
         char[] str = string.toCharArray();
-        String retrn = "";
+        StringBuilder ret = new StringBuilder();
         for (char car : str) {
-            retrn = retrn + RandomColor() + car;
+            ret.append(RandomColor()).append(Character.toString(car));
         }
-        return retrn;
+        return ret.toString();
+    }
+
+    public static String charToColorChar(char replacement, String phrase) {
+        char[] charString = phrase.toCharArray();
+        int index = 0;
+        for (char charE : charString) {
+            if (charE == replacement) {
+                if (((charString.length - 1) - index + 1) >= 0) {
+                    String temp = new StringBuilder().append(Character.toString(charE)).append(Character.toString(charString[index + 1])).toString();
+                    if (colorList.contains(temp) || fontList.contains(temp)) {
+                        charString[index] = colorChar;
+                    }
+                }
+            }
+            index++;
+        }
+        return new String(charString);
     }
 
     /**

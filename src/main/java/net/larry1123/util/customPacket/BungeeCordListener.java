@@ -6,6 +6,7 @@ import net.canarymod.hook.HookHandler;
 import net.canarymod.hook.player.BanHook;
 import net.canarymod.hook.player.DisconnectionHook;
 import net.canarymod.plugin.PluginListener;
+import net.larry1123.util.api.abstracts.RemoteServer;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInput;
@@ -49,7 +50,8 @@ public final class BungeeCordListener extends ChannelListener implements PluginL
                     for (String playerr : rawplayers.split(",")) {
                         players.add(playerr);
                     }
-                } catch (ArrayIndexOutOfBoundsException e) {
+                }
+                catch (ArrayIndexOutOfBoundsException e) {
                     // No one on this server
                 }
                 BungeeCord.setPlayerList(RemoteServer.getServer(server), players, this);
@@ -62,12 +64,14 @@ public final class BungeeCordListener extends ChannelListener implements PluginL
                         servers.add(RemoteServer.getServer(server));
                     }
                     BungeeCord.setServerList(servers, this);
-                } else {
+                }
+                else {
                     String server = input.readUTF();
                     BungeeCord.setCurrentServerName(RemoteServer.getServer(server), this);
                 }
             }
-        } catch (IOException error) {
+        }
+        catch (IOException error) {
             // No clue what should be done if this happens.
         }
     }

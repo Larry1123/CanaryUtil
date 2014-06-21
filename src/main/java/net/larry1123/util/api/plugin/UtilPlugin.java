@@ -2,23 +2,25 @@ package net.larry1123.util.api.plugin;
 
 import net.canarymod.logger.Logman;
 import net.canarymod.plugin.Plugin;
-import net.larry1123.util.logger.EELogger;
+import net.larry1123.elec.util.factorys.FactoryManager;
+import net.larry1123.elec.util.logger.EELogger;
 
 public abstract class UtilPlugin extends Plugin {
 
-    private final EELogger logger = EELogger.getLogger(getName());
-    private final EELogman loggerWrap = new EELogman(logger);
-
     protected final String defultLoggerPath = getLogger().path;
+    protected final FactoryManager factoryManager = FactoryManager.getFactoryManager();
+    private final EELogger logger = factoryManager.getEELoggerFactory().getLogger(getName());
+    private final EELogman loggerWrap = new EELogman(logger);
 
     /**
      * Retrieves a SubLogger
      *
      * @param name Name to name the subLogger
+     *
      * @return The SubLogger
      */
     public EELogger getSubLogger(String name) {
-        return EELogger.getSubLogger(name, getLogger());
+        return factoryManager.getEELoggerFactory().getSubLogger(name, getLogger());
     }
 
     /**

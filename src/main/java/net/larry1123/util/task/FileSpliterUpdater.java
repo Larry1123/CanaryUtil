@@ -3,10 +3,10 @@ package net.larry1123.util.task;
 import net.canarymod.tasks.ServerTask;
 import net.canarymod.tasks.ServerTaskManager;
 import net.canarymod.tasks.TaskOwner;
+import net.larry1123.elec.util.logger.FileManager;
+import net.larry1123.elec.util.logger.FileSplits;
 import net.larry1123.util.config.LoggerConfig;
 import net.larry1123.util.config.UtilConfigManager;
-import net.larry1123.util.logger.FileManager;
-import net.larry1123.util.logger.FileSplits;
 import org.apache.commons.lang3.time.DateUtils;
 
 import static net.larry1123.util.CanaryUtil.getPlugin;
@@ -18,6 +18,14 @@ public class FileSpliterUpdater extends ServerTask {
      * Current Updater
      */
     private static FileSpliterUpdater ticksystem = null;
+
+    private FileSpliterUpdater(TaskOwner owner, long delay) {
+        this(owner, delay, true);
+    }
+
+    private FileSpliterUpdater(TaskOwner owner, long delay, boolean continuous) {
+        super(owner, delay, continuous);
+    }
 
     /**
      * Starts the updater polling if the config will allow
@@ -48,7 +56,8 @@ public class FileSpliterUpdater extends ServerTask {
         if (isSplitng()) {
             endUpdater();
             startUpdater();
-        } else {
+        }
+        else {
             endUpdater();
         }
     }
@@ -64,17 +73,10 @@ public class FileSpliterUpdater extends ServerTask {
     private static boolean isNotCurrent() {
         if (hasCurrentSplit()) {
             return !config.getCurrentSplit().equals(FileManager.dateTime());
-        } else {
+        }
+        else {
             return !false;
         }
-    }
-
-    private FileSpliterUpdater(TaskOwner owner, long delay) {
-        this(owner, delay, true);
-    }
-
-    private FileSpliterUpdater(TaskOwner owner, long delay, boolean continuous) {
-        super(owner, delay, continuous);
     }
 
     @Override
@@ -83,7 +85,8 @@ public class FileSpliterUpdater extends ServerTask {
             if (isNotCurrent()) {
                 FileManager.updateFileHandlers();
             }
-        } else {
+        }
+        else {
             if (hasCurrentSplit()) {
                 config.setCurrentSplit("");
             }

@@ -3,6 +3,7 @@ package net.larry1123.util.customPacket;
 import net.canarymod.Canary;
 import net.canarymod.api.OfflinePlayer;
 import net.canarymod.api.entity.living.humanoid.Player;
+import net.larry1123.util.api.abstracts.RemoteServer;
 import net.larry1123.util.config.UtilConfigManager;
 
 import java.util.LinkedList;
@@ -50,7 +51,7 @@ public class BungeeCordless extends BungeeCord {
      * {@inheritDoc}
      */
     @Override
-    public RemoteServer getCurrentServerName() {
+    public RemoteServer getCurrentServer() {
         return RemoteServer.getServer(UtilConfigManager.getConfig().getBungeeCordConfig().getServerName());
     }
 
@@ -58,7 +59,7 @@ public class BungeeCordless extends BungeeCord {
      * {@inheritDoc}
      */
     @Override
-    public boolean sendPlayertoServer(Player player, RemoteServer server) {
+    public boolean sendPlayerToServer(Player player, RemoteServer server) {
         return false;
     }
 

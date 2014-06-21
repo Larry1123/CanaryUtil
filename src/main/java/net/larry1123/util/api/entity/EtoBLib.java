@@ -15,6 +15,7 @@ public class EtoBLib {
      * One Block Back
      *
      * @param eLocation
+     *
      * @return
      */
     public Block blokeB(Location eLocation) {
@@ -34,6 +35,7 @@ public class EtoBLib {
      * One Block in front
      *
      * @param eLocation
+     *
      * @return
      */
     public Block blokey(Location eLocation) {
@@ -66,7 +68,8 @@ public class EtoBLib {
 
         if (f_b) {
             block = block.getFacingBlock(direction);
-        } else {
+        }
+        else {
             switch (direction) {
                 case EAST:
                     block = block.getFacingBlock(BlockFace.WEST);

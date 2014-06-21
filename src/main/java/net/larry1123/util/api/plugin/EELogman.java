@@ -1,9 +1,8 @@
 package net.larry1123.util.api.plugin;
 
 import net.canarymod.logger.Logman;
-import net.larry1123.util.logger.EELogger;
-
-import java.util.logging.LogRecord;
+import net.larry1123.elec.util.factorys.FactoryManager;
+import net.larry1123.elec.util.logger.EELogger;
 
 /**
  * To be Refactored to work with log4j and still use the EELogger
@@ -22,7 +21,7 @@ public class EELogman extends Logman {
      */
     public EELogman(String name) {
         super(name);
-        logger = EELogger.getLogger(name);
+        logger = FactoryManager.getFactoryManager().getEELoggerFactory().getLogger(name);
     }
 
     /**
@@ -81,7 +80,7 @@ public class EELogman extends Logman {
      * {@inheritDoc}
      */
     public void logStacktrace(String message, Throwable thrown) {
-        getLogger().logStacktrace(message, thrown);
+        getLogger().logStackTrace(message, thrown);
     }
 
     private EELogger getLogger() {
