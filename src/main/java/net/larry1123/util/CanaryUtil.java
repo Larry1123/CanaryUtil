@@ -70,7 +70,7 @@ public class CanaryUtil extends UtilPlugin implements TaskOwner, CommandOwner {
     @Override
     public void disable() {
         // Stop Tasks!
-        ServerTaskManager.removeTasksForPlugin(this);
+        ServerTaskManager.removeTasks(this);
         // Log that the plugin was Disabled
         getLogger().info("Plugin Disabled");
     }
