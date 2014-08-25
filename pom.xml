@@ -183,7 +183,7 @@
                                 </property>
                             </javaApiLinks>
                             <links>
-                                <link>https://docs.larry1123.net/canarylib/</link>
+                                <link>https://docs.larry1123.net/canarylib/bleeding/</link>
                                 <link>http://docs.visualillusionsent.net/VIUtils/1.2.1/</link>
                             </links>
                             <includeDependencySources>true</includeDependencySources>
@@ -258,22 +258,18 @@
         <dependency>
             <groupId>net.canarymod</groupId>
             <artifactId>CanaryLib</artifactId>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>${EEutil.groupID}</groupId>
             <artifactId>${EEutil.name}</artifactId>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 
