@@ -144,7 +144,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <finalName>${project.artifactId}-${project.version}-shaded</finalName>
+                    <finalName>${project.name}-${project.version}${build.number}-shaded</finalName>
                     <artifactSet>
                         <includes>
                             <include>net.larry1123:EEUtils</include>

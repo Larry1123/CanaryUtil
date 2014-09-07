@@ -22,10 +22,10 @@ import net.larry1123.elec.util.logger.EELogger;
 
 public abstract class UtilPlugin extends Plugin {
 
-    protected final String defultLoggerPath = getLogger().path;
     protected final FactoryManager factoryManager = FactoryManager.getFactoryManager();
     private final EELogger logger = factoryManager.getEELoggerFactory().getLogger(getName());
-    private final EELogman loggerWrap = new EELogman(logger);
+    private final EELogman loggerWrap = new EELogman(logger, super.getLogman());
+    protected final String defultLoggerPath = getLogger().path;
 
     /**
      * Retrieves a SubLogger
