@@ -5,14 +5,18 @@
     <groupId>net.larry1123</groupId>
     <artifactId>CanaryUtil</artifactId>
     <version>0.3.3-SNAPSHOT</version>
+    <name>${project.artifactId}</name>
     <inceptionYear>2013</inceptionYear>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <build.number/>
+        <main.class>${project.groupId}.util.${project.name}</main.class>
+        <author>Larry1123</author>
         <EEutil.groupID>net.larry1123</EEutil.groupID>
         <EEutil.name>EEUtils</EEutil.name>
-        <EEutil.version>1.3.0-SNAPSHOT</EEutil.version>
-        <canary.lib.version>1.0-RC-4-SNAPSHOT</canary.lib.version>
+        <EEutil.version>1.3.0</EEutil.version>
+        <canary.lib.version>1.1.0-SNAPSHOT</canary.lib.version>
     </properties>
 
     <organization>
@@ -67,13 +71,51 @@
         </snapshotRepository>
     </distributionManagement>
 
+    <repositories>
+        <repository>
+            <id>repo1123</id>
+            <name>Larry1123's Repo</name>
+            <url>http://repo.larry1123.net/content/groups/public/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>net.canarymod</groupId>
+            <artifactId>CanaryLib</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${EEutil.groupID}</groupId>
+            <artifactId>${EEutil.name}</artifactId>
+        </dependency>
+    </dependencies>
+
     <build>
         <defaultGoal>clean install</defaultGoal>
 
         <sourceDirectory>${basedir}/src/main/java/</sourceDirectory>
         <resources>
             <resource>
-                <directory>${basedir}/src/main/resources</directory>
+                <directory>${project.basedir}/src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>Canary.inf</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>Canary.inf</exclude>
+                </excludes>
             </resource>
         </resources>
 
@@ -111,11 +153,14 @@
                         <manifestEntries>
                             <Implementation-Title>${project.name}</Implementation-Title>
                             <Implementation-Version>${project.version}</Implementation-Version>
-                            <Implementation-Vendor>Larry1123</Implementation-Vendor>
-                            <Implementation-Vendor-Id>net.larry1123</Implementation-Vendor-Id>
+                            <Implementation-Vendor>${author}</Implementation-Vendor>
+                            <Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>
                             <Specification-Title>${project.name}</Specification-Title>
-                            <Specification-Vendor>Larry1123</Specification-Vendor>
-                            <Specification-Vendor-Id>net.larry1123</Specification-Vendor-Id>
+                            <Specification-Vendor>${author}</Specification-Vendor>
+                            <Specification-Vendor-Id>${project.groupId}</Specification-Vendor-Id>
+                            <authors>
+                                <author>${author}</author>
+                            </authors>
                             <Sealed>true</Sealed>
                         </manifestEntries>
                         <manifestSections>
@@ -147,7 +192,7 @@
                     <finalName>${project.name}-${project.version}${build.number}-shaded</finalName>
                     <artifactSet>
                         <includes>
-                            <include>net.larry1123:EEUtils</include>
+                            <include>${EEutil.groupID}:${EEutil.name}</include>
                         </includes>
                     </artifactSet>
                     <filters>
@@ -179,7 +224,7 @@
                             <javaApiLinks>
                                 <property>
                                     <name>api_1.7</name>
-                                    <fieldValue>http://download.java.net/jdk7/docs/api/</fieldValue>
+                                    <fieldValue>http://download.java.net/jdk8/docs/api/</fieldValue>
                                 </property>
                             </javaApiLinks>
                             <links>
@@ -195,30 +240,6 @@
                 </executions>
             </plugin>
 
-            <!-- Replacement plugin -->
-            <plugin>
-                <groupId>com.google.code.maven-replacer-plugin</groupId>
-                <artifactId>replacer</artifactId>
-                <version>1.5.2</version>
-                <executions>
-                    <execution>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>replace</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <file>/${basedir}/target/classes/Canary.inf</file>
-                    <replacements>
-                        <replacement>
-                            <token>[version]</token>
-                            <value>${project.version}</value>
-                        </replacement>
-                    </replacements>
-                    <regex>false</regex>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 
@@ -236,42 +257,6 @@
             </properties>
         </profile>
     </profiles>
-
-    <repositories>
-        <repository>
-            <id>repo1123</id>
-            <name>Larry1123's Repo</name>
-            <url>http://repo.larry1123.net/content/groups/public/</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-                <checksumPolicy>warn</checksumPolicy>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-                <checksumPolicy>warn</checksumPolicy>
-            </releases>
-        </repository>
-    </repositories>
-
-    <dependencies>
-        <dependency>
-            <groupId>net.canarymod</groupId>
-            <artifactId>CanaryLib</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>${EEutil.groupID}</groupId>
-            <artifactId>${EEutil.name}</artifactId>
-        </dependency>
-    </dependencies>
 
     <dependencyManagement>
         <dependencies>

@@ -30,6 +30,7 @@ public class CommandCommand implements Command {
     public final String[] searchTerms;
     public final int min;
     public final int max;
+    public final int version;
 
     CommandCommand(CommandData data) {
         String[] aliases = new String[data.getAliases().length + 1];
@@ -47,6 +48,7 @@ public class CommandCommand implements Command {
         this.searchTerms = data.getSearchTerms();
         this.min = data.getMin();
         this.max = data.getMax();
+        this.version = 1;
     }
 
     /**
@@ -129,9 +131,13 @@ public class CommandCommand implements Command {
         return this.max;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public String tabCompleteMethod() {
-        return null;
+    public int version() {
+        return 0;
     }
+
 
 }

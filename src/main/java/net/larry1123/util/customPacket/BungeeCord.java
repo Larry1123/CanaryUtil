@@ -241,9 +241,9 @@ public class BungeeCord {
     }
 
     /**
-     * Gets the name for this server
+     * Gets the {@link net.larry1123.util.api.abstracts.RemoteServer} for this server
      *
-     * @return The Name for this Server
+     * @return The {@link net.larry1123.util.api.abstracts.RemoteServer} for this Server
      */
     public RemoteServer getCurrentServer() {
         return currentServer;

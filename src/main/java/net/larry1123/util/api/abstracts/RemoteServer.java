@@ -52,18 +52,39 @@ public class RemoteServer {
         return serverName;
     }
 
+    /**
+     * Tells if this {@link RemoteServer} is the local server
+     *
+     * @return {@code true} if this is the local server, {@code false} if this is not the local server
+     */
     public boolean isCurrentServer() {
         return this.equals(getBungeeCordInterface().getCurrentServer());
     }
 
+    /**
+     * Tells if the server is currently online
+     *
+     * @return {@code true} this {@link RemoteServer} is online, {@code false} this {@link RemoteServer} is offline
+     */
     public boolean isServerOnline() {
         return getBungeeCordInterface().getServerList().contains(this);
     }
 
+    /**
+     * Gets the last known amount of players on the given Server
+     * Will return -1 if the server is Offline
+     *
+     * @return Player Count for given Server
+     */
     public int getPlayerCount() {
         return getBungeeCordInterface().getServerPlayerCount(this);
     }
 
+    /**
+     * Gets a OfflinePlayer LinkedList of Players for the given Server or a empty List
+     *
+     * @return LinkedList of OfflinePlayers for the given Server
+     */
     public LinkedList<OfflinePlayer> getServerPlayerList() {
         return getBungeeCordInterface().getServerPlayerList(this);
     }
@@ -76,7 +97,7 @@ public class RemoteServer {
      *
      * @param player Player Object of who to send to a new server
      *
-     * @return true if the packet was sent, false if the packet was not sent
+     * @return {@code true} if the packet was sent, {@code false} if the packet was not sent
      */
     public boolean sendPlayerToServer(Player player) {
         return getBungeeCordInterface().sendPlayerToServer(player, this);
@@ -88,10 +109,10 @@ public class RemoteServer {
      * Will also return false if you are trying to send to the current server;
      * Will return false if no players are online or if no players that are online are connected to the BungeeCord Server
      *
-     * @param subChannel What channel to send over
+     * @param subChannel What channel to send data over
      * @param data       What data to pass
      *
-     * @return true if the packet was sent, false if the packet was not sent
+     * @return {@code true} if the packet was sent, {@code false} if the packet was not sent
      */
     public boolean sendMessageToServer(String subChannel, String data) {
         return getBungeeCordInterface().sendMessageToServer(this, subChannel, data);
@@ -103,10 +124,10 @@ public class RemoteServer {
      * Will also return false if you are trying to send to the current server;
      * Will return false if no players are online or if no players that are online are connected to the BungeeCord Server
      *
-     * @param subChannel
-     * @param data
+     * @param subChannel What channel to send data over
+     * @param data       What data to pass
      *
-     * @return
+     * @return {@code true} if the packet was sent, {@code false} if the packet was not sent
      */
     public boolean sendMessageToServerAsAllPlayers(String subChannel, String data) {
         return getBungeeCordInterface().sendMessageToServerAsAllPlayers(this, subChannel, data);
@@ -117,11 +138,11 @@ public class RemoteServer {
      * Will also return false if you are trying to send to the current server;
      * Will return false if the player is not connected to the BungeeCord Server
      *
-     * @param subChannel
-     * @param data
-     * @param player
+     * @param subChannel What channel to send data over
+     * @param data       What data to pass
+     * @param player     What player to send this data over with
      *
-     * @return
+     * @return {@code true} if the packet was sent, {@code false} if the packet was not sent
      */
     public boolean sendMessageToServerAsPlayer(String subChannel, String data, Player player) {
         return getBungeeCordInterface().sendMessageToServerAsPlayer(this, subChannel, data, player);

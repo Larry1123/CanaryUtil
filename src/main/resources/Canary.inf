@@ -1,4 +1,4 @@
-main-class=net.larry1123.util.CanaryUtil
-name=CanaryUtil
-author=Larry1123
-version=[version]
+main-class=${main.class}
+name=${project.name}
+author=${author}
+version=${project.version}

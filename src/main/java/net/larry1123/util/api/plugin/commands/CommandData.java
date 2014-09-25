@@ -19,22 +19,32 @@ import java.util.UUID;
 
 public class CommandData {
 
-    private final String[] aliases;
-    private final String[] permissions;
-    private final String description;
-    private final String toolTip;
-    private final UUID commandID = UUID.randomUUID();
-    private String parent = "";
-    private String helpLookup = "";
-    private String[] searchTerms = {" "};
-    private int min = 1;
-    private int max = -1;
+    protected final String[] aliases;
+    protected final String[] permissions;
+    protected final String description;
+    protected final String toolTip;
+    protected final UUID commandID = UUID.randomUUID();
+    protected String parent = "";
+    protected String helpLookup = "";
+    protected String[] searchTerms = {" "};
+    protected int min = 1;
+    protected int max = -1;
+    protected final int version;
 
     public CommandData(String[] aliases, String[] permissions, String description, String toolTip) {
         this.aliases = aliases;
         this.permissions = permissions;
         this.description = description;
         this.toolTip = toolTip;
+        this.version = 1;
+    }
+
+    public CommandData(String[] aliases, String[] permissions, String description, String toolTip, int version) {
+        this.aliases = aliases;
+        this.permissions = permissions;
+        this.description = description;
+        this.toolTip = toolTip;
+        this.version = version;
     }
 
     /**
@@ -187,6 +197,15 @@ public class CommandData {
      */
     public String getToolTip() {
         return toolTip;
+    }
+
+    /**
+     * TODO
+     *
+     * @return TODO
+     */
+    public int getVersion() {
+        return version;
     }
 
     /**
