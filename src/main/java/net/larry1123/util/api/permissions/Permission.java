@@ -41,8 +41,8 @@ public class Permission {
     /**
      * Used only for creating a root perm
      *
-     * @param tracker    What tracker is tracking this root
-     * @param path       The root path
+     * @param tracker What tracker is tracking this root
+     * @param path    The root path
      */
     public Permission(PermissionTracker tracker, String path) {
         permissionTracker = tracker;
@@ -136,7 +136,7 @@ public class Permission {
     /**
      * Checks if the player has this permission
      *
-     * @param player    The {@link net.canarymod.api.entity.living.humanoid.Player} to check if it has Permission of
+     * @param player The {@link net.canarymod.api.entity.living.humanoid.Player} to check if it has Permission of
      *
      * @return {@code true} if the given {@link net.canarymod.api.entity.living.humanoid.Player} has this Permission
      */
@@ -147,7 +147,7 @@ public class Permission {
     /**
      * Gives the player this permission with the fieldValue true
      *
-     * @param player   What player to give this permission to
+     * @param player What player to give this permission to
      */
     public void givePermission(Player player) {
         givePermission(player, true);
@@ -156,8 +156,8 @@ public class Permission {
     /**
      * Gives the player this permission with the given fieldValue
      *
-     * @param player   What player to give this permission to
-     * @param value    pass false if this perm should take and not give
+     * @param player What player to give this permission to
+     * @param value  pass false if this perm should take and not give
      */
     public void givePermission(Player player, boolean value) {
         player.getPermissionProvider().addPermission(getPermissionString(), value);
@@ -166,7 +166,8 @@ public class Permission {
     /**
      * Checks to see if the passed {@link net.canarymod.user.Group} has this permission
      *
-     * @param group    What to check if it has Permission of
+     * @param group What to check if it has Permission of
+     *
      * @return {@code true} if the given {@link net.canarymod.user.Group} has this Permission
      */
     public boolean hasPermission(Group group) {
@@ -176,7 +177,8 @@ public class Permission {
     /**
      * Checks to see if the passed {@link net.canarymod.chat.MessageReceiver} has this permission
      *
-     * @param caller    What to check if it has Permission of
+     * @param caller What to check if it has Permission of
+     *
      * @return {@code true} if the given {@link net.canarymod.chat.MessageReceiver} has this Permission
      */
     public boolean hasPermission(MessageReceiver caller) {
@@ -189,7 +191,7 @@ public class Permission {
     /**
      * Gives the group this permission with the fieldValue true
      *
-     * @param group    What group to give this permission to
+     * @param group What group to give this permission to
      */
     public void givePermission(Group group) {
         givePermission(group, true);
@@ -198,8 +200,8 @@ public class Permission {
     /**
      * Gives the group this permission with the given fieldValue
      *
-     * @param group    What group to give this permission to
-     * @param value    pass false if this perm should take and not give
+     * @param group What group to give this permission to
+     * @param value pass false if this perm should take and not give
      */
     public void givePermission(Group group, boolean value) {
         group.getPermissionProvider().addPermission(getPermissionString(), value);
@@ -217,7 +219,8 @@ public class Permission {
     /**
      * TODO doc this
      *
-     * @param path    The path to get the parent of
+     * @param path The path to get the parent of
+     *
      * @return Returns the {@link net.larry1123.util.api.permissions.Permission}
      */
     protected Permission getParentByPath(String path) {

@@ -32,7 +32,7 @@ public class Repair {
     /**
      * Repairs the item in the player's hand fully
      *
-     * @param player    The player to have an item repaired for
+     * @param player The player to have an item repaired for
      */
     public static void repairItemInHand(Player player) {
         checkNotNull(player, "Player can not be null");
@@ -43,8 +43,8 @@ public class Repair {
     /**
      * Repairs the item in the player's hand by the requested amount
      *
-     * @param player    The player to have an item repaired for
-     * @param amount    How much to repair the item by
+     * @param player The player to have an item repaired for
+     * @param amount How much to repair the item by
      */
     public static void repairItemInHand(Player player, int amount) {
         checkNotNull(player, "Player can not be null");
@@ -97,7 +97,8 @@ public class Repair {
     /**
      * Checks if this item is able to be repaired
      *
-     * @param item    Item to check
+     * @param item Item to check
+     *
      * @return {@code true} if item can be repaired, {@code false} item can not be repaired, or is not damaged
      */
     public static boolean canRepairItem(Item item) {
@@ -107,8 +108,9 @@ public class Repair {
     /**
      * Checks if this item is able to be repaired
      *
-     * @param item        Item to check
-     * @param baseItem    BaseItem that is to this Item
+     * @param item     Item to check
+     * @param baseItem BaseItem that is to this Item
+     *
      * @return {@code true} if item can be repaired, {@code false} item can not be repaired, or is not damaged
      */
     private static boolean canRepairItem(Item item, BaseItem baseItem) {

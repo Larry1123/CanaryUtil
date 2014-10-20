@@ -15,7 +15,6 @@
  */
 package net.larry1123.util.config;
 
-import net.canarymod.config.Configuration;
 import net.canarymod.plugin.Plugin;
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.ConfigField;
@@ -124,6 +123,6 @@ public class BungeeCordConfig implements ConfigBase {
 
     @Override
     public PropertiesFile getPropertiesFile() {
-        return plugin == null ? null : Configuration.getPluginConfig(plugin, "BungeeCord");
+        return plugin == null ? null : plugin.getModuleConfig("BungeeCord");
     }
 }

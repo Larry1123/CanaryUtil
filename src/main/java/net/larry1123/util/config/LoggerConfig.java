@@ -15,7 +15,6 @@
  */
 package net.larry1123.util.config;
 
-import net.canarymod.config.Configuration;
 import net.canarymod.plugin.Plugin;
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.ConfigField;
@@ -144,7 +143,7 @@ public class LoggerConfig implements ConfigBase, LoggerSettings {
 
     @Override
     public PropertiesFile getPropertiesFile() {
-        return plugin == null ? null : Configuration.getPluginConfig(plugin, "Logger");
+        return plugin == null ? null : plugin.getModuleConfig("Logger");
     }
 
 }

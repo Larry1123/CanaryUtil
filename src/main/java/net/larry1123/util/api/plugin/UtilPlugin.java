@@ -16,10 +16,13 @@
 package net.larry1123.util.api.plugin;
 
 import com.google.common.io.Files;
+import net.canarymod.commandsys.CommandDependencyException;
 import net.canarymod.logger.Logman;
 import net.canarymod.plugin.Plugin;
 import net.larry1123.elec.util.factorys.FactoryManager;
 import net.larry1123.elec.util.logger.EELogger;
+import net.larry1123.util.CanaryUtil;
+import net.larry1123.util.api.plugin.commands.Command;
 
 import java.io.File;
 import java.io.IOException;
@@ -68,6 +71,13 @@ public abstract class UtilPlugin extends Plugin {
     }
 
     /**
+     * Logs that the plugin is enabled
+     */
+    public void enabled() {
+        getLogger().info("Plugin Enabled");
+    }
+
+    /**
      * Gets the EELogger of the current Plugin
      *
      * @return This Plugins EELogger
@@ -88,6 +98,11 @@ public abstract class UtilPlugin extends Plugin {
 
     public File getPluginDataFolder() {
         return pluginDataFolder;
+    }
+
+    public void registerCommand(Command command) throws CommandDependencyException {
+        CanaryUtil.commands().registerCommand(command, this);
+        command.setLoaded(true);
     }
 
 }

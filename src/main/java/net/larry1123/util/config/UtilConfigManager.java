@@ -15,37 +15,19 @@
  */
 package net.larry1123.util.config;
 
-import net.canarymod.api.world.World;
-import net.canarymod.config.Configuration;
-import net.canarymod.plugin.Plugin;
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.ConfigFile;
 import net.larry1123.util.CanaryUtil;
-import net.visualillusionsent.utils.PropertiesFile;
 
 public class UtilConfigManager {
 
     private static final UtilConfigManager config = new UtilConfigManager();
-
+    protected CanaryUtil plugin;
     private BungeeCordConfig bungeecordConfig;
     private LoggerConfig loggerConfig;
     private UtilCommandsConfig utilCommandsConfig;
-    protected CanaryUtil plugin;
 
     private UtilConfigManager() {}
-
-    public void setPlugin(CanaryUtil plugin) {
-        if (getPlugin() == null) {
-            this.plugin = plugin;
-            getLoggerConfig().postInt(getPlugin());
-            getBungeeCordConfig().postInt(getPlugin());
-            getUtilCommandsConfig().postInt(getPlugin());
-        }
-    }
-
-    public CanaryUtil getPlugin() {
-        return plugin;
-    }
 
     /**
      * Gets the Config Manager
@@ -54,6 +36,19 @@ public class UtilConfigManager {
      */
     public static UtilConfigManager getConfig() {
         return config;
+    }
+
+    public CanaryUtil getPlugin() {
+        return plugin;
+    }
+
+    public void setPlugin(CanaryUtil plugin) {
+        if (getPlugin() == null) {
+            this.plugin = plugin;
+            getLoggerConfig().postInt(getPlugin());
+            getBungeeCordConfig().postInt(getPlugin());
+            getUtilCommandsConfig().postInt(getPlugin());
+        }
     }
 
     /**
@@ -106,22 +101,6 @@ public class UtilConfigManager {
      */
     public ConfigFile getPluginConfig(ConfigBase config) {
         return new ConfigFile(config);
-    }
-
-    public PropertiesFile getPluginPropertiesFile(Plugin plugin) {
-        return Configuration.getPluginConfig(plugin);
-    }
-
-    public PropertiesFile getPluginPropertiesFile(Plugin plugin, String module) {
-        return Configuration.getPluginConfig(plugin, module);
-    }
-
-    public PropertiesFile getPluginPropertiesFile(Plugin plugin, World world) {
-        return Configuration.getPluginConfig(plugin, world);
-    }
-
-    public PropertiesFile getPluginPropertiesFile(Plugin plugin, String module, World world) {
-        return Configuration.getPluginConfig(plugin, module, world);
     }
 
 }

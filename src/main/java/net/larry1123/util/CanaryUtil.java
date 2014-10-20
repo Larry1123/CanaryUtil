@@ -78,7 +78,7 @@ public class CanaryUtil extends UtilPlugin implements TaskOwner, CommandOwner {
         UtilConfigManager.getConfig().setPlugin(this);
         factoryManager.getEELoggerFactory().setLoggerSettings(UtilConfigManager.getConfig().getLoggerConfig());
         // Log that the Plugin was Enabled
-        getLogger().info("Plugin Enabled");
+        enabled();
         // Hey everything worked lets return true so Canary knows that too
         return true;
     }

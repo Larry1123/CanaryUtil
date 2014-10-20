@@ -15,7 +15,6 @@
  */
 package net.larry1123.util.config;
 
-import net.canarymod.config.Configuration;
 import net.canarymod.plugin.Plugin;
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.ConfigField;
@@ -32,12 +31,10 @@ public class UtilCommandsConfig implements ConfigBase {
 
     protected ConfigFile configManager;
     protected Plugin plugin;
-
-    @ConfigField(name = "Repair-Enabled", comments = "")
-    private boolean repairEnable = false;
-
     @ConfigField(name = "Repair-Aliases", comments = "")
     protected ArrayList<String> repairAliases = new ArrayList<String>();
+    @ConfigField(name = "Repair-Enabled", comments = "")
+    private boolean repairEnable = false;
 
     public UtilCommandsConfig() {
         repairAliases.add("repair");
@@ -63,6 +60,6 @@ public class UtilCommandsConfig implements ConfigBase {
 
     @Override
     public PropertiesFile getPropertiesFile() {
-        return plugin == null ? null : Configuration.getPluginConfig(plugin, "Commands");
+        return plugin == null ? null : plugin.getModuleConfig("Commands");
     }
 }

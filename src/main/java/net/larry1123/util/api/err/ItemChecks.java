@@ -26,7 +26,8 @@ public final class ItemChecks {
     /**
      * Checks if the item is air
      *
-     * @param item    The Item to check
+     * @param item The Item to check
+     *
      * @throws IllegalStateException if {@code item} is air
      */
     public static void itemNotAir(Item item) {
@@ -38,8 +39,9 @@ public final class ItemChecks {
     /**
      * Checks if the item is air
      *
-     * @param item            The Item to check
-     * @param errorMessage    The error message to use if the check fails
+     * @param item         The Item to check
+     * @param errorMessage The error message to use if the check fails
+     *
      * @throws IllegalStateException if {@code item} is air
      */
     public static void itemNotAir(Item item, Object errorMessage) {
@@ -51,7 +53,8 @@ public final class ItemChecks {
     /**
      * Checks if the item has an amount
      *
-     * @param item    The Item to check
+     * @param item The Item to check
+     *
      * @throws IllegalStateException if {@code item} has an amount of 0
      */
     public static void itemHasAmount(Item item) {
@@ -63,8 +66,9 @@ public final class ItemChecks {
     /**
      * Checks if the item has an amount
      *
-     * @param item            The Item to check
-     * @param errorMessage    The error message to use if the check fails
+     * @param item         The Item to check
+     * @param errorMessage The error message to use if the check fails
+     *
      * @throws IllegalStateException if {@code item} has an amount of 0
      */
     public static void itemHasAmount(Item item, Object errorMessage) {

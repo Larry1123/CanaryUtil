@@ -21,8 +21,8 @@ import java.util.HashMap;
 
 public class PermissionTracker {
 
-    final HashMap<String, Permission> Permissions = new HashMap<String, Permission>();
     protected final RemoteServer remoteServer;
+    final HashMap<String, Permission> Permissions = new HashMap<String, Permission>();
 
     /**
      * TODO
@@ -166,6 +166,7 @@ public class PermissionTracker {
      * Will find out if a root has been made for this tracker yet
      *
      * @param root what root to check
+     *
      * @return {@code true} if the root exist; {@code false} if the root does not exist
      */
     public boolean doesRootExist(String root) {

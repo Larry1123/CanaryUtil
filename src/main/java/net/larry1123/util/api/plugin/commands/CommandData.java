@@ -24,12 +24,12 @@ public class CommandData {
     protected final String description;
     protected final String toolTip;
     protected final UUID commandID = UUID.randomUUID();
+    protected final int version;
     protected String parent = "";
     protected String helpLookup = "";
     protected String[] searchTerms = {" "};
     protected int min = 1;
     protected int max = -1;
-    protected final int version;
 
     public CommandData(String[] aliases, String[] permissions, String description, String toolTip) {
         this.aliases = aliases;
