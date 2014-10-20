@@ -15,6 +15,8 @@
  */
 package net.larry1123.util.config;
 
+import net.canarymod.config.Configuration;
+import net.canarymod.plugin.Plugin;
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.ConfigField;
 import net.larry1123.elec.util.config.ConfigFile;
@@ -23,21 +25,26 @@ import net.visualillusionsent.utils.PropertiesFile;
 
 public class BungeeCordConfig implements ConfigBase {
 
-    private final ConfigFile configManager;
-    private PropertiesFile propertiesFile;
+    protected ConfigFile configManager;
+    protected Plugin plugin;
 
     @ConfigField(name = "BungeeCord-enabled", comments = "This sets if the Util will try to talk to a BungeeCord server or not")
-    private boolean BungeeCord_enabled = false;
+    protected boolean BungeeCord_enabled = false;
 
     @ConfigField(name = "BungeeCord-pollTime", comments = "This sets how many ticks between when the Util will send packets to BungeeCord")
-    private long BungeeCord_pollTime = 1000;
+    protected long BungeeCord_pollTime = 1000;
 
     @ConfigField(name = "BungeeCord-ServerName", comments = "This is only used if BungeeCord is disabled, and as a default if no players have yet connected")
-    private String BungeeCord_ServerName = "Server";
+    protected String BungeeCord_ServerName = "Server";
 
-    BungeeCordConfig(String plugin) {
-        this.propertiesFile = UtilConfigManager.getConfig().getPluginPropertiesFile(plugin, "BungeeCord");
-        configManager = UtilConfigManager.getConfig().getPluginConfig(this);
+    BungeeCordConfig() {}
+
+    public void postInt(Plugin plugin) {
+        if (configManager == null) {
+            this.plugin = plugin;
+            configManager = UtilConfigManager.getConfig().getPluginConfig(this);
+            configManager.save();
+        }
     }
 
     /**
@@ -54,7 +61,7 @@ public class BungeeCordConfig implements ConfigBase {
      * @return If BungeeCord functions are enabled
      */
     public boolean isEnabled() {
-        return BungeeCord_enabled;
+        return configManager != null && BungeeCord_enabled;
     }
 
     /**
@@ -73,7 +80,9 @@ public class BungeeCordConfig implements ConfigBase {
      */
     public void setPollTime(long time) {
         BungeeCord_pollTime = time;
-        configManager.save(); // Time to Save
+        if (configManager != null) {
+            configManager.save(); // Time to Save
+        }
         CanaryUtil.getCustomPacket().reloadBungeeCord();
     }
 
@@ -94,7 +103,9 @@ public class BungeeCordConfig implements ConfigBase {
      */
     public void setServerName(String name) {
         BungeeCord_ServerName = name;
-        configManager.save(); // Time to Save
+        if (configManager != null) {
+            configManager.save(); // Time to Save
+        }
         CanaryUtil.getCustomPacket().reloadBungeeCord();
     }
 
@@ -105,12 +116,14 @@ public class BungeeCordConfig implements ConfigBase {
      */
     public void setIsEnabled(boolean state) {
         BungeeCord_enabled = state;
-        configManager.save(); // Time to Save
+        if (configManager != null) {
+            configManager.save(); // Time to Save
+        }
         CanaryUtil.getCustomPacket().reloadBungeeCord();
     }
 
     @Override
     public PropertiesFile getPropertiesFile() {
-        return propertiesFile;
+        return plugin == null ? null : Configuration.getPluginConfig(plugin, "BungeeCord");
     }
 }

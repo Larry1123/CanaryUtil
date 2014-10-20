@@ -40,6 +40,7 @@ public class CanaryUtil extends UtilPlugin implements TaskOwner, CommandOwner {
 
     public CanaryUtil() {
         plugin = this;
+        UtilConfigManager.getConfig().setPlugin(this);
     }
 
     /**

@@ -22,6 +22,7 @@ import net.larry1123.util.api.plugin.commands.Command;
 import net.larry1123.util.commands.bungeecord.BungeeCordCommand;
 import net.larry1123.util.commands.bungeecord.BungeeCordReloadCommand;
 import net.larry1123.util.commands.bungeecord.BungeeCordSetCommand;
+import org.slf4j.MarkerFactory;
 
 import static net.larry1123.util.CanaryUtil.getPlugin;
 
@@ -63,7 +64,7 @@ public class UtilCommands {
             command.setLoaded(true);
         }
         catch (CommandDependencyException e) {
-            FactoryManager.getFactoryManager().getEELoggerFactory().getLogger("CanaryUtil").logCustom("Commands", "Failed to add command: " + command.getCommandData().getAliases()[0], e);
+            FactoryManager.getFactoryManager().getEELoggerFactory().getLogger("CanaryUtil").error(MarkerFactory.getMarker("Commands"), "Failed to add command: " + command.getCommandData().getAliases()[0], e);
             command.setLoaded(false);
         }
     }

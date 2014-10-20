@@ -15,6 +15,8 @@
  */
 package net.larry1123.util.config;
 
+import net.canarymod.config.Configuration;
+import net.canarymod.plugin.Plugin;
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.ConfigField;
 import net.larry1123.elec.util.config.ConfigFile;
@@ -23,39 +25,38 @@ import net.larry1123.elec.util.logger.LoggerSettings;
 import net.larry1123.util.task.FileSpliterUpdater;
 import net.visualillusionsent.utils.PropertiesFile;
 
-import java.util.logging.Logger;
-
 public class LoggerConfig implements ConfigBase, LoggerSettings {
 
-    private final ConfigFile configManager;
-    private PropertiesFile propertiesFile;
-
-    @ConfigField(name = "Logger-Path", comments = "This defines where the log files will be placed.")
-    private String logger_Path = "pluginlogs/";
+    protected ConfigFile configManager;
+    protected Plugin plugin;
 
     @ConfigField(name = "Logger-Split", comments = {"If left blank it will default no spliting", "None|Hour|Day|Week|Month"})
-    private String logSplit = "None";
-
-    @ConfigField(name = "Logger-FileType", comments = "The FileType with out the leading '.'")
-    private String logFileType = "log";
+    protected String logSplit = "None";
 
     @ConfigField(name = "Logger-CurrentSplit", comments = "Do not change this, used to keep track of splits over reloads and restarts")
-    private String currentSplit = "";
+    protected String currentSplit = "";
 
     @ConfigField(name = "Paste-Enabled", comments = "Allows plugins to post errors to https://paste.larry1123.net/")
-    private boolean pasteSend = true;
+    protected boolean pasteSend = true;
 
-    public LoggerConfig(String plugin) {
-        this.propertiesFile = UtilConfigManager.getConfig().getPluginPropertiesFile(plugin, "Logger");
-        configManager = UtilConfigManager.getConfig().getPluginConfig(this);
+    public LoggerConfig() {}
+
+    public void postInt(Plugin plugin) {
+        if (configManager == null) {
+            this.plugin = plugin;
+            configManager = UtilConfigManager.getConfig().getPluginConfig(this);
+            configManager.save();
+        }
     }
 
     /**
      * Will update everything with any changes in Config file
      */
     void reload() {
-        configManager.reload();
-        FileSpliterUpdater.reloadUpdater();
+        if (configManager != null) {
+            configManager.reload();
+            FileSpliterUpdater.reloadUpdater();
+        }
     }
 
     /**
@@ -63,39 +64,35 @@ public class LoggerConfig implements ConfigBase, LoggerSettings {
      */
     @Override
     public String getLoggerPath() {
-        return logger_Path;
+        return "logs/";
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setLoggerPath(String path) {
-        logger_Path = path;
-        configManager.save(); // Time to Save
-    }
+    public void setLoggerPath(String path) {}
 
     /**
      * {@inheritDoc}
      */
     @Override
     public boolean isPastingAllowed() {
-        return pasteSend;
+        return configManager != null && pasteSend;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setPastingAllowed(boolean state) {
-    }
+    public void setPastingAllowed(boolean state) {}
 
     /**
      * {@inheritDoc}
      */
     @Override
     public FileSplits getSplit() {
-        return FileSplits.getFromString(logSplit);
+        return configManager == null ? FileSplits.NONE : FileSplits.getFromString(logSplit);
     }
 
     /**
@@ -111,7 +108,7 @@ public class LoggerConfig implements ConfigBase, LoggerSettings {
      */
     @Override
     public String getCurrentSplit() {
-        return currentSplit;
+        return configManager == null ? "" : currentSplit;
     }
 
     /**
@@ -121,7 +118,9 @@ public class LoggerConfig implements ConfigBase, LoggerSettings {
     public void setCurrentSplit(String current) {
         boolean change = !currentSplit.equals(current);
         currentSplit = current;
-        configManager.save(); // Time to Save
+        if (configManager != null) {
+            configManager.save(); // Time to Save
+        }
         if (change) {
             FileSpliterUpdater.reloadUpdater();
         }
@@ -132,41 +131,18 @@ public class LoggerConfig implements ConfigBase, LoggerSettings {
      */
     @Override
     public String getFileType() {
-        if (logFileType.startsWith(".")) {
-            logFileType = logFileType.substring(2);
-        }
-        if (!logFileType.equals("")) {
-            return this.logFileType;
-        }
-        else {
-            return "log";
-        }
+        return "log";
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setFileType(String type) {
-        // TODO add command to change setting
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Logger getParentLogger() {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setParentLogger(Logger logger) {}
+    public void setFileType(String type) {}
 
     @Override
     public PropertiesFile getPropertiesFile() {
-        return propertiesFile;
+        return plugin == null ? null : Configuration.getPluginConfig(plugin, "Logger");
     }
+
 }

@@ -15,17 +15,30 @@
  */
 package net.larry1123.util.api.plugin;
 
+import com.google.common.io.Files;
 import net.canarymod.logger.Logman;
 import net.canarymod.plugin.Plugin;
 import net.larry1123.elec.util.factorys.FactoryManager;
 import net.larry1123.elec.util.logger.EELogger;
+
+import java.io.File;
+import java.io.IOException;
 
 public abstract class UtilPlugin extends Plugin {
 
     protected final FactoryManager factoryManager = FactoryManager.getFactoryManager();
     private final EELogger logger = factoryManager.getEELoggerFactory().getLogger(getName());
     private final EELogman loggerWrap = new EELogman(logger, super.getLogman());
-    protected final String defultLoggerPath = getLogger().path;
+    private final File pluginDataFolder = new File("pluginData" + File.separatorChar + getName());
+
+    {
+        try {
+            Files.createParentDirs(pluginDataFolder);
+        }
+        catch (IOException e) {
+            getLogger().error("Unable to create plugin data folder!", e);
+        }
+    }
 
     /**
      * Retrieves a SubLogger
@@ -42,7 +55,7 @@ public abstract class UtilPlugin extends Plugin {
      * Logs that this Plugin failed to start
      */
     public void enableFailed() {
-        getLogger().logSevere("Plugin Could not be Enabled!");
+        getLogger().error("Plugin Could not be Enabled!");
     }
 
     /**
@@ -51,7 +64,7 @@ public abstract class UtilPlugin extends Plugin {
      * @param reason The Reason that the plugin failed to start
      */
     public void enableFailed(String reason) {
-        getLogger().logSevere("Plugin Could not be Enabled, because" + reason);
+        getLogger().error("Plugin Could not be Enabled, because" + reason);
     }
 
     /**
@@ -71,6 +84,10 @@ public abstract class UtilPlugin extends Plugin {
     @Override
     public Logman getLogman() {
         return loggerWrap;
+    }
+
+    public File getPluginDataFolder() {
+        return pluginDataFolder;
     }
 
 }

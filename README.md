@@ -29,6 +29,12 @@ Maven
             <url>http://repo.larry1123.net/content/groups/public/</url>
         </repository>
 
+*Canary.inf*
+
+        dependencies=CanaryUtil
+
+On top of this have users know that they need to have CanaryUtil as a plugin on their server also.
+
 Java Docs
 -------------
 

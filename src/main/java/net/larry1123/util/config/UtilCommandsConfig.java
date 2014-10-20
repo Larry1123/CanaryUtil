@@ -15,6 +15,8 @@
  */
 package net.larry1123.util.config;
 
+import net.canarymod.config.Configuration;
+import net.canarymod.plugin.Plugin;
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.ConfigField;
 import net.larry1123.elec.util.config.ConfigFile;
@@ -28,18 +30,23 @@ import java.util.ArrayList;
  */
 public class UtilCommandsConfig implements ConfigBase {
 
-    private final ConfigFile configManager;
-    private PropertiesFile propertiesFile;
+    protected ConfigFile configManager;
+    protected Plugin plugin;
 
     @ConfigField(name = "Repair-Enabled", comments = "")
     private boolean repairEnable = false;
 
     @ConfigField(name = "Repair-Aliases", comments = "")
-    private ArrayList<String> repairAliases = new ArrayList<String>();
+    protected ArrayList<String> repairAliases = new ArrayList<String>();
 
-    public UtilCommandsConfig(String plugin) {
-        this.propertiesFile = UtilConfigManager.getConfig().getPluginPropertiesFile(plugin, "Commands");
-        configManager = UtilConfigManager.getConfig().getPluginConfig(this);
+    public UtilCommandsConfig() {}
+
+    public void postInt(Plugin plugin) {
+        if (configManager == null) {
+            this.plugin = plugin;
+            configManager = UtilConfigManager.getConfig().getPluginConfig(this);
+            configManager.save();
+        }
     }
 
     /**
@@ -55,6 +62,6 @@ public class UtilCommandsConfig implements ConfigBase {
 
     @Override
     public PropertiesFile getPropertiesFile() {
-        return propertiesFile;
+        return plugin == null ? null : Configuration.getPluginConfig(plugin, "Commands");
     }
 }

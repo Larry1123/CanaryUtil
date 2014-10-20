@@ -20,23 +20,31 @@ import net.canarymod.config.Configuration;
 import net.canarymod.plugin.Plugin;
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.ConfigFile;
+import net.larry1123.util.CanaryUtil;
 import net.visualillusionsent.utils.PropertiesFile;
-
-import java.io.File;
-import java.util.HashMap;
 
 public class UtilConfigManager {
 
     private static final UtilConfigManager config = new UtilConfigManager();
 
-    private static HashMap<ConfigBase, HashMap<String, PropertiesFile>> plugin_cfg_cache = new HashMap<ConfigBase, HashMap<String, PropertiesFile>>();
-
-    private final String pluginName = "CanaryUtil";
     private BungeeCordConfig bungeecordConfig;
     private LoggerConfig loggerConfig;
     private UtilCommandsConfig utilCommandsConfig;
+    protected CanaryUtil plugin;
 
-    private UtilConfigManager() {
+    private UtilConfigManager() {}
+
+    public void setPlugin(CanaryUtil plugin) {
+        if (getPlugin() == null) {
+            this.plugin = plugin;
+            getLoggerConfig().postInt(getPlugin());
+            getBungeeCordConfig().postInt(getPlugin());
+            getUtilCommandsConfig().postInt(getPlugin());
+        }
+    }
+
+    public CanaryUtil getPlugin() {
+        return plugin;
     }
 
     /**
@@ -54,7 +62,9 @@ public class UtilConfigManager {
      * @return Config Manager for BungeeCord
      */
     public BungeeCordConfig getBungeeCordConfig() {
-        if (bungeecordConfig == null) { bungeecordConfig = new BungeeCordConfig(pluginName); }
+        if (bungeecordConfig == null) {
+            bungeecordConfig = new BungeeCordConfig();
+        }
         return bungeecordConfig;
     }
 
@@ -71,7 +81,9 @@ public class UtilConfigManager {
      * @return Config Manager for Logger
      */
     public LoggerConfig getLoggerConfig() {
-        if (loggerConfig == null) { loggerConfig = new LoggerConfig(pluginName); }
+        if (loggerConfig == null) {
+            loggerConfig = new LoggerConfig();
+        }
         return loggerConfig;
     }
 
@@ -83,7 +95,7 @@ public class UtilConfigManager {
     }
 
     public UtilCommandsConfig getUtilCommandsConfig() {
-        if (utilCommandsConfig == null) { utilCommandsConfig = new UtilCommandsConfig(pluginName); }
+        if (utilCommandsConfig == null) { utilCommandsConfig = new UtilCommandsConfig(); }
         return utilCommandsConfig;
     }
 
@@ -100,36 +112,16 @@ public class UtilConfigManager {
         return Configuration.getPluginConfig(plugin);
     }
 
-    @Deprecated
-    public PropertiesFile getPluginPropertiesFile(String plugin) {
-        return new PropertiesFile("config" + File.separatorChar + plugin + File.separatorChar + plugin + ".cfg");
-    }
-
     public PropertiesFile getPluginPropertiesFile(Plugin plugin, String module) {
         return Configuration.getPluginConfig(plugin, module);
-    }
-
-    @Deprecated
-    public PropertiesFile getPluginPropertiesFile(String plugin, String module) {
-        return new PropertiesFile("config" + File.separatorChar + plugin + File.separatorChar + plugin + "." + module + ".cfg");
     }
 
     public PropertiesFile getPluginPropertiesFile(Plugin plugin, World world) {
         return Configuration.getPluginConfig(plugin, world);
     }
 
-    @Deprecated
-    public PropertiesFile getPluginPropertiesFile(String plugin, World world) {
-        return new PropertiesFile("config" + File.separatorChar + plugin + File.separatorChar + "worlds" + File.separatorChar + world.getFqName() + File.separatorChar + plugin + ".cfg");
-    }
-
     public PropertiesFile getPluginPropertiesFile(Plugin plugin, String module, World world) {
         return Configuration.getPluginConfig(plugin, module, world);
-    }
-
-    @Deprecated
-    public PropertiesFile getPluginPropertiesFile(String plugin, String module, World world) {
-        return new PropertiesFile("config" + File.separatorChar + plugin + File.separatorChar + "worlds" + File.separatorChar + world.getFqName() + File.separatorChar + plugin + "." + module + ".cfg");
     }
 
 }

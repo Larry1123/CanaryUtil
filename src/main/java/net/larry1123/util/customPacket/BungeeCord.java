@@ -184,6 +184,7 @@ public class BungeeCord {
      *
      * @return The IP of the Player
      */
+    @Deprecated
     public String getRealPlayerIp(Player player) {
         if (IPs.get(Canary.getServer().getOfflinePlayer(player.getName())) != null) {
             return IPs.get(Canary.getServer().getOfflinePlayer(player.getName()));
