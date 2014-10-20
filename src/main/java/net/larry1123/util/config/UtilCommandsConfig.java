@@ -39,13 +39,14 @@ public class UtilCommandsConfig implements ConfigBase {
     @ConfigField(name = "Repair-Aliases", comments = "")
     protected ArrayList<String> repairAliases = new ArrayList<String>();
 
-    public UtilCommandsConfig() {}
+    public UtilCommandsConfig() {
+        repairAliases.add("repair");
+    }
 
     public void postInt(Plugin plugin) {
         if (configManager == null) {
             this.plugin = plugin;
             configManager = UtilConfigManager.getConfig().getPluginConfig(this);
-            configManager.save();
         }
     }
 

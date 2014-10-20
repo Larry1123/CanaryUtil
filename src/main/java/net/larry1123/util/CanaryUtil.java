@@ -22,6 +22,7 @@ import net.larry1123.elec.util.factorys.FactoryManager;
 import net.larry1123.util.api.plugin.UtilPlugin;
 import net.larry1123.util.api.plugin.commands.Commands;
 import net.larry1123.util.commands.UtilCommands;
+import net.larry1123.util.config.LoggerConfig;
 import net.larry1123.util.config.UtilConfigManager;
 import net.larry1123.util.customPacket.CustomPacket;
 import net.larry1123.util.task.FileSpliterUpdater;
@@ -31,7 +32,7 @@ public class CanaryUtil extends UtilPlugin implements TaskOwner, CommandOwner {
     private static final Commands commands = new Commands();
 
     static {
-        FactoryManager.getFactoryManager().getEELoggerFactory().setLoggerSettings(UtilConfigManager.getConfig().getLoggerConfig());
+        FactoryManager.getFactoryManager().getEELoggerFactory().setLoggerSettings(new LoggerConfig());
     }
 
     private static CanaryUtil plugin;
@@ -40,7 +41,6 @@ public class CanaryUtil extends UtilPlugin implements TaskOwner, CommandOwner {
 
     public CanaryUtil() {
         plugin = this;
-        UtilConfigManager.getConfig().setPlugin(this);
     }
 
     /**
@@ -74,6 +74,9 @@ public class CanaryUtil extends UtilPlugin implements TaskOwner, CommandOwner {
         customPacket = new CustomPacket();
         // Start up the Command manager
         commandsManager = new UtilCommands();
+        // Give that ConfigManager something to think about!
+        UtilConfigManager.getConfig().setPlugin(this);
+        factoryManager.getEELoggerFactory().setLoggerSettings(UtilConfigManager.getConfig().getLoggerConfig());
         // Log that the Plugin was Enabled
         getLogger().info("Plugin Enabled");
         // Hey everything worked lets return true so Canary knows that too

@@ -25,6 +25,8 @@ import net.larry1123.elec.util.logger.LoggerSettings;
 import net.larry1123.util.task.FileSpliterUpdater;
 import net.visualillusionsent.utils.PropertiesFile;
 
+import java.io.File;
+
 public class LoggerConfig implements ConfigBase, LoggerSettings {
 
     protected ConfigFile configManager;
@@ -64,7 +66,7 @@ public class LoggerConfig implements ConfigBase, LoggerSettings {
      */
     @Override
     public String getLoggerPath() {
-        return "logs/";
+        return "logs" + File.separatorChar;
     }
 
     /**

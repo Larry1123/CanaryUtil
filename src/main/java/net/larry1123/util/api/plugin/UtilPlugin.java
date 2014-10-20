@@ -64,7 +64,7 @@ public abstract class UtilPlugin extends Plugin {
      * @param reason The Reason that the plugin failed to start
      */
     public void enableFailed(String reason) {
-        getLogger().error("Plugin Could not be Enabled, because" + reason);
+        getLogger().error("Plugin Could not be Enabled, because " + reason);
     }
 
     /**

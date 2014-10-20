@@ -57,7 +57,7 @@ public class BaseCommand implements Command {
      */
     @Override
     public boolean isForced() {
-        return false;
+        return true;
     }
 
     /**
