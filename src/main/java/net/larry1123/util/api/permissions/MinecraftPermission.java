@@ -90,7 +90,7 @@ public class MinecraftPermission {
                 this.tracker.createRootPerm("canary");
             }
             catch (PermissionCreationError permissionCreationError) {
-                getLoggerFactory().getSubLogger("MinecraftPermission", getLoggerFactory().getLogger("CanaryUtil")).logStackTrace("Complete Derpness Happened that should never have been able to have happened", permissionCreationError);
+                getLoggerFactory().getSubLogger("MinecraftPermission", getLoggerFactory().getLogger("CanaryUtil")).error("Complete Derpness Happened that should never have been able to have happened", permissionCreationError);
             }
         }
     }
@@ -106,7 +106,7 @@ public class MinecraftPermission {
             return ret;
         }
         catch (PermissionCreationError permissionCreationError) {
-            getLoggerFactory().getSubLogger("MinecraftPermission", getLoggerFactory().getLogger("CanaryUtil")).logStackTrace("Failed to Create Permission", permissionCreationError);
+            getLoggerFactory().getSubLogger("MinecraftPermission", getLoggerFactory().getLogger("CanaryUtil")).error("Failed to Create Permission", permissionCreationError);
         }
         return null;
     }

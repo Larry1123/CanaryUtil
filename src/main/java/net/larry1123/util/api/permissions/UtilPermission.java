@@ -43,7 +43,7 @@ public class UtilPermission {
                     this.tracker.createRootPerm(root);
                 }
                 catch (PermissionCreationError permissionCreationError) {
-                    getLoggerFactory().getSubLogger("UtilPermission", getLoggerFactory().getLogger("CanaryUtil")).logStackTrace("Complete Derpness Happened that should never have been able to have happened\"", permissionCreationError);
+                    getLoggerFactory().getSubLogger("UtilPermission", getLoggerFactory().getLogger("CanaryUtil")).error("Complete Derpness Happened that should never have been able to have happened\"", permissionCreationError);
                 }
             }
         }
@@ -61,7 +61,7 @@ public class UtilPermission {
             return ret;
         }
         catch (PermissionCreationError permissionCreationError) {
-            getLoggerFactory().getSubLogger("UtilPermission", getLoggerFactory().getLogger("CanaryUtil")).logStackTrace("Failed to Create Permission", permissionCreationError);
+            getLoggerFactory().getSubLogger("UtilPermission", getLoggerFactory().getLogger("CanaryUtil")).error("Failed to Create Permission", permissionCreationError);
         }
         return null;
     }

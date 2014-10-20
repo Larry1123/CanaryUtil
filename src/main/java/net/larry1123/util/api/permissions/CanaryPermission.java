@@ -16,6 +16,7 @@
 package net.larry1123.util.api.permissions;
 
 import com.google.common.collect.Lists;
+import net.canarymod.commandsys.CanaryCommandPermissions;
 import net.larry1123.elec.util.factorys.EELoggerFactory;
 import net.larry1123.elec.util.factorys.FactoryManager;
 
@@ -28,65 +29,82 @@ import java.util.ArrayList;
 public class CanaryPermission {
 
     // "super" permissions
-    public final Permission Ban = createPermission("canary.command.super.ban");
-    public final Permission IPBan = createPermission("canary.command.super.ipban");
-    public final Permission Kick = createPermission("canary.command.super.kick");
-    public final Permission Mute = createPermission("canary.command.super.mute");
-    public final Permission Reload = createPermission("canary.command.super.reload");
-    public final Permission SetSpawn = createPermission("canary.command.super.setspawn");
-    public final Permission ReserveList = createPermission("canary.command.super.reservelist");
-    public final Permission WhiteList = createPermission("canary.command.super.whitelist");
+    public final Permission Ban = createPermission(CanaryCommandPermissions.BAN);
+    public final Permission IPBan = createPermission(CanaryCommandPermissions.IPBAN);
+    public final Permission Kick = createPermission(CanaryCommandPermissions.KICK);
+    public final Permission Mute = createPermission(CanaryCommandPermissions.MUTE);
+    public final Permission Reload = createPermission(CanaryCommandPermissions.RELOAD);
+    public final Permission SetSpawn = createPermission(CanaryCommandPermissions.SETWORLDSPAWN);
+    public final Permission ReserveList = createPermission(CanaryCommandPermissions.RESERVELIST);
+    public final Permission WhiteList = createPermission(CanaryCommandPermissions.WHITELIST);
     // GroupMod
-    public final Permission GroupMod = createPermission("canary.command.super.groupmod");
-    public final Permission GroupModAdd = createPermission("canary.command.super.groupmod.add");
-    public final Permission GroupModDelete = createPermission("canary.command.super.groupmod.delete");
-    public final Permission GroupModPermissions = createPermission("canary.command.super.groupmod.permissions");
-    public final Permission GroupModList = createPermission("canary.command.super.groupmod.list");
-    public final Permission GroupModRename = createPermission("canary.command.super.groupmod.rename");
-    public final Permission GroupModPrefix = createPermission("canary.command.super.groupmod.prefix");
+    public final Permission GROUPMOD = createPermission(CanaryCommandPermissions.GROUPMOD);
+    public final Permission GROUPMOD$LIST = createPermission(CanaryCommandPermissions.GROUPMOD$LIST);
+    public final Permission GROUPMOD$CHECK = createPermission(CanaryCommandPermissions.GROUPMOD$CHECK);
+    public final Permission GROUPMOD$ADD = createPermission(CanaryCommandPermissions.GROUPMOD$ADD);
+    public final Permission GROUPMOD$REMOVE = createPermission(CanaryCommandPermissions.GROUPMOD$REMOVE);
+    public final Permission GROUPMOD$RENAME = createPermission(CanaryCommandPermissions.GROUPMOD$RENAME);
+    public final Permission GROUPMOD$PREFIX = createPermission(CanaryCommandPermissions.GROUPMOD$PREFIX);
+    public final Permission GROUPMOD$PARENT = createPermission(CanaryCommandPermissions.GROUPMOD$PARENT);
+    public final Permission GROUPMOD$PERMISSIONS = createPermission(CanaryCommandPermissions.GROUPMOD$PERMISSIONS);
+    public final Permission GROUPMOD$PERMISSIONS$ADD = createPermission(CanaryCommandPermissions.GROUPMOD$PERMISSIONS$ADD);
+    public final Permission GROUPMOD$PERMISSIONS$REMOVE = createPermission(CanaryCommandPermissions.GROUPMOD$PERMISSIONS$REMOVE);
+    public final Permission GROUPMOD$PERMISSIONS$CHECK = createPermission(CanaryCommandPermissions.GROUPMOD$PERMISSIONS$CHECK);
+    public final Permission GROUPMOD$PERMISSIONS$LIST = createPermission(CanaryCommandPermissions.GROUPMOD$PERMISSIONS$LIST);
+    public final Permission GROUPMOD$PERMISSIONS$FLUSH = createPermission(CanaryCommandPermissions.GROUPMOD$PERMISSIONS$FLUSH);
     // PlayerMod
-    public final Permission PlayerMod = createPermission("canary.command.super.playermod");
-    public final Permission PlayerModAdd = createPermission("canary.command.super.playermod.add");
-    public final Permission PlayerModRemove = createPermission("canary.command.super.playermod.remove");
-    public final Permission PlayerModPermissions = createPermission("canary.command.super.playermod.permissions");
-    public final Permission PlayerModPrefix = createPermission("canary.command.super.playermod.prefix");
-    public final Permission PlayerModGroup = createPermission("canary.command.super.playermod.group");
+    public final Permission PLAYERMOD = createPermission(CanaryCommandPermissions.PLAYERMOD);
+    public final Permission PLAYERMOD$ADD = createPermission(CanaryCommandPermissions.PLAYERMOD$ADD);
+    public final Permission PLAYERMOD$REMOVE = createPermission(CanaryCommandPermissions.GROUPMOD$REMOVE);
+    public final Permission PLAYERMOD$PREFIX = createPermission(CanaryCommandPermissions.PLAYERMOD$PREFIX);
+    public final Permission PLAYERMOD$GROUP = createPermission(CanaryCommandPermissions.PLAYERMOD$GROUP);
+    public final Permission PLAYERMOD$GROUP$SET = createPermission(CanaryCommandPermissions.PLAYERMOD$GROUP$SET);
+    public final Permission PLAYERMOD$GROUP$ADD = createPermission(CanaryCommandPermissions.PLAYERMOD$GROUP$ADD);
+    public final Permission PLAYERMOD$GROUP$LIST = createPermission(CanaryCommandPermissions.PLAYERMOD$GROUP$LIST);
+    public final Permission PLAYERMOD$GROUP$CHECK = createPermission(CanaryCommandPermissions.PLAYERMOD$GROUP$CHECK);
+    public final Permission PLAYERMOD$GROUP$REMOVE = createPermission(CanaryCommandPermissions.PLAYERMOD$GROUP$REMOVE);
+    public final Permission PLAYERMOD$PERMISSIONS = createPermission(CanaryCommandPermissions.PLAYERMOD$PERMISSIONS);
+    public final Permission PLAYERMOD$PERMISSIONS$ADD = createPermission(CanaryCommandPermissions.PLAYERMOD$PERMISSIONS$ADD);
+    public final Permission PLAYERMOD$PERMISSIONS$REMOVE = createPermission(CanaryCommandPermissions.PLAYERMOD$PERMISSIONS$REMOVE);
+    public final Permission PLAYERMOD$PERMISSIONS$CHECK = createPermission(CanaryCommandPermissions.PLAYERMOD$PERMISSIONS$CHECK);
+    public final Permission PLAYERMOD$PERMISSIONS$LIST = createPermission(CanaryCommandPermissions.PLAYERMOD$PERMISSIONS$LIST);
     //"player" permissions
-    public final Permission Compass = createPermission("canary.command.player.compass");
-    public final Permission GetPos = createPermission("canary.command.player.getpos");
-    public final Permission Give = createPermission("canary.command.player.give");
-    public final Permission GiveOther = createPermission("canary.command.player.give.other");
-    public final Permission Kill = createPermission("canary.command.player.kill");
-    public final Permission Kit = createPermission("canary.command.player.kit");
-    public final Permission KitOther = createPermission("canary.command.player.kit.other");
-    public final Permission KitGroup = createPermission("canary.command.player.kit.group");
-    public final Permission KitPrivate = createPermission("canary.command.player.kit.private");
+    public final Permission Compass = createPermission(CanaryCommandPermissions.COMPASS);
+    public final Permission GetPos = createPermission(CanaryCommandPermissions.GETPOS);
+    public final Permission Give = createPermission(CanaryCommandPermissions.GIVE);
+    public final Permission GiveOther = createPermission(CanaryCommandPermissions.GIVE$OTHER);
+    public final Permission Kill = createPermission(CanaryCommandPermissions.KILL);
+    public final Permission Kit = createPermission(CanaryCommandPermissions.KIT);
+    public final Permission KitOther = createPermission(CanaryCommandPermissions.KIT$OTHER);
+    public final Permission KitGroup = createPermission(CanaryCommandPermissions.KIT$GROUP);
+    public final Permission KitPrivate = createPermission(CanaryCommandPermissions.KIT$PRIVATE);
     public final Permission MobSpawn = createPermission("canary.command.player.mobspawn");
-    public final Permission Message = createPermission("canary.command.player.msg");
-    public final Permission PList = createPermission("canary.command.player.list");
+    public final Permission Message = createPermission(CanaryCommandPermissions.MESSAGE);
+    public final Permission PList = createPermission(CanaryCommandPermissions.PLAYER$LIST);
     // "teleport" permissions
-    public final Permission Home = createPermission("canary.command.teleport.home");
-    public final Permission HomeOther = createPermission("canary.command.teleport.home.other");
-    public final Permission SetHome = createPermission("canary.command.teleport.sethome");
-    public final Permission Spawn = createPermission("canary.command.teleport.spawn");
-    public final Permission Teleport = createPermission("canary.command.teleport.self");
-    public final Permission TeleportOther = createPermission("canary.command.teleport.other");
+    public final Permission Home = createPermission(CanaryCommandPermissions.HOME);
+    public final Permission HomeOther = createPermission(CanaryCommandPermissions.HOME$OTHER);
+    public final Permission SetHome = createPermission(CanaryCommandPermissions.HOME$SET);
+    public final Permission Spawn = createPermission(CanaryCommandPermissions.SPAWN);
+    public final Permission Teleport = createPermission(CanaryCommandPermissions.TELEPORT);
+    public final Permission TeleportOther = createPermission(CanaryCommandPermissions.TELEPORT$OTHER);
     // "warp" permissions
-    public final Permission WarpList = createPermission("canary.command.warp.list");
-    public final Permission WarpSet = createPermission("canary.command.warp.set");
+    public final Permission WarpList = createPermission(CanaryCommandPermissions.WARP$LIST);
+    public final Permission WarpSet = createPermission(CanaryCommandPermissions.WARP$SET);
     public final Permission WarpSetAdmin = createPermission("canary.command.warp.admin");
     public final Permission WarpSetPublic = createPermission("canary.command.warp.set.public");
     public final Permission WarpSetGroup = createPermission("canary.command.warp.set.group");
     public final Permission WarpSetPrivate = createPermission("canary.command.warp.set.private");
-    public final Permission WarpUse = createPermission("canary.command.warp.use");
+    public final Permission WarpUse = createPermission(CanaryCommandPermissions.WARP$USE);
     public final Permission WarpAdmin = createPermission("canary.command.warp.admin");
     // "plugin" permissions
-    public final Permission PluginEnable = createPermission("canary.command.plugin.enable");
-    public final Permission PluginDisable = createPermission("canary.command.plugin.disable");
-    public final Permission PluginReload = createPermission("canary.command.plugin.reload");
+    public final Permission PluginEnable = createPermission(CanaryCommandPermissions.PLUGIN$ENABLE);
+    public final Permission PluginDisable = createPermission(CanaryCommandPermissions.PLUGIN$DISABLE);
+    public final Permission PluginReload = createPermission(CanaryCommandPermissions.RELOAD);
+    public final Permission PluginList = createPermission(CanaryCommandPermissions.PLUGIN$LIST);
     //"misc" commands
-    public final Permission Motd = createPermission("canary.command.motd");
-    public final Permission Help = createPermission("canary.command.help");
+    public final Permission Motd = createPermission(CanaryCommandPermissions.MOTD);
+    public final Permission Help = createPermission(CanaryCommandPermissions.HELP);
     // other permissions
     public final Permission CommandBlock = createPermission("canary.world.commandblock");
     public final Permission SpawnBuild = createPermission("canary.world.spawnbuild");
@@ -103,7 +121,7 @@ public class CanaryPermission {
                 this.tracker.createRootPerm("canary");
             }
             catch (PermissionCreationError permissionCreationError) {
-                getLoggerFactory().getSubLogger("CanaryPermission", getLoggerFactory().getLogger("CanaryUtil")).logStackTrace("Complete Derpness Happened that should never have been able to have happened", permissionCreationError);
+                getLoggerFactory().getSubLogger("CanaryPermission", getLoggerFactory().getLogger("CanaryUtil")).error("Complete Derpness Happened that should never have been able to have happened", permissionCreationError);
             }
         }
     }
@@ -119,7 +137,7 @@ public class CanaryPermission {
             return ret;
         }
         catch (PermissionCreationError permissionCreationError) {
-            getLoggerFactory().getSubLogger("CanaryPermission", getLoggerFactory().getLogger("CanaryUtil")).logStackTrace("Failed to Create Permission", permissionCreationError);
+            getLoggerFactory().getSubLogger("CanaryPermission", getLoggerFactory().getLogger("CanaryUtil")).error("Failed to Create Permission", permissionCreationError);
         }
         return null;
     }
