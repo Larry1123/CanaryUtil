@@ -36,8 +36,6 @@ public class PermissionsManager {
 
     /**
      * Gets the PermissionTracker for the local server
-     *
-     * @return
      */
     public PermissionTracker getPermissionTracker() {
         return getPermissionTracker(CanaryUtil.getCustomPacket().getBungeeCord().getCurrentServer());
@@ -58,10 +56,12 @@ public class PermissionsManager {
         return new CanaryPermission(getPermissionTracker(remoteServer));
     }
 
+    @Deprecated
     public MinecraftPermission getMinecraftPermission() {
         return new MinecraftPermission(getPermissionTracker());
     }
 
+    @Deprecated
     public MinecraftPermission getMinecraftPermission(RemoteServer remoteServer) {
         return new MinecraftPermission(getPermissionTracker(remoteServer));
     }

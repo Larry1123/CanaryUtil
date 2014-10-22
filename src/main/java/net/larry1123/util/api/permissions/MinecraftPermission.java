@@ -38,14 +38,6 @@ public class MinecraftPermission {
 
     public MinecraftPermission(PermissionTracker tracker) {
         this.tracker = tracker;
-        if (!this.tracker.doesRootExist("canary")) {
-            try {
-                this.tracker.createRootPerm("canary");
-            }
-            catch (PermissionCreationError permissionCreationError) {
-                getLoggerFactory().getSubLogger("MinecraftPermission", getLoggerFactory().getLogger("CanaryUtil")).error("Complete Derpness Happened that should never have been able to have happened", permissionCreationError);
-            }
-        }
     }
 
     public ArrayList<Permission> getAllMinecraftPermissions() {
@@ -53,15 +45,9 @@ public class MinecraftPermission {
     }
 
     protected Permission createPermission(String perm) {
-        try {
-            Permission ret = tracker.getPerm(perm);
-            permissions.add(ret);
-            return ret;
-        }
-        catch (PermissionCreationError permissionCreationError) {
-            getLoggerFactory().getSubLogger("MinecraftPermission", getLoggerFactory().getLogger("CanaryUtil")).error("Failed to Create Permission", permissionCreationError);
-        }
-        return null;
+        Permission ret = tracker.getPerm(perm);
+        permissions.add(ret);
+        return ret;
     }
 
     private EELoggerFactory getLoggerFactory() {

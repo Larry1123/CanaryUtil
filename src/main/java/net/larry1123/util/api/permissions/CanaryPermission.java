@@ -36,7 +36,8 @@ public class CanaryPermission {
     public final Permission GETPOS = createPermission(CanaryCommandPermissions.GETPOS);
     public final Permission MESSAGE = createPermission(CanaryCommandPermissions.MESSAGE);
     public final Permission EMOTE = createPermission(CanaryCommandPermissions.EMOTE);
-    public final Permission TIME = createPermission(CanaryCommandPermissions.SPAWNPOINT);
+    public final Permission TIME = createPermission(CanaryCommandPermissions.TIME);
+    public final Permission SPAWNPOINT = createPermission(CanaryCommandPermissions.SPAWNPOINT);
     // Mod permissions
     public final Permission BAN = createPermission(CanaryCommandPermissions.BAN);
     public final Permission UNBAN = createPermission(CanaryCommandPermissions.UNBAN);
@@ -167,14 +168,6 @@ public class CanaryPermission {
 
     public CanaryPermission(PermissionTracker tracker) {
         this.tracker = tracker;
-        if (!this.tracker.doesRootExist("canary")) {
-            try {
-                this.tracker.createRootPerm("canary");
-            }
-            catch (PermissionCreationError permissionCreationError) {
-                getLoggerFactory().getSubLogger("CanaryPermission", getLoggerFactory().getLogger("CanaryUtil")).error("Complete Derpness Happened that should never have been able to have happened", permissionCreationError);
-            }
-        }
     }
 
     public ArrayList<Permission> getAllCanaryPermissions() {
@@ -182,15 +175,9 @@ public class CanaryPermission {
     }
 
     protected Permission createPermission(String perm) {
-        try {
-            Permission ret = tracker.getPerm(perm);
-            permissions.add(ret);
-            return ret;
-        }
-        catch (PermissionCreationError permissionCreationError) {
-            getLoggerFactory().getSubLogger("CanaryPermission", getLoggerFactory().getLogger("CanaryUtil")).error("Failed to Create Permission", permissionCreationError);
-        }
-        return null;
+        Permission ret = tracker.getPerm(perm);
+        permissions.add(ret);
+        return ret;
     }
 
     private EELoggerFactory getLoggerFactory() {

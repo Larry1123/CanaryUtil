@@ -27,35 +27,21 @@ import java.util.LinkedList;
 /**
  * This is not a New Permission system this is only a tracker of used Permission Nodes
  */
-public class Permission {
+public class Permission implements Comparable<Permission> {
 
     protected final PermissionTracker permissionTracker;
 
-    // The full node path for this Permission
-    protected final String path;
-    // If this is a Root Perm or not
-    protected final boolean root;
-    // Should all ways be set even if it is the root
-    protected final Permission rootPerm;
+    protected final PermissionNode permissionNode;
 
     /**
      * Used only for creating a root perm
      *
      * @param tracker What tracker is tracking this root
-     * @param path    The root path
+     * @param node    The Node for this Permission
      */
-    public Permission(PermissionTracker tracker, String path) {
+    public Permission(PermissionTracker tracker, PermissionNode node) {
         permissionTracker = tracker;
-        this.path = path;
-        root = true;
-        rootPerm = this;
-    }
-
-    public Permission(PermissionTracker tracker, Permission parentPerm, String subPath) {
-        permissionTracker = tracker;
-        this.path = parentPerm.getPermissionString() + "." + subPath;
-        rootPerm = parentPerm.getRootPerm();
-        root = false;
+        permissionNode = node;
     }
 
     /**
@@ -64,7 +50,7 @@ public class Permission {
      * @return returns the string value
      */
     public String getPermissionString() {
-        return path;
+        return getPermissionNode().getFullPath();
     }
 
     /**
@@ -73,32 +59,20 @@ public class Permission {
      * @return true if it is a root perm, false if it is not
      */
     public boolean isRootPermission() {
-        return root;
+        return getPermissionNode().isRoot();
     }
 
     /**
      * Will Return the Parent of this Permission.
      * Returns null if this Permission is a root.
      * Also Returns null if something has gone derp and we can't find a parent
-     *
-     * @return
      */
     public Permission getParentPerm() {
-        if (isRootPermission()) {
-            return null;
-        }
-        Permission ret = null;
-        for (Permission perm : rootPerm.getChildPermissions()) {
-            // Lets not return that something is it's own parent
-            if (perm != this) {
-                ret = getParentByPath(getPermissionString());
-            }
-        }
-        return ret;
+        return isRootPermission() ? null : getTrackingPermissionTracker().getPerm(getPermissionNode().getParent());
     }
 
     public Permission getRootPerm() {
-        return rootPerm;
+        return getTrackingPermissionTracker().getPerm(getPermissionNode().getRoot());
     }
 
     /**
@@ -111,7 +85,7 @@ public class Permission {
     }
 
     public boolean isParentOf(Permission permission) {
-        return getChildPermissions().contains(permission);
+        return toPermissionNode().isParentOf(permission.toPermissionNode());
     }
 
     /**
@@ -121,12 +95,10 @@ public class Permission {
      */
     public LinkedList<Permission> getChildPermissions() {
         LinkedList<Permission> ret = new LinkedList<Permission>();
-        for (String perm : getPermissions().keySet()) {
-            if (perm.startsWith(getPermissionString())) {
-                Permission permission = getPermissions().get(perm);
-                // Would hope that Permissions.get(perm) will not be null ever but to be safe
-                if (permission != this && permission != null) {
-                    ret.add(permission);
+        for (Permission perm : getPermissions().values()) {
+            if (isParentOf(perm)) {
+                if (perm != this && perm != null) {
+                    ret.add(perm);
                 }
             }
         }
@@ -216,46 +188,34 @@ public class Permission {
         return permissionTracker;
     }
 
-    /**
-     * TODO doc this
-     *
-     * @param path The path to get the parent of
-     *
-     * @return Returns the {@link net.larry1123.util.api.permissions.Permission}
-     */
-    protected Permission getParentByPath(String path) {
-        Permission ret = null;
-        for (Permission perm : getPermissions().values()) {
-            // Lets weed out childs of this permission since they can not be the parent
-            if (!perm.getPermissionString().contains(path)) {
-                // Now lets see everything that is in the parent chain
-                if (path.contains(perm.getPermissionString())) {
-                    if (ret != null && ret != perm) {
-                        if (perm.getPermissionString().contains(ret.getPermissionString())) {
-                            ret = perm;
-                        }
-                    }
-                    else {
-                        ret = perm;
-                    }
-                }
-            }
-        }
-        return ret;
-    }
-
-    protected HashMap<String, Permission> getPermissions() {
+    protected HashMap<PermissionNode, Permission> getPermissions() {
         return permissionTracker.getPermissions();
     }
 
-    /**
-     * Returns the Permission String
-     *
-     * @return provides the string value for this Permission
-     */
+    public PermissionNode toPermissionNode() {
+        return new PermissionNode(getPermissionNode());
+    }
+
+    protected PermissionNode getPermissionNode() {
+        return permissionNode;
+    }
+
+    @Override
+    public int hashCode() {
+        return getPermissionNode().hashCode();
+    }
+
     @Override
     public String toString() {
         return getPermissionString();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int compareTo(Permission permission) {
+        return toPermissionNode().compareTo(permission.toPermissionNode());
     }
 
 }
