@@ -30,29 +30,28 @@ public class FontTools extends TextFormat {
     public static final char colorChar = '\u00A7';
     private static final ArrayList<String> colorList = new ArrayList<String>();
     private static final ArrayList<String> fontList = new ArrayList<String>();
-    private static final String Black = BLACK;
-    private static final String Navy = DARK_BLUE;
-    private static final String Green = GREEN;
-    private static final String Blue = TURQUIOSE;
-    private static final String Red = RED;
-    private static final String Purple = PURPLE;
-    private static final String Gold = ORANGE;
-    private static final String LightGray = LIGHT_GRAY;
-    private static final String Gray = GRAY;
-    private static final String DarkPurple = BLUE;
-    private static final String LightGreen = LIGHT_GREEN;
-    private static final String LightBlue = CYAN;
-    private static final String Rose = LIGHT_RED;
-    private static final String LightPurple = PINK;
-    private static final String Yellow = YELLOW;
-    private static final String White = WHITE;
-    private static final String Random = RANDOM;
-    private static final String Bold = BOLD;
-    private static final String Strike = STRIKE;
-    private static final String Underline = UNDERLINED;
-    private static final String Italic = ITALICS;
-    private static final String Reset = RESET;
-    private static final String Marker = MARKER;
+    public static final String Black = BLACK.replace("" + colorChar, "");
+    public static final String Navy = DARK_BLUE.replace("" + colorChar, "");
+    public static final String Green = GREEN.replace("" + colorChar, "");
+    public static final String Blue = TURQUIOSE.replace("" + colorChar, "");
+    public static final String Red = RED.replace("" + colorChar, "");
+    public static final String Purple = PURPLE.replace("" + colorChar, "");
+    public static final String Gold = ORANGE.replace("" + colorChar, "");
+    public static final String LightGray = LIGHT_GRAY.replace("" + colorChar, "");
+    public static final String Gray = GRAY.replace("" + colorChar, "");
+    public static final String DarkPurple = BLUE.replace("" + colorChar, "");
+    public static final String LightGreen = LIGHT_GREEN.replace("" + colorChar, "");
+    public static final String LightBlue = CYAN.replace("" + colorChar, "");
+    public static final String Rose = LIGHT_RED.replace("" + colorChar, "");
+    public static final String LightPurple = PINK.replace("" + colorChar, "");
+    public static final String Yellow = YELLOW.replace("" + colorChar, "");
+    public static final String White = WHITE.replace("" + colorChar, "");
+    public static final String Random = RANDOM.replace("" + colorChar, "");
+    public static final String Bold = BOLD.replace("" + colorChar, "");
+    public static final String Strike = STRIKE.replace("" + colorChar, "");
+    public static final String Underline = UNDERLINED.replace("" + colorChar, "");
+    public static final String Italic = ITALICS.replace("" + colorChar, "");
+    public static final String Reset = RESET.replace("" + colorChar, "");
 
     static {
         colorList.add(Black);
@@ -75,7 +74,6 @@ public class FontTools extends TextFormat {
         fontList.add(Strike);
         fontList.add(Underline);
         fontList.add(Italic);
-        fontList.add(Marker);
         fontList.add(Random);
         fontList.add(Reset);
     }
@@ -102,7 +100,7 @@ public class FontTools extends TextFormat {
         for (char charE : charString) {
             if (charE == replacement) {
                 if (((charString.length - 1) - index + 1) >= 0) {
-                    String temp = new StringBuilder().append(Character.toString(charE)).append(Character.toString(charString[index + 1])).toString();
+                    String temp = Character.toString(charString[index + 1]);
                     if (colorList.contains(temp) || fontList.contains(temp)) {
                         charString[index] = colorChar;
                     }
@@ -120,7 +118,7 @@ public class FontTools extends TextFormat {
      */
     public static String RandomColor() {
         Random random = new Random();
-        return colorList.get(random.nextInt(colorList.size() - 1));
+        return colorChar + colorList.get(random.nextInt(colorList.size() - 1));
     }
 
 }
