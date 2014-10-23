@@ -29,6 +29,9 @@ public class PermissionsManager {
     private static final PermissionsManager globalManager = new PermissionsManager();
 
     private final HashMap<RemoteServer, PermissionTracker> Trackers = new HashMap<RemoteServer, PermissionTracker>();
+    private final HashMap<RemoteServer, CanaryPermission> canaryPermissionHashMap = new HashMap<RemoteServer, CanaryPermission>();
+
+    private PermissionsManager() {}
 
     public static PermissionsManager getManager() {
         return globalManager;
@@ -49,11 +52,14 @@ public class PermissionsManager {
     }
 
     public CanaryPermission getCanaryPermissions() {
-        return new CanaryPermission(getPermissionTracker());
+        return getCanaryPermissions(CanaryUtil.getCustomPacket().getBungeeCord().getCurrentServer());
     }
 
     public CanaryPermission getCanaryPermissions(RemoteServer remoteServer) {
-        return new CanaryPermission(getPermissionTracker(remoteServer));
+        if (!canaryPermissionHashMap.containsKey(remoteServer)) {
+            canaryPermissionHashMap.put(remoteServer, new CanaryPermission(getPermissionTracker(remoteServer)));
+        }
+        return canaryPermissionHashMap.get(remoteServer);
     }
 
     @Deprecated

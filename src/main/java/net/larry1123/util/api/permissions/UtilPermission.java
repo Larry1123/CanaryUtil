@@ -32,21 +32,10 @@ public class UtilPermission {
     public final Permission RepairFreePermission = createPermission("canaryUtil.commands.repair.free");
     private final PermissionTracker tracker;
     private final ArrayList<Permission> permissions = new ArrayList<Permission>();
-    private final ArrayList<String> rootPerms = new ArrayList<String>();
 
 
     public UtilPermission(PermissionTracker tracker) {
         this.tracker = tracker;
-        for (String root : rootPerms) {
-            if (this.tracker.getRootByPath(root) == null) {
-                try {
-                    this.tracker.createRootPerm(root);
-                }
-                catch (PermissionCreationError permissionCreationError) {
-                    getLoggerFactory().getSubLogger("UtilPermission", getLoggerFactory().getLogger("CanaryUtil")).error("Complete Derpness Happened that should never have been able to have happened\"", permissionCreationError);
-                }
-            }
-        }
     }
 
     public ArrayList<Permission> getAllUtilPermissions() {
@@ -54,16 +43,9 @@ public class UtilPermission {
     }
 
     private Permission createPermission(String perm) {
-        rootPerms.add("canaryUtil");
-        try {
-            Permission ret = tracker.getPerm(perm);
-            permissions.add(ret);
-            return ret;
-        }
-        catch (PermissionCreationError permissionCreationError) {
-            getLoggerFactory().getSubLogger("UtilPermission", getLoggerFactory().getLogger("CanaryUtil")).error("Failed to Create Permission", permissionCreationError);
-        }
-        return null;
+        Permission ret = tracker.getPerm(perm);
+        permissions.add(ret);
+        return ret;
     }
 
     private EELoggerFactory getLoggerFactory() {
