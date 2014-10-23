@@ -27,17 +27,25 @@ import java.util.ArrayList;
  */
 public class MinecraftPermission {
 
-    public final Permission BlockData = createPermission("canary.command.blockdata");
-    public final Permission Clone = createPermission("canary.command.clone");
-    public final Permission Fill = createPermission("canary.command.fill");
-    public final Permission Particle = createPermission("canary.command.particle");
-    public final Permission Seed = createPermission("canary.command.seed");
-    public final Permission SetIdleTimeOut = createPermission("canary.command.setidletimeout");
+    public final Permission BlockData;
+    public final Permission Clone;
+    public final Permission Fill;
+    public final Permission Particle;
+    public final Permission Seed;
+    public final Permission SetIdleTimeOut;
+
     private final PermissionTracker tracker;
     private final ArrayList<Permission> permissions = new ArrayList<Permission>();
 
     public MinecraftPermission(PermissionTracker tracker) {
         this.tracker = tracker;
+
+        BlockData = createPermission("canary.command.blockdata");
+        Clone = createPermission("canary.command.clone");
+        Fill = createPermission("canary.command.fill");
+        Particle = createPermission("canary.command.particle");
+        Seed = createPermission("canary.command.seed");
+        SetIdleTimeOut = createPermission("canary.command.setidletimeout");
     }
 
     public ArrayList<Permission> getAllMinecraftPermissions() {

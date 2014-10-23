@@ -28,8 +28,6 @@ import java.util.Random;
 public class FontTools extends TextFormat {
 
     public static final char colorChar = '\u00A7';
-    private static final ArrayList<String> colorList = new ArrayList<String>();
-    private static final ArrayList<String> fontList = new ArrayList<String>();
     public static final String Black = BLACK.replace("" + colorChar, "");
     public static final String Navy = DARK_BLUE.replace("" + colorChar, "");
     public static final String Green = GREEN.replace("" + colorChar, "");
@@ -52,6 +50,9 @@ public class FontTools extends TextFormat {
     public static final String Underline = UNDERLINED.replace("" + colorChar, "");
     public static final String Italic = ITALICS.replace("" + colorChar, "");
     public static final String Reset = RESET.replace("" + colorChar, "");
+
+    private static final ArrayList<String> colorList = new ArrayList<String>();
+    private static final ArrayList<String> fontList = new ArrayList<String>();
 
     static {
         colorList.add(Black);
@@ -113,12 +114,10 @@ public class FontTools extends TextFormat {
 
     /**
      * Gets a RandomColor Code
-     *
-     * @return
      */
     public static String RandomColor() {
         Random random = new Random();
-        return colorChar + colorList.get(random.nextInt(colorList.size() - 1));
+        return colorChar + "" + colorList.get(random.nextInt(colorList.size() - 1));
     }
 
 }

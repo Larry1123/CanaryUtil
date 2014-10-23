@@ -152,4 +152,20 @@ public class RemoteServer {
         return CanaryUtil.getCustomPacket().getBungeeCord();
     }
 
+    @Override
+    public int hashCode() {
+        return getServerName().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        return (object instanceof RemoteServer && (((RemoteServer) object).getServerName().equals(getServerName()))) || object.equals(getServerName());
+    }
+
+    @Override
+    public String toString() {
+        return getServerName();
+    }
+
+
 }

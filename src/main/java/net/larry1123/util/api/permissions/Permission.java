@@ -30,7 +30,6 @@ import java.util.LinkedList;
 public class Permission implements Comparable<Permission> {
 
     protected final PermissionTracker permissionTracker;
-
     protected final PermissionNode permissionNode;
 
     /**

@@ -16,8 +16,6 @@
 package net.larry1123.util.api.permissions;
 
 import com.google.common.collect.Lists;
-import net.larry1123.elec.util.factorys.EELoggerFactory;
-import net.larry1123.elec.util.factorys.FactoryManager;
 
 import java.util.ArrayList;
 
@@ -27,15 +25,20 @@ import java.util.ArrayList;
  */
 public class UtilPermission {
 
-    public final Permission RepairPermission = createPermission("canaryUtil.commands.repair");
-    public final Permission RepairAllPermission = createPermission("canaryUtil.commands.repair.all");
-    public final Permission RepairFreePermission = createPermission("canaryUtil.commands.repair.free");
+    public final Permission RepairPermission;
+    public final Permission RepairAllPermission;
+    public final Permission RepairFreePermission;
+
     private final PermissionTracker tracker;
     private final ArrayList<Permission> permissions = new ArrayList<Permission>();
 
 
     public UtilPermission(PermissionTracker tracker) {
         this.tracker = tracker;
+
+        RepairPermission = createPermission("canaryUtil.commands.repair");
+        RepairAllPermission = createPermission("canaryUtil.commands.repair.all");
+        RepairFreePermission = createPermission("canaryUtil.commands.repair.free");
     }
 
     public ArrayList<Permission> getAllUtilPermissions() {
@@ -46,10 +49,6 @@ public class UtilPermission {
         Permission ret = tracker.getPerm(perm);
         permissions.add(ret);
         return ret;
-    }
-
-    private EELoggerFactory getLoggerFactory() {
-        return FactoryManager.getFactoryManager().getEELoggerFactory();
     }
 
 }
