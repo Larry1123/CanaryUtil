@@ -46,7 +46,6 @@ public class LoggerConfig implements ConfigBase, LoggerSettings {
         if (configManager == null) {
             this.plugin = plugin;
             configManager = UtilConfigManager.getConfig().getPluginConfig(this);
-            configManager.save();
         }
     }
 

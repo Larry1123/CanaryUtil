@@ -19,6 +19,7 @@ import com.google.common.io.Files;
 import net.canarymod.commandsys.CommandDependencyException;
 import net.canarymod.logger.Logman;
 import net.canarymod.plugin.Plugin;
+import net.larry1123.elec.util.factorys.EELoggerFactory;
 import net.larry1123.elec.util.factorys.FactoryManager;
 import net.larry1123.elec.util.logger.EELogger;
 import net.larry1123.util.CanaryUtil;
@@ -29,14 +30,11 @@ import java.io.IOException;
 
 public abstract class UtilPlugin extends Plugin {
 
-    protected final FactoryManager factoryManager = FactoryManager.getFactoryManager();
-    private final EELogger logger = factoryManager.getEELoggerFactory().getLogger(getName());
-    private final EELogman loggerWrap = new EELogman(logger, super.getLogman());
     private final File pluginDataFolder = new File("pluginData" + File.separatorChar + getName());
 
     {
         try {
-            Files.createParentDirs(pluginDataFolder);
+            Files.createParentDirs(getPluginDataFolder());
         }
         catch (IOException e) {
             getLogger().error("Unable to create plugin data folder!", e);
@@ -44,14 +42,17 @@ public abstract class UtilPlugin extends Plugin {
     }
 
     /**
-     * Retrieves a SubLogger
-     *
      * @param name Name to name the subLogger
      *
      * @return The SubLogger
+     *
+     * @deprecated {@link UtilPlugin#getLogger(String)}
+     * <p/>
+     * Retrieves a SubLogger
      */
+    @Deprecated
     public EELogger getSubLogger(String name) {
-        return factoryManager.getEELoggerFactory().getSubLogger(name, getLogger());
+        return getLogger(name);
     }
 
     /**
@@ -78,22 +79,14 @@ public abstract class UtilPlugin extends Plugin {
     }
 
     /**
-     * Gets the EELogger of the current Plugin
-     *
-     * @return This Plugins EELogger
-     */
-    public EELogger getLogger() {
-        return logger;
-    }
-
-    /**
      * {@inheritDoc}
      * <p/>
      * The Logman returned is a wrapper of EELogger
      */
+    @Deprecated
     @Override
     public Logman getLogman() {
-        return loggerWrap;
+        return null; // TODO replace
     }
 
     public File getPluginDataFolder() {
@@ -103,6 +96,34 @@ public abstract class UtilPlugin extends Plugin {
     public void registerCommand(Command command) throws CommandDependencyException {
         CanaryUtil.commands().registerCommand(command, this);
         command.setLoaded(true);
+    }
+
+    public FactoryManager getEEFactoryManager() {
+        return FactoryManager.getFactoryManager();
+    }
+
+    public EELoggerFactory getEELoggerFactory() {
+        return getEEFactoryManager().getEELoggerFactory();
+    }
+
+    /**
+     * Get the Logger for this plugin
+     *
+     * @return The Logger for this pluign
+     */
+    public EELogger getLogger() {
+        return getEELoggerFactory().getLogger(getName());
+    }
+
+    /**
+     * Get a sub logger of this plugin
+     *
+     * @param sub Name of the sub logger you want
+     *
+     * @return The sub logger you wanted
+     */
+    public EELogger getLogger(String sub) {
+        return getEELoggerFactory().getSubLogger(getLogger(), sub);
     }
 
 }

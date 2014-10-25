@@ -42,7 +42,6 @@ public class BungeeCordConfig implements ConfigBase {
         if (configManager == null) {
             this.plugin = plugin;
             configManager = UtilConfigManager.getConfig().getPluginConfig(this);
-            configManager.save();
         }
     }
 

@@ -160,7 +160,6 @@
             </plugin>
 
             <!--  Dependency inclusion plugin -->
-            <!--  Got to include EEUtil for plugin use -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -179,6 +178,7 @@
                             <include>${EEutil.groupID}:${EEutil.name}</include>
                             <include>org.apache.logging.log4j:log4j-slf4j-impl</include>
                             <include>org.slf4j:slf4j-api</include>
+                            <include>org.apache.commons:commons-collections4</include>
                         </includes>
                     </artifactSet>
                     <shadedArtifactAttached>true</shadedArtifactAttached>
