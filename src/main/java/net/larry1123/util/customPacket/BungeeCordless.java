@@ -18,12 +18,13 @@ package net.larry1123.util.customPacket;
 import net.canarymod.Canary;
 import net.canarymod.api.OfflinePlayer;
 import net.canarymod.api.entity.living.humanoid.Player;
+import net.larry1123.util.api.abstracts.BungeeCord;
 import net.larry1123.util.api.abstracts.RemoteServer;
 import net.larry1123.util.config.UtilConfigManager;
 
 import java.util.LinkedList;
 
-public class BungeeCordless extends BungeeCord {
+public class BungeeCordless implements BungeeCord {
 
     public BungeeCordless() {
         super();
@@ -33,6 +34,7 @@ public class BungeeCordless extends BungeeCord {
      * {@inheritDoc}
      */
     @Override
+    @Deprecated
     public String getRealPlayerIp(Player player) {
         return player.getIP();
     }
@@ -59,7 +61,9 @@ public class BungeeCordless extends BungeeCord {
      */
     @Override
     public LinkedList<RemoteServer> getServerList() {
-        return new LinkedList<RemoteServer>();
+        LinkedList<RemoteServer> remoteServerLinkedList = new LinkedList<RemoteServer>();
+        remoteServerLinkedList.add(getCurrentServer());
+        return remoteServerLinkedList;
     }
 
     /**

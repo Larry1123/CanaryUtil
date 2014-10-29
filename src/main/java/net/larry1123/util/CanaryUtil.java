@@ -38,9 +38,11 @@ public class CanaryUtil extends UtilPlugin implements TaskOwner, CommandOwner {
     private static CanaryUtil plugin;
     private static CustomPacket customPacket;
     private UtilCommands commandsManager;
+    protected FileSpliterUpdater fileSpliterUpdater;
 
     public CanaryUtil() {
         plugin = this;
+        fileSpliterUpdater = new FileSpliterUpdater(this);
     }
 
     /**
@@ -69,14 +71,14 @@ public class CanaryUtil extends UtilPlugin implements TaskOwner, CommandOwner {
     @Override
     public boolean enable() {
         // Start checker for splitting logging files
-        FileSpliterUpdater.startUpdater();
+        getFileSpliterUpdater().startUpdater();
         // Make the custom packet manager object
-        customPacket = new CustomPacket();
+        customPacket = new CustomPacket(this);
         // Start up the Command manager
-        commandsManager = new UtilCommands();
+        commandsManager = new UtilCommands(this);
         // Give that ConfigManager something to think about!
         UtilConfigManager.getConfig().setPlugin(this);
-        factoryManager.getEELoggerFactory().setLoggerSettings(UtilConfigManager.getConfig().getLoggerConfig());
+        getEELoggerFactory().setLoggerSettings(UtilConfigManager.getConfig().getLoggerConfig());
         // Log that the Plugin was Enabled
         enabled();
         // Hey everything worked lets return true so Canary knows that too
@@ -92,6 +94,10 @@ public class CanaryUtil extends UtilPlugin implements TaskOwner, CommandOwner {
         ServerTaskManager.removeTasks(this);
         // Log that the plugin was Disabled
         getLogger().info("Plugin Disabled");
+    }
+
+    public FileSpliterUpdater getFileSpliterUpdater() {
+        return fileSpliterUpdater;
     }
 
 }

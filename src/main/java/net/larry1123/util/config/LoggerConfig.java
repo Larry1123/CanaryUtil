@@ -15,13 +15,12 @@
  */
 package net.larry1123.util.config;
 
-import net.canarymod.plugin.Plugin;
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.ConfigField;
 import net.larry1123.elec.util.config.ConfigFile;
 import net.larry1123.elec.util.logger.FileSplits;
 import net.larry1123.elec.util.logger.LoggerSettings;
-import net.larry1123.util.task.FileSpliterUpdater;
+import net.larry1123.util.CanaryUtil;
 import net.visualillusionsent.utils.PropertiesFile;
 
 import java.io.File;
@@ -29,7 +28,7 @@ import java.io.File;
 public class LoggerConfig implements ConfigBase, LoggerSettings {
 
     protected ConfigFile configManager;
-    protected Plugin plugin;
+    protected CanaryUtil plugin;
 
     @ConfigField(name = "Logger-Split", comments = {"If left blank it will default no spliting", "None|Hour|Day|Week|Month"})
     protected String logSplit = "None";
@@ -42,7 +41,7 @@ public class LoggerConfig implements ConfigBase, LoggerSettings {
 
     public LoggerConfig() {}
 
-    public void postInt(Plugin plugin) {
+    public void postInt(CanaryUtil plugin) {
         if (configManager == null) {
             this.plugin = plugin;
             configManager = UtilConfigManager.getConfig().getPluginConfig(this);
@@ -55,7 +54,7 @@ public class LoggerConfig implements ConfigBase, LoggerSettings {
     void reload() {
         if (configManager != null) {
             configManager.reload();
-            FileSpliterUpdater.reloadUpdater();
+            reloadUpdater();
         }
     }
 
@@ -122,7 +121,7 @@ public class LoggerConfig implements ConfigBase, LoggerSettings {
             configManager.save(); // Time to Save
         }
         if (change) {
-            FileSpliterUpdater.reloadUpdater();
+            reloadUpdater();
         }
     }
 
@@ -142,7 +141,17 @@ public class LoggerConfig implements ConfigBase, LoggerSettings {
 
     @Override
     public PropertiesFile getPropertiesFile() {
-        return plugin == null ? null : plugin.getModuleConfig("Logger");
+        return getPlugin() == null ? null : getPlugin().getModuleConfig("Logger");
+    }
+
+    public CanaryUtil getPlugin() {
+        return plugin;
+    }
+
+    protected void reloadUpdater() {
+        if (getPlugin() != null) {
+            getPlugin().getFileSpliterUpdater().reloadUpdater();
+        }
     }
 
 }

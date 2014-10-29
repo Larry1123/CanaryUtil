@@ -15,27 +15,27 @@
  */
 package net.larry1123.util.customPacket;
 
+import net.larry1123.util.CanaryUtil;
+import net.larry1123.util.api.abstracts.BungeeCord;
+import net.larry1123.util.config.BungeeCordConfig;
 import net.larry1123.util.config.UtilConfigManager;
 import net.larry1123.util.task.UpdateBungeeInfo;
 
 public class CustomPacket {
 
-    /**
-     * Config Manager
-     */
-    private static final UtilConfigManager config = UtilConfigManager.getConfig();
-    /**
-     * The currently running BungeeCord manager
-     */
-    private BungeeCord bungeecord;
+    protected BungeeCord bungeeCord;
+    protected final CanaryUtil plugin;
+    protected final UpdateBungeeInfo updateBungeeInfo;
 
-    public CustomPacket() {
-        if (config.getBungeeCordConfig().isEnabled()) {
-            bungeecord = new BungeeCord();
-            UpdateBungeeInfo.startUpdater();
+    public CustomPacket(CanaryUtil plugin) {
+        this.plugin = plugin;
+        updateBungeeInfo = new UpdateBungeeInfo(this.plugin);
+        if (getBungeeCordConfig().isEnabled()) {
+            setBungeeCord(new BungeeCordHandler(getPlugin()));
+            updateBungeeInfo.startUpdater();
         }
         else {
-            new BungeeCordless();
+            setBungeeCord(new BungeeCordless());
         }
     }
 
@@ -45,25 +45,38 @@ public class CustomPacket {
      * @return Current BungeeCord Manager
      */
     public BungeeCord getBungeeCord() {
-        return bungeecord;
+        return bungeeCord;
     }
 
     /**
      * Will start BungeeCord functions if the config allows or stops BungeeCord functions if running if needed to be
      */
     public void reloadBungeeCord() {
-        if (config.getBungeeCordConfig().isEnabled()) {
-            if (bungeecord instanceof BungeeCordless) {
-                bungeecord = new BungeeCord();
+        if (getBungeeCordConfig().isEnabled()) {
+            if (getBungeeCord() != null && getBungeeCord() instanceof BungeeCordHandler) {
+                ((BungeeCordHandler) getBungeeCord()).unregChannelListener();
             }
-            UpdateBungeeInfo.reloadUpdater();
+            setBungeeCord(new BungeeCordHandler(getPlugin()));
+            updateBungeeInfo.reloadUpdater();
         }
         else {
-            if (!(bungeecord instanceof BungeeCordless)) {
-                new BungeeCordless();
+            if (getBungeeCord() == null || getBungeeCord() instanceof BungeeCordHandler) {
+                setBungeeCord(new BungeeCordless());
             }
-            UpdateBungeeInfo.endUpdater();
+            updateBungeeInfo.endUpdater();
         }
+    }
+
+    protected void setBungeeCord(BungeeCord bungeeCord) {
+        this.bungeeCord = bungeeCord;
+    }
+
+    protected BungeeCordConfig getBungeeCordConfig() {
+        return UtilConfigManager.getConfig().getBungeeCordConfig();
+    }
+
+    protected CanaryUtil getPlugin() {
+        return plugin;
     }
 
 }

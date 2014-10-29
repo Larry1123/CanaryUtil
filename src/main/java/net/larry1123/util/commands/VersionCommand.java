@@ -17,13 +17,12 @@ package net.larry1123.util.commands;
 
 import net.canarymod.Translator;
 import net.canarymod.chat.MessageReceiver;
+import net.larry1123.util.CanaryUtil;
 import net.larry1123.util.api.plugin.commands.Command;
 import net.larry1123.util.api.plugin.commands.CommandData;
 import net.visualillusionsent.utils.LocaleHelper;
 
 import java.util.List;
-
-import static net.larry1123.util.CanaryUtil.getPlugin;
 
 public class VersionCommand implements Command {
 
@@ -88,6 +87,10 @@ public class VersionCommand implements Command {
     @Override
     public void setLoaded(boolean loadedness) {
         loaded = loadedness;
+    }
+
+    protected CanaryUtil getPlugin() {
+        return utilcommands.getPlugin();
     }
 
 }

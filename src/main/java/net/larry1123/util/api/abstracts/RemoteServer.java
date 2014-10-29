@@ -18,7 +18,6 @@ package net.larry1123.util.api.abstracts;
 import net.canarymod.api.OfflinePlayer;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.larry1123.util.CanaryUtil;
-import net.larry1123.util.customPacket.BungeeCord;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

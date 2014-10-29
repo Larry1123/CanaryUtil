@@ -20,92 +20,109 @@ import net.canarymod.tasks.ServerTaskManager;
 import net.canarymod.tasks.TaskOwner;
 import net.larry1123.elec.util.logger.FileManager;
 import net.larry1123.elec.util.logger.FileSplits;
+import net.larry1123.util.CanaryUtil;
+import net.larry1123.util.api.task.TaskHandler;
 import net.larry1123.util.config.LoggerConfig;
 import net.larry1123.util.config.UtilConfigManager;
 import org.apache.commons.lang3.time.DateUtils;
 
-import static net.larry1123.util.CanaryUtil.getPlugin;
+public class FileSpliterUpdater implements TaskHandler {
 
-public class FileSpliterUpdater extends ServerTask {
+    public class FileSplitTask extends ServerTask {
 
-    private static final LoggerConfig config = UtilConfigManager.getConfig().getLoggerConfig();
+        protected FileSplitTask(TaskOwner owner, long delay) {
+            this(owner, delay, true);
+        }
+
+        protected FileSplitTask(TaskOwner owner, long delay, boolean continuous) {
+            super(owner, delay, continuous);
+        }
+
+        @Override
+        public void run() {
+            if (isSplitng()) {
+                if (isNotCurrent()) {
+                    FileManager.updateFileHandlers();
+                }
+            }
+            else {
+                if (hasCurrentSplit()) {
+                    getLoggerConfig().setCurrentSplit("");
+                }
+            }
+        }
+
+    }
+
     /**
      * Current Updater
      */
-    private static FileSpliterUpdater ticksystem = null;
+    protected FileSplitTask task = null;
+    protected final CanaryUtil plugin;
 
-    private FileSpliterUpdater(TaskOwner owner, long delay) {
-        this(owner, delay, true);
-    }
-
-    private FileSpliterUpdater(TaskOwner owner, long delay, boolean continuous) {
-        super(owner, delay, continuous);
+    public FileSpliterUpdater(CanaryUtil plugin) {
+        this.plugin = plugin;
     }
 
     /**
      * Starts the updater polling if the config will allow
      */
-    public static void startUpdater() {
-        if (isSplitng() && (getPlugin() != null)) {
-            if (ticksystem == null) {
-                ticksystem = new FileSpliterUpdater(getPlugin(), DateUtils.MILLIS_PER_HOUR);
-                ServerTaskManager.addTask(ticksystem);
+    @Override
+    public boolean startUpdater() {
+        if (isSplitng()) {
+            if (task == null) {
+                task = new FileSplitTask(getPlugin(), DateUtils.MILLIS_PER_HOUR);
+                ServerTaskManager.addTask(task);
             }
+            return true;
         }
+        return false;
     }
 
     /**
      * Stops the updater polling
      */
-    public static void endUpdater() {
-        if (ticksystem != null) {
-            ServerTaskManager.removeTask(ticksystem);
-            ticksystem = null;
+    @Override
+    public void endUpdater() {
+        if (task != null) {
+            ServerTaskManager.removeTask(task);
+            task = null;
         }
     }
 
     /**
      * Will start the updater if the config allows or stops the updater if running and needed to be
      */
-    public static void reloadUpdater() {
-        if (isSplitng()) {
-            endUpdater();
-            startUpdater();
-        }
-        else {
-            endUpdater();
-        }
-    }
-
-    private static boolean isSplitng() {
-        return !config.getSplit().getValue().toLowerCase().equals(FileSplits.NONE.getValue().toLowerCase());
-    }
-
-    private static boolean hasCurrentSplit() {
-        return !(config.getCurrentSplit().equals(null) || config.getCurrentSplit().equals(""));
-    }
-
-    private static boolean isNotCurrent() {
-        if (hasCurrentSplit()) {
-            return !config.getCurrentSplit().equals(FileManager.dateTime());
-        }
-        else {
-            return !false;
-        }
-    }
-
     @Override
-    public void run() {
+    public boolean reloadUpdater() {
         if (isSplitng()) {
-            if (isNotCurrent()) {
-                FileManager.updateFileHandlers();
-            }
+            endUpdater();
+            return startUpdater();
         }
         else {
-            if (hasCurrentSplit()) {
-                config.setCurrentSplit("");
-            }
+            endUpdater();
+            return false;
         }
+    }
+
+    protected boolean isSplitng() {
+        return !getLoggerConfig().getSplit().equals(FileSplits.NONE);
+    }
+
+    protected boolean hasCurrentSplit() {
+        return !(getLoggerConfig().getCurrentSplit() == null || getLoggerConfig().getCurrentSplit().equals(""));
+    }
+
+    protected boolean isNotCurrent() {
+        return !hasCurrentSplit() || !getLoggerConfig().getCurrentSplit().equals(FileManager.dateTime());
+    }
+
+    protected LoggerConfig getLoggerConfig() {
+        return UtilConfigManager.getConfig().getLoggerConfig();
+    }
+
+    protected CanaryUtil getPlugin() {
+        return plugin;
     }
 
 }

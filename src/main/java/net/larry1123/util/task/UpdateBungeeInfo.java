@@ -23,6 +23,8 @@ import net.canarymod.tasks.TaskOwner;
 import net.larry1123.util.CanaryUtil;
 import net.larry1123.util.api.abstracts.RemoteServer;
 import net.larry1123.util.api.plugin.hooks.bungeecord.BungeeCordPollHook;
+import net.larry1123.util.api.task.TaskHandler;
+import net.larry1123.util.config.BungeeCordConfig;
 import net.larry1123.util.config.UtilConfigManager;
 
 import java.io.ByteArrayOutputStream;
@@ -30,105 +32,96 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 
-import static net.larry1123.util.CanaryUtil.getPlugin;
+public class UpdateBungeeInfo implements TaskHandler {
 
-public class UpdateBungeeInfo extends ServerTask {
+    public class BungeeCordTask extends ServerTask {
 
-    /**
-     * ConfigManager
-     */
-    private static final UtilConfigManager config = UtilConfigManager.getConfig();
+        public BungeeCordTask(TaskOwner owner, long delay) {
+            this(owner, delay, true);
+        }
+
+        public BungeeCordTask(TaskOwner owner, long delay, boolean continuous) {
+            super(owner, delay, continuous);
+        }
+
+        /**
+         * Sends Polls for BungeeCord Info over players
+         */
+        @Override
+        public void run() {
+            // Update Player IPs
+            updateIPs();
+            for (Player player : Canary.getServer().getPlayerList()) {
+                // Update Server List
+                updateServerList(player);
+                LinkedList<RemoteServer> servers = CanaryUtil.getCustomPacket().getBungeeCord().getServerList();
+                servers.add(RemoteServer.getALLServerObject());
+                for (RemoteServer server : servers) {
+                    // Update playerList for each server
+                    updatePlayerList(player, server);
+                    // Update Playercount for each server
+                    updatePlayerCount(player, server);
+                }
+                // Update Current Server's name
+                updateCurrentServer(player);
+                // Call BungeeCordPollHook
+                new BungeeCordPollHook(player).call();
+            }
+        }
+
+    }
+
     /**
      * Current Updater
      */
-    private static UpdateBungeeInfo tickSystem;
+    protected BungeeCordTask task;
+    protected final CanaryUtil plugin;
+    protected ByteArrayOutputStream b;
+    protected DataOutputStream out;
 
-    private UpdateBungeeInfo(TaskOwner owner, long delay) {
-        this(owner, delay, true);
-    }
-
-    private UpdateBungeeInfo(TaskOwner owner, long delay, boolean continuous) {
-        super(owner, delay, continuous);
+    public UpdateBungeeInfo(CanaryUtil plugin) {
+        this.plugin = plugin;
     }
 
     /**
      * Starts the updater polling if the config will allow
      */
-    public static void startUpdater() {
-        if (config.getBungeeCordConfig().isEnabled() && getPlugin() != null) {
-            if (tickSystem == null) {
-                tickSystem = new UpdateBungeeInfo(getPlugin(), config.getBungeeCordConfig().getPollTime());
-                ServerTaskManager.addTask(tickSystem);
+    public boolean startUpdater() {
+        if (getBungeeCordConfig().isEnabled() && getPlugin() != null) {
+            if (task == null) {
+                task = new BungeeCordTask(getPlugin(), getBungeeCordConfig().getPollTime());
+                ServerTaskManager.addTask(task);
             }
+            return true;
         }
+        return false;
     }
 
     /**
      * Stops the updater polling
      */
-    public static void endUpdater() {
-        if (tickSystem != null) {
-            ServerTaskManager.removeTask(tickSystem);
-            tickSystem = null;
+    public void endUpdater() {
+        if (task != null) {
+            ServerTaskManager.removeTask(task);
+            task = null;
         }
     }
 
     /**
      * Will start the updater if the config allows or stops the updater if running and needed to be
      */
-    public static void reloadUpdater() {
-        if (config.getBungeeCordConfig().isEnabled()) {
-            if (tickSystem != null) {
-                ServerTaskManager.removeTask(tickSystem);
-            }
-            startUpdater();
+    public boolean reloadUpdater() {
+        if (getBungeeCordConfig().isEnabled()) {
+            endUpdater();
+            return startUpdater();
         }
         else {
-            if (tickSystem != null) {
-                ServerTaskManager.removeTask(tickSystem);
-                tickSystem = null;
-            }
+            endUpdater();
+            return false;
         }
     }
 
-    /**
-     * Sends Polls for BungeeCord Info over players
-     */
-    @Override
-    public void run() {
-
-        // Update Player IPs
-        updateIPs();
-
-        for (Player player : Canary.getServer().getPlayerList()) {
-
-            // Update Server List
-            updateServerList(player);
-
-            @SuppressWarnings("unchecked")
-            LinkedList<RemoteServer> servers = (LinkedList<RemoteServer>) CanaryUtil.getCustomPacket().getBungeeCord().getServerList().clone();
-            servers.add(RemoteServer.getALLServerObject());
-            for (RemoteServer server : servers) {
-                // Update playerList for each server
-                updatePlayerList(player, server);
-
-                // Update Playercount for each server
-                updatePlayerCount(player, server);
-
-            }
-
-            // Update Current Server's name
-            updateCurrentServer(player);
-
-            // Call BungeeCordPollHook
-            new BungeeCordPollHook(player).call();
-        }
-    }
-
-    private void updateIPs() {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(b);
-
+    protected void updateIPs() {
         for (Player player : Canary.getServer().getPlayerList()) {
             b = new ByteArrayOutputStream();
             out = new DataOutputStream(b);
@@ -142,10 +135,7 @@ public class UpdateBungeeInfo extends ServerTask {
         }
     }
 
-    private void updateServerList(Player player) {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(b);
-
+    protected void updateServerList(Player player) {
         b = new ByteArrayOutputStream();
         out = new DataOutputStream(b);
         try {
@@ -157,10 +147,7 @@ public class UpdateBungeeInfo extends ServerTask {
         Canary.channels().sendCustomPayloadToPlayer("BungeeCord", b.toByteArray(), player);
     }
 
-    private void updatePlayerList(Player player, RemoteServer server) {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(b);
-
+    protected void updatePlayerList(Player player, RemoteServer server) {
         b = new ByteArrayOutputStream();
         out = new DataOutputStream(b);
         try {
@@ -173,10 +160,7 @@ public class UpdateBungeeInfo extends ServerTask {
         Canary.channels().sendCustomPayloadToPlayer("BungeeCord", b.toByteArray(), player);
     }
 
-    private void updatePlayerCount(Player player, RemoteServer server) {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(b);
-
+    protected void updatePlayerCount(Player player, RemoteServer server) {
         b = new ByteArrayOutputStream();
         out = new DataOutputStream(b);
         try {
@@ -189,10 +173,7 @@ public class UpdateBungeeInfo extends ServerTask {
         Canary.channels().sendCustomPayloadToPlayer("BungeeCord", b.toByteArray(), player);
     }
 
-    private void updateCurrentServer(Player player) {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(b);
-
+    protected void updateCurrentServer(Player player) {
         b = new ByteArrayOutputStream();
         out = new DataOutputStream(b);
         try {
@@ -202,6 +183,14 @@ public class UpdateBungeeInfo extends ServerTask {
             // Can't happen man
         }
         Canary.channels().sendCustomPayloadToPlayer("BungeeCord", b.toByteArray(), player);
+    }
+
+    protected BungeeCordConfig getBungeeCordConfig() {
+        return UtilConfigManager.getConfig().getBungeeCordConfig();
+    }
+
+    protected CanaryUtil getPlugin() {
+        return plugin;
     }
 
 }

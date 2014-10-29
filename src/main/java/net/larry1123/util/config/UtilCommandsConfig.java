@@ -62,4 +62,5 @@ public class UtilCommandsConfig implements ConfigBase {
     public PropertiesFile getPropertiesFile() {
         return plugin == null ? null : plugin.getModuleConfig("Commands");
     }
+
 }

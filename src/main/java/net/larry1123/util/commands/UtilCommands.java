@@ -25,8 +25,6 @@ import net.larry1123.util.commands.bungeecord.BungeeCordReloadCommand;
 import net.larry1123.util.commands.bungeecord.BungeeCordSetCommand;
 import org.slf4j.MarkerFactory;
 
-import static net.larry1123.util.CanaryUtil.getPlugin;
-
 public class UtilCommands {
 
     public final Command baseCommand;
@@ -35,19 +33,22 @@ public class UtilCommands {
     public final Command bungeecordReloadCommand;
     public final Command bungeecordSetCommand;
 
-    public UtilCommands() {
+    protected final CanaryUtil plugin;
+
+    public UtilCommands(CanaryUtil plugin) {
+        this.plugin = plugin;
         {
             // canaryutil
             baseCommand = new BaseCommand(this);
             { // SubCommands BaseCommand
                 // canaryutil help
                 versionCommand = new VersionCommand(this);
-                // canaryutil bungeecord
+                // canaryutil bungeeCord
                 bungeecordCommand = new BungeeCordCommand(this);
                 { // SubCommands of BungeeCordCommand
-                    // canaryutil bungeecord reload
+                    // canaryutil bungeeCord reload
                     bungeecordReloadCommand = new BungeeCordReloadCommand(this);
-                    // canaryutil bungeecord set
+                    // canaryutil bungeeCord set
                     bungeecordSetCommand = new BungeeCordSetCommand(this);
                 }
             }
@@ -76,6 +77,10 @@ public class UtilCommands {
 
     public void reloadUtilCommandRepair() {
         // TODO
+    }
+
+    public CanaryUtil getPlugin() {
+        return plugin;
     }
 
 }

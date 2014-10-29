@@ -15,9 +15,12 @@
  */
 package net.larry1123.util.customPacket;
 
+import com.google.common.collect.Lists;
 import net.canarymod.Canary;
 import net.canarymod.api.OfflinePlayer;
 import net.canarymod.api.entity.living.humanoid.Player;
+import net.larry1123.util.CanaryUtil;
+import net.larry1123.util.api.abstracts.BungeeCord;
 import net.larry1123.util.api.abstracts.RemoteServer;
 import net.larry1123.util.config.UtilConfigManager;
 
@@ -27,9 +30,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import static net.larry1123.util.CanaryUtil.getPlugin;
-
-public class BungeeCord {
+public class BungeeCordHandler implements BungeeCord {
 
     private static final BungeeCordListener lis = new BungeeCordListener();
     private static final RemoteServer all = RemoteServer.getALLServerObject();
@@ -40,7 +41,10 @@ public class BungeeCord {
     private static LinkedList<RemoteServer> serverList = new LinkedList<RemoteServer>();
     private static RemoteServer currentServer = RemoteServer.getServer(UtilConfigManager.getConfig().getBungeeCordConfig().getServerName());
 
-    public BungeeCord() {
+    protected final CanaryUtil plugin;
+
+    public BungeeCordHandler(CanaryUtil plugin) {
+        this.plugin = plugin;
         Canary.channels().registerListener(getPlugin(), "BungeeCord", lis);
         Canary.hooks().registerListener(lis, getPlugin());
     }
@@ -184,6 +188,7 @@ public class BungeeCord {
      *
      * @return The IP of the Player
      */
+    @Override
     @Deprecated
     public String getRealPlayerIp(Player player) {
         if (IPs.get(Canary.getServer().getOfflinePlayer(player.getName())) != null) {
@@ -202,6 +207,7 @@ public class BungeeCord {
      *
      * @return Player Count for given Server
      */
+    @Override
     public int getServerPlayerCount(RemoteServer server) {
         if (currentServer != server) {
             Integer count = serverPlayerCount.get(server);
@@ -224,6 +230,7 @@ public class BungeeCord {
      *
      * @return LinkedList of OfflinePlayers for the given Server
      */
+    @Override
     public LinkedList<OfflinePlayer> getServerPlayerList(RemoteServer server) {
         LinkedList<OfflinePlayer> ren = new LinkedList<OfflinePlayer>();
         if (playerList.get(server) != null) {
@@ -237,8 +244,9 @@ public class BungeeCord {
      *
      * @return List of Online Servers
      */
+    @Override
     public LinkedList<RemoteServer> getServerList() {
-        return serverList;
+        return Lists.newLinkedList(serverList);
     }
 
     /**
@@ -246,6 +254,7 @@ public class BungeeCord {
      *
      * @return The {@link net.larry1123.util.api.abstracts.RemoteServer} for this Server
      */
+    @Override
     public RemoteServer getCurrentServer() {
         return currentServer;
     }
@@ -261,6 +270,7 @@ public class BungeeCord {
      *
      * @return true if the packet was sent, false if the packet was not sent
      */
+    @Override
     public boolean sendPlayerToServer(Player player, RemoteServer server) {
         if (!server.isServerOnline() || server.isCurrentServer() || server == all) {
             return false;
@@ -292,6 +302,7 @@ public class BungeeCord {
      *
      * @return true if the packet was sent, false if the packet was not sent
      */
+    @Override
     public boolean sendMessageToServer(RemoteServer server, String subCnannel, String data) {
         if (!server.isServerOnline() || server.isCurrentServer()) {
             return false;
@@ -330,6 +341,7 @@ public class BungeeCord {
      *
      * @return
      */
+    @Override
     public boolean sendMessageToServerAsAllPlayers(RemoteServer server, String subCnannel, String data) {
         if (!server.isServerOnline() || server.isCurrentServer()) {
             return false;
@@ -372,6 +384,7 @@ public class BungeeCord {
      *
      * @return
      */
+    @Override
     public boolean sendMessageToServerAsPlayer(RemoteServer server, String subCnannel, String data, Player player) {
         if (!server.isServerOnline() || server.isCurrentServer()) {
             return false;
@@ -391,6 +404,10 @@ public class BungeeCord {
             // But lets return just in case it does
         }
         return Canary.channels().sendCustomPayloadToPlayer("BungeeCord", b.toByteArray(), player);
+    }
+
+    protected CanaryUtil getPlugin() {
+        return plugin;
     }
 
 }
