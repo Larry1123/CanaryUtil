@@ -24,7 +24,7 @@ public class CommandData {
     protected final String description;
     protected final String toolTip;
     protected final UUID commandID = UUID.randomUUID();
-    protected final int version;
+    protected int version;
     protected String parent = "";
     protected String helpLookup = "";
     protected String[] searchTerms = {" "};
@@ -36,7 +36,7 @@ public class CommandData {
         this.permissions = permissions;
         this.description = description;
         this.toolTip = toolTip;
-        this.version = 1;
+        this.setVersion(1);
     }
 
     public CommandData(String[] aliases, String[] permissions, String description, String toolTip, int version) {
@@ -44,7 +44,7 @@ public class CommandData {
         this.permissions = permissions;
         this.description = description;
         this.toolTip = toolTip;
-        this.version = version;
+        this.setVersion(version);
     }
 
     /**
@@ -215,6 +215,10 @@ public class CommandData {
      */
     public UUID getCommandUID() {
         return commandID;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 
 }

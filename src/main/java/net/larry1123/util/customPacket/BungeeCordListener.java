@@ -17,7 +17,6 @@ package net.larry1123.util.customPacket;
 
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.channels.ChannelListener;
-import net.canarymod.plugin.PluginListener;
 import net.larry1123.util.api.abstracts.RemoteServer;
 
 import java.io.ByteArrayInputStream;
@@ -27,25 +26,30 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedList;
 
-public final class BungeeCordListener extends ChannelListener implements PluginListener {
+public final class BungeeCordListener extends ChannelListener {
+
+    private final BungeeCordHandler bungeeCordHandler;
+
+    public BungeeCordListener(BungeeCordHandler bungeeCordHandler) {
+        this.bungeeCordHandler = bungeeCordHandler;
+    }
 
     @Override
     public void onChannelInput(String channel, Player player, byte[] byteStream) {
         try {
             DataInput input = new DataInputStream(new ByteArrayInputStream(byteStream));
             String subChannel = input.readUTF();
-
             if (subChannel.startsWith("PlayerCount")) {
                 String server = input.readUTF();
                 int playerCount = input.readInt();
-                BungeeCordHandler.setPlayerCountForServer(RemoteServer.getServer(server), playerCount, this);
+                bungeeCordHandler.setPlayerCountForServer(RemoteServer.getServer(server), playerCount, this);
             }
             if (subChannel.startsWith("PlayerList")) {
                 String server = input.readUTF();
                 LinkedList<String> players = new LinkedList<String>();
                 String rawplayers = input.readUTF();
                 Collections.addAll(players, rawplayers.split(","));
-                BungeeCordHandler.setPlayerList(RemoteServer.getServer(server), players, this);
+                bungeeCordHandler.setPlayerList(RemoteServer.getServer(server), players, this);
             }
             if (subChannel.startsWith("GetServer")) {
                 if (subChannel.startsWith("GetServers")) {
@@ -54,11 +58,11 @@ public final class BungeeCordListener extends ChannelListener implements PluginL
                     for (String server : rawservers.split(",")) {
                         servers.add(RemoteServer.getServer(server));
                     }
-                    BungeeCordHandler.setServerList(servers, this);
+                    bungeeCordHandler.setServerList(servers, this);
                 }
                 else {
                     String server = input.readUTF();
-                    BungeeCordHandler.setCurrentServerName(RemoteServer.getServer(server), this);
+                    bungeeCordHandler.setCurrentServerName(RemoteServer.getServer(server), this);
                 }
             }
         }

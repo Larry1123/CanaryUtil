@@ -32,49 +32,20 @@ import java.util.LinkedList;
 
 public class BungeeCordHandler implements BungeeCord {
 
-    private static final BungeeCordListener lis = new BungeeCordListener();
-    private static final RemoteServer all = RemoteServer.getALLServerObject();
+    private final BungeeCordListener lis;
+    private final RemoteServer all = RemoteServer.getALLServerObject();
 
-    private static final HashMap<OfflinePlayer, String> IPs = new HashMap<OfflinePlayer, String>();
-    private static final HashMap<RemoteServer, Integer> serverPlayerCount = new HashMap<RemoteServer, Integer>();
-    private static final HashMap<RemoteServer, LinkedList<OfflinePlayer>> playerList = new HashMap<RemoteServer, LinkedList<OfflinePlayer>>();
-    private static LinkedList<RemoteServer> serverList = new LinkedList<RemoteServer>();
-    private static RemoteServer currentServer = RemoteServer.getServer(UtilConfigManager.getConfig().getBungeeCordConfig().getServerName());
+    private final HashMap<RemoteServer, Integer> serverPlayerCount = new HashMap<RemoteServer, Integer>();
+    private final HashMap<RemoteServer, LinkedList<OfflinePlayer>> playerList = new HashMap<RemoteServer, LinkedList<OfflinePlayer>>();
+    private LinkedList<RemoteServer> serverList = new LinkedList<RemoteServer>();
+    private RemoteServer currentServer = RemoteServer.getServer(UtilConfigManager.getConfig().getBungeeCordConfig().getServerName());
 
     protected final CanaryUtil plugin;
 
     public BungeeCordHandler(CanaryUtil plugin) {
         this.plugin = plugin;
+        lis = new BungeeCordListener(this);
         Canary.channels().registerListener(getPlugin(), "BungeeCord", lis);
-        Canary.hooks().registerListener(lis, getPlugin());
-    }
-
-    /**
-     * For use from the Listener only
-     *
-     * @param player String of the Player's Name
-     * @param Ip     Current IP of a Player
-     * @param liss   The Object of the Listener
-     */
-    static void setPlayerIp(Player player, String Ip, BungeeCordListener liss) {
-        if (lis == liss) {
-            if (Ip != null) {
-                IPs.put(Canary.getServer().getOfflinePlayer(player.getName()), Ip);
-                player.message(Ip);
-            }
-        }
-    }
-
-    /**
-     * For use from the Listener only
-     *
-     * @param player String of the Player's Name
-     * @param liss   The Object of the Listener
-     */
-    static void removePlayerIp(Player player, BungeeCordListener liss) {
-        if (lis == liss) {
-            IPs.remove(Canary.getServer().getOfflinePlayer(player.getName()));
-        }
     }
 
     /**
@@ -84,7 +55,7 @@ public class BungeeCordHandler implements BungeeCord {
      * @param players Number of Players
      * @param liss    The Object of the Listener
      */
-    static void setPlayerCountForServer(RemoteServer server, int players, BungeeCordListener liss) {
+    void setPlayerCountForServer(RemoteServer server, int players, BungeeCordListener liss) {
         if (lis == liss) {
             if (currentServer == server) {
                 return;
@@ -101,7 +72,7 @@ public class BungeeCordHandler implements BungeeCord {
      * @param players List of Players on Given Server
      * @param liss    The Object of the Listener
      */
-    static void setPlayerList(RemoteServer server, LinkedList<String> players, BungeeCordListener liss) {
+    void setPlayerList(RemoteServer server, LinkedList<String> players, BungeeCordListener liss) {
         if (lis == liss) {
             LinkedList<OfflinePlayer> serverplayers = new LinkedList<OfflinePlayer>();
             for (String playerr : players) {
@@ -110,13 +81,6 @@ public class BungeeCordHandler implements BungeeCord {
             playerList.put(server, serverplayers);
 
             if (server == all) {
-                // Removes players that for some reason are still there when they should not be
-                for (OfflinePlayer player : IPs.keySet()) {
-                    if (!playerList.get(all).contains(player)) {
-                        IPs.remove(player);
-                    }
-                }
-
                 // Removes players from the list for an other server if they are not in the list for all
                 for (RemoteServer key : playerList.keySet()) {
                     if (key != all) {
@@ -149,7 +113,7 @@ public class BungeeCordHandler implements BungeeCord {
      * @param servers String LinkedList of Server Names
      * @param liss    The Object of the Listener
      */
-    static void setServerList(LinkedList<RemoteServer> servers, BungeeCordListener liss) {
+    void setServerList(LinkedList<RemoteServer> servers, BungeeCordListener liss) {
         if (lis == liss) {
             serverList = servers;
             for (RemoteServer server : serverList) {
@@ -166,7 +130,7 @@ public class BungeeCordHandler implements BungeeCord {
      * @param server Server to update
      * @param liss   The Object of the Listener
      */
-    static void setCurrentServerName(RemoteServer server, BungeeCordListener liss) {
+    void setCurrentServerName(RemoteServer server, BungeeCordListener liss) {
         if (lis == liss) {
             // Only update if changed!
             if (!currentServer.equals(server)) {
@@ -191,12 +155,7 @@ public class BungeeCordHandler implements BungeeCord {
     @Override
     @Deprecated
     public String getRealPlayerIp(Player player) {
-        if (IPs.get(Canary.getServer().getOfflinePlayer(player.getName())) != null) {
-            return IPs.get(Canary.getServer().getOfflinePlayer(player.getName()));
-        }
-        else {
-            return player.getIP();
-        }
+        return player.getIP();
     }
 
     /**
