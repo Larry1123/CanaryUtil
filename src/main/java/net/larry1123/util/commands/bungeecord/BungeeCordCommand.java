@@ -31,12 +31,14 @@ public class BungeeCordCommand implements Command {
     private final CommandData command;
     private final LocaleHelper translator = Translator.getInstance();
     private final UtilCommands utilcommands;
+    private final Command parent;
     private boolean loaded = false;
 
-    public BungeeCordCommand(UtilCommands utilCommands) {
+    public BungeeCordCommand(UtilCommands utilCommands, Command parent) {
         utilcommands = utilCommands;
-        command = new CommandData(aliases, new String[] {"canary.super.canaryutil.bungeecord", "canary.command.super.canaryutil.bungeecord"}, "TODO", "/" + utilcommands.baseCommand.getCommandData().getAliases()[0] + " " + aliases[0] + " <set|reload>");
-        command.setParent(utilcommands.baseCommand.getCommandData());
+        this.parent = parent;
+        command = new CommandData(aliases, new String[] {"canary.super.canaryutil.bungeecord", "canary.command.super.canaryutil.bungeecord"}, "TODO", "/" + parent.getCommandData().getAliases()[0] + " " + aliases[0] + " <set|reload>");
+        command.setParent(parent.getCommandData());
         command.setMax(1);
     }
 
@@ -45,7 +47,7 @@ public class BungeeCordCommand implements Command {
      */
     @Override
     public void execute(MessageReceiver caller, String[] parameters) {
-        caller.message("/" + utilcommands.baseCommand.getCommandData().getAliases()[0] + " " + aliases[0] + " <set|reload>");
+        caller.message("/" + parent.getCommandData().getAliases()[0] + " " + aliases[0] + " <set|reload>");
     }
 
     @Override

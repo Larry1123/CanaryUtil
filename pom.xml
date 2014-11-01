@@ -16,7 +16,7 @@
         <EEutil.groupID>net.larry1123</EEutil.groupID>
         <EEutil.name>EEUtils</EEutil.name>
         <EEutil.version>1.4.0-SNAPSHOT</EEutil.version>
-        <canary.lib.version>1.1.2</canary.lib.version>
+        <canary.lib.version>1.2.0-SNAPSHOT</canary.lib.version>
     </properties>
 
     <organization>

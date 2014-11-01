@@ -33,9 +33,9 @@ public class BungeeCordReloadCommand implements Command {
     private final UtilCommands utilcommands;
     private boolean loaded = false;
 
-    public BungeeCordReloadCommand(UtilCommands utilCommands) {
+    public BungeeCordReloadCommand(UtilCommands utilCommands, Command parent) {
         utilcommands = utilCommands;
-        command.setParent(utilcommands.bungeecordCommand.getCommandData());
+        command.setParent(parent.getCommandData());
     }
 
     /**

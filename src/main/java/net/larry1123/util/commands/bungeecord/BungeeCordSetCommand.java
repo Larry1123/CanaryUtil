@@ -34,9 +34,9 @@ public class BungeeCordSetCommand implements Command {
     private final UtilCommands utilcommands;
     private boolean loaded = false;
 
-    public BungeeCordSetCommand(UtilCommands utilCommands) {
+    public BungeeCordSetCommand(UtilCommands utilCommands, Command parent) {
         utilcommands = utilCommands;
-        command.setParent(utilcommands.bungeecordCommand.getCommandData());
+        command.setParent(parent.getCommandData());
         command.setMin(2);
     }
 
@@ -50,15 +50,12 @@ public class BungeeCordSetCommand implements Command {
                 config.getBungeeCordConfig().setIsEnabled(Boolean.parseBoolean(parameters[3]));
             }
             else {
-                caller.message(getCommandPath() + "enabled <true:false>");
+                caller.message("enabled <true:false>");
             }
         }
         else if (parameters[2].toLowerCase().equals("time") || parameters[2].toLowerCase().equals("polltime")) {
             if (parameters.length > 2) {
                 config.getBungeeCordConfig().setPollTime(Integer.parseInt(parameters[3]));
-            }
-            else {
-                caller.message(getCommandPath() + "");
             }
         }
         else if (parameters[2].toLowerCase().equals("server")) {
@@ -70,7 +67,7 @@ public class BungeeCordSetCommand implements Command {
             }
         }
         else {
-            caller.message(getCommandPath() + "<enabled:polltime:server>");
+            caller.message("<enabled:polltime:server>");
         }
     }
 
@@ -117,11 +114,6 @@ public class BungeeCordSetCommand implements Command {
     @Override
     public void setLoaded(boolean loadedness) {
         loaded = loadedness;
-    }
-
-    private String getCommandPath() {
-        return "/" + utilcommands.baseCommand.getCommandData().getAliases()[0] + " " + utilcommands.bungeecordCommand.getCommandData().getAliases()[0] +
-                command.getAliases()[0];
     }
 
 }

@@ -154,7 +154,7 @@ public class Permission implements Comparable<Permission> {
      */
     public boolean hasPermission(MessageReceiver caller) {
         if (caller instanceof Server) { return true; }
-        if (caller instanceof Player) { return hasPermission(caller); }
+        if (caller instanceof Player) { return hasPermission((Player) caller); }
         if (caller instanceof CommandBlock) { return hasPermission(((CommandBlock) caller).getGroup()); }
         return caller.hasPermission(getPermissionString());
     }

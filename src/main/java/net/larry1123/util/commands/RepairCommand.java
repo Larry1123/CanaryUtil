@@ -50,6 +50,8 @@ public class RepairCommand implements Command {
                 aliases[0] + "[Player] [all]", //
                 aliases[0] + "[Player] [all]", //
                 2);
+        command.setMin(0);
+        command.setMax(2);
     }
 
     @Override
@@ -91,11 +93,10 @@ public class RepairCommand implements Command {
             free = true;
             targetPlayer = Canary.getServer().matchPlayer(parameters[0]);
             buyingPlayer = null;
-            all = parameters.length >= 2;
+            all = parameters.length == 2;
         }
         else if (caller instanceof Player || caller instanceof CommandBlock) {
-            // Find target and if they want all items that can be repaired fixed up.
-            if (parameters.length > 1) {
+            if (parameters.length > 0) {
                 if (parameters[0].equals("all")) {
                     if (caller instanceof CommandBlock) {
                         caller.notice("Must say what player to repair all for!");
@@ -114,7 +115,7 @@ public class RepairCommand implements Command {
                 }
                 else {
                     targetPlayer = Canary.getServer().matchPlayer(parameters[0]);
-                    all = parameters.length >= 2 && hasRepairAllPermission(caller);
+                    all = parameters.length == 2 && hasRepairAllPermission(caller);
                     if (caller instanceof Player) {
                         buyingPlayer = (Player) caller;
                         free = hasRepairFreePermission(caller);
@@ -154,6 +155,7 @@ public class RepairCommand implements Command {
             // what the hell is using a command!
             return;
         }
+        // Ok everything is set to be able to do the repair stuff!
         if (targetPlayer == null) {
             caller.notice("Target Player not found!");
             return;
@@ -182,12 +184,16 @@ public class RepairCommand implements Command {
             return;
         }
         int itemsRepaired = 0;
+        int levelsCost = 0;
         for (Item item : itemsToRepair) {
             if (item == null) continue;
+            String cost = "";
             if (!free) {
                 int repairCost = item.getRepairCost() * 2;
                 if (buyingPlayer.getLevel() >= repairCost) {
                     buyingPlayer.removeLevel(repairCost);
+                    levelsCost += repairCost;
+                    cost = "Repair cost " + repairCost + " Levels.";
                 }
                 else {
                     if (!(caller instanceof CommandBlock) || caller != buyingPlayer) {
@@ -198,10 +204,13 @@ public class RepairCommand implements Command {
                 }
             }
             repairItem(item);
-            targetPlayer.message(item.getDisplayName() + " has been repaired.");
+            targetPlayer.message(item.getDisplayName() + " has been repaired." + cost);
             itemsRepaired++;
         }
-        String message = itemsRepaired + ", items have been repaired.";
+        String message = itemsRepaired + ", item(s) have been repaired.";
+        if (levelsCost > 0) {
+            message += " Total Levels spent " + levelsCost + ".";
+        }
         if (itemsToRepair.size() != itemsRepaired) {
             message += " " + (itemsToRepair.size() - itemsRepaired) + " items have not been repaired.";
         }

@@ -59,8 +59,7 @@ public class Repair {
         if (item == null) return;
         if (item.getId() == 0) return;
         if (item.getAmount() == 0) return;
-        BaseItem baseItem = item.getBaseItem();
-        repairItem(item, baseItem, baseItem.getMaxDamage());
+        repairItem(item, getMaxDamage(item));
     }
 
     /**
@@ -81,11 +80,11 @@ public class Repair {
 
     private static void repairItem(Item item, BaseItem baseItem, int amount) {
         if (canRepairItem(item, baseItem)) {
-            if (item.getDamage() + amount < baseItem.getMaxDamage()) {
-                item.setDamage(item.getDamage() + amount);
+            if (getMaxDamage(item) - item.getDamage() + amount < getMaxDamage(item)) {
+                item.setDamage(item.getDamage() - amount);
             }
             else {
-                item.setDamage(baseItem.getMaxDamage());
+                item.setDamage(0);
             }
         }
     }
@@ -101,6 +100,10 @@ public class Repair {
         return item != null && canRepairItem(item, item.getBaseItem());
     }
 
+    public static boolean isItemDamaged(Item item) {
+        return item.getBaseItem().getMaxDamage() - item.getDamage() != 0;
+    }
+
     /**
      * Checks if this item is able to be repaired
      *
@@ -110,7 +113,11 @@ public class Repair {
      * @return {@code true} if item can be repaired, {@code false} item can not be repaired, or is not damaged
      */
     private static boolean canRepairItem(Item item, BaseItem baseItem) {
-        return !(item == null || baseItem == null) && baseItem.isDamageable() && item.getDamage() < baseItem.getMaxDamage();
+        return (item != null && baseItem != null) && baseItem.isDamageable() && isItemDamaged(item);
+    }
+
+    private static int getMaxDamage(Item item) {
+        return item.getBaseItem().getMaxDamage();
     }
 
 }

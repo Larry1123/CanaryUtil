@@ -25,42 +25,38 @@ import net.larry1123.util.commands.bungeecord.BungeeCordReloadCommand;
 import net.larry1123.util.commands.bungeecord.BungeeCordSetCommand;
 import org.slf4j.MarkerFactory;
 
+import java.util.LinkedList;
+
 public class UtilCommands {
 
-    public final Command baseCommand;
-    public final Command versionCommand;
-    public final Command bungeecordCommand;
-    public final Command bungeecordReloadCommand;
-    public final Command bungeecordSetCommand;
-    public Command repairCommand;
 
     protected final CanaryUtil plugin;
 
     public UtilCommands(CanaryUtil plugin) {
         this.plugin = plugin;
+        LinkedList<Command> commands = new LinkedList<Command>();
+        Command baseCommand;
+        Command bungeeCordBase;
         {
             // canaryutil
-            baseCommand = new BaseCommand(this);
+            commands.add(baseCommand = new BaseCommand(this));
             { // SubCommands BaseCommand
                 // canaryutil help
-                versionCommand = new VersionCommand(this);
+                commands.add(new VersionCommand(this, baseCommand));
                 // canaryutil bungeeCord
-                bungeecordCommand = new BungeeCordCommand(this);
+                commands.add(bungeeCordBase = new BungeeCordCommand(this, baseCommand));
                 { // SubCommands of BungeeCordCommand
                     // canaryutil bungeeCord reload
-                    bungeecordReloadCommand = new BungeeCordReloadCommand(this);
+                    commands.add(new BungeeCordReloadCommand(this, bungeeCordBase));
                     // canaryutil bungeeCord set
-                    bungeecordSetCommand = new BungeeCordSetCommand(this);
+                    commands.add(new BungeeCordSetCommand(this, bungeeCordBase));
                 }
             }
-            repairCommand = new RepairCommand(this, new String[] { "repair" });
+            commands.add(new RepairCommand(this, new String[] { "repair" }));
         }
-        regCommand(baseCommand);
-        regCommand(versionCommand);
-        regCommand(bungeecordCommand);
-        regCommand(bungeecordReloadCommand);
-        regCommand(bungeecordSetCommand);
-        regCommand(repairCommand);
+        for (Command command : commands) {
+            regCommand(command);
+        }
     }
 
     private void regCommand(Command command) {

@@ -31,9 +31,9 @@ public class VersionCommand implements Command {
     private final UtilCommands utilcommands;
     private boolean loaded = false;
 
-    public VersionCommand(UtilCommands utilCommands) {
+    public VersionCommand(UtilCommands utilCommands, Command parent) {
         utilcommands = utilCommands;
-        command.setParent(utilCommands.baseCommand.getCommandData());
+        command.setParent(parent.getCommandData());
     }
 
     /**
