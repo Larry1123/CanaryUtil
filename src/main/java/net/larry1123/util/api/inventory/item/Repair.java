@@ -13,15 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.larry1123.util.api.item;
+package net.larry1123.util.api.inventory.item;
 
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.inventory.BaseItem;
 import net.canarymod.api.inventory.Item;
-
-import static com.google.common.base.Preconditions.checkNotNull;
-import static net.larry1123.util.api.err.ItemChecks.itemHasAmount;
-import static net.larry1123.util.api.err.ItemChecks.itemNotAir;
 
 /**
  * @author Larry1123
@@ -35,7 +31,7 @@ public class Repair {
      * @param player The player to have an item repaired for
      */
     public static void repairItemInHand(Player player) {
-        checkNotNull(player, "Player can not be null");
+        if (player == null) return;
         Item item = player.getItemHeld();
         repairItem(item);
     }
@@ -47,7 +43,7 @@ public class Repair {
      * @param amount How much to repair the item by
      */
     public static void repairItemInHand(Player player, int amount) {
-        checkNotNull(player, "Player can not be null");
+        if (player == null) return;
         Item item = player.getItemHeld();
         repairItem(item, amount);
     }
@@ -60,9 +56,9 @@ public class Repair {
      * @param item What item to be repaired
      */
     public static void repairItem(Item item) {
-        checkNotNull(item, "Item can not be null");
-        itemNotAir(item, "Item can not be Air");
-        itemHasAmount(item, "Item stack size can not be 0");
+        if (item == null) return;
+        if (item.getId() == 0) return;
+        if (item.getAmount() == 0) return;
         BaseItem baseItem = item.getBaseItem();
         repairItem(item, baseItem, baseItem.getMaxDamage());
     }
@@ -76,9 +72,9 @@ public class Repair {
      * @param amount How much to repair the item by
      */
     public static void repairItem(Item item, int amount) {
-        checkNotNull(item, "Item can not be null");
-        itemNotAir(item, "Item can not be Air");
-        itemHasAmount(item, "Item stack size can not be 0");
+        if (item == null) return;
+        if (item.getId() == 0) return;
+        if (item.getAmount() == 0) return;
         BaseItem baseItem = item.getBaseItem();
         repairItem(item, baseItem, amount);
     }
@@ -102,7 +98,7 @@ public class Repair {
      * @return {@code true} if item can be repaired, {@code false} item can not be repaired, or is not damaged
      */
     public static boolean canRepairItem(Item item) {
-        return canRepairItem(item, item.getBaseItem());
+        return item != null && canRepairItem(item, item.getBaseItem());
     }
 
     /**
@@ -114,7 +110,7 @@ public class Repair {
      * @return {@code true} if item can be repaired, {@code false} item can not be repaired, or is not damaged
      */
     private static boolean canRepairItem(Item item, BaseItem baseItem) {
-        return baseItem.isDamageable() && baseItem.getMaxDamage() != item.getDamage();
+        return !(item == null || baseItem == null) && baseItem.isDamageable() && item.getDamage() < baseItem.getMaxDamage();
     }
 
 }

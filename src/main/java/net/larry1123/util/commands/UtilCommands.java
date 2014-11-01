@@ -32,6 +32,7 @@ public class UtilCommands {
     public final Command bungeecordCommand;
     public final Command bungeecordReloadCommand;
     public final Command bungeecordSetCommand;
+    public Command repairCommand;
 
     protected final CanaryUtil plugin;
 
@@ -52,12 +53,14 @@ public class UtilCommands {
                     bungeecordSetCommand = new BungeeCordSetCommand(this);
                 }
             }
+            repairCommand = new RepairCommand(this, new String[] { "repair" });
         }
         regCommand(baseCommand);
         regCommand(versionCommand);
         regCommand(bungeecordCommand);
         regCommand(bungeecordReloadCommand);
         regCommand(bungeecordSetCommand);
+        regCommand(repairCommand);
     }
 
     private void regCommand(Command command) {

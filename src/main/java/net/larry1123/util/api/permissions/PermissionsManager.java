@@ -30,6 +30,7 @@ public class PermissionsManager {
 
     private final HashMap<RemoteServer, PermissionTracker> Trackers = new HashMap<RemoteServer, PermissionTracker>();
     private final HashMap<RemoteServer, CanaryPermission> canaryPermissionHashMap = new HashMap<RemoteServer, CanaryPermission>();
+    private final HashMap<RemoteServer, UtilPermission> utilPermissionHashMap = new HashMap<RemoteServer, UtilPermission>();
 
     private PermissionsManager() {}
 
@@ -41,7 +42,7 @@ public class PermissionsManager {
      * Gets the PermissionTracker for the local server
      */
     public PermissionTracker getPermissionTracker() {
-        return getPermissionTracker(CanaryUtil.getCustomPacket().getBungeeCord().getCurrentServer());
+        return getPermissionTracker(getLocalRemoteServer());
     }
 
     public PermissionTracker getPermissionTracker(RemoteServer remoteServer) {
@@ -52,7 +53,7 @@ public class PermissionsManager {
     }
 
     public CanaryPermission getCanaryPermissions() {
-        return getCanaryPermissions(CanaryUtil.getCustomPacket().getBungeeCord().getCurrentServer());
+        return getCanaryPermissions(getLocalRemoteServer());
     }
 
     public CanaryPermission getCanaryPermissions(RemoteServer remoteServer) {
@@ -60,6 +61,17 @@ public class PermissionsManager {
             canaryPermissionHashMap.put(remoteServer, new CanaryPermission(getPermissionTracker(remoteServer)));
         }
         return canaryPermissionHashMap.get(remoteServer);
+    }
+
+    public UtilPermission getUtilPermissions() {
+        return getUtilPermissions(getLocalRemoteServer());
+    }
+
+    public UtilPermission getUtilPermissions(RemoteServer remoteServer) {
+        if (!utilPermissionHashMap.containsKey(remoteServer)) {
+            utilPermissionHashMap.put(remoteServer, new UtilPermission(getPermissionTracker(remoteServer)));
+        }
+        return utilPermissionHashMap.get(remoteServer);
     }
 
     @Deprecated
@@ -71,5 +83,7 @@ public class PermissionsManager {
     public MinecraftPermission getMinecraftPermission(RemoteServer remoteServer) {
         return new MinecraftPermission(getPermissionTracker(remoteServer));
     }
+
+    protected RemoteServer getLocalRemoteServer() {return CanaryUtil.getCustomPacket().getBungeeCord().getCurrentServer();}
 
 }

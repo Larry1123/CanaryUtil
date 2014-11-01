@@ -25,9 +25,10 @@ import java.util.ArrayList;
  */
 public class UtilPermission {
 
-    public final Permission RepairPermission;
-    public final Permission RepairAllPermission;
-    public final Permission RepairFreePermission;
+    public final Permission REPAIR;
+    public final Permission REPAIR$ALL;
+    public final Permission REPAIR$FREE;
+    public final Permission REPAIR$OTHER;
 
     private final PermissionTracker tracker;
     private final ArrayList<Permission> permissions = new ArrayList<Permission>();
@@ -36,9 +37,10 @@ public class UtilPermission {
     public UtilPermission(PermissionTracker tracker) {
         this.tracker = tracker;
 
-        RepairPermission = createPermission("canaryUtil.commands.repair");
-        RepairAllPermission = createPermission("canaryUtil.commands.repair.all");
-        RepairFreePermission = createPermission("canaryUtil.commands.repair.free");
+        REPAIR = createPermission("canaryUtil.commands.repair");
+        REPAIR$ALL = createPermission("canaryUtil.commands.repair.all");
+        REPAIR$FREE = createPermission("canaryUtil.commands.repair.free");
+        REPAIR$OTHER = createPermission("canaryUtil.commands.repair.other");
     }
 
     public ArrayList<Permission> getAllUtilPermissions() {
