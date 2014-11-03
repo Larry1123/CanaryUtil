@@ -23,13 +23,15 @@ import net.larry1123.util.api.plugin.commands.Command;
 import net.larry1123.util.commands.bungeecord.BungeeCordCommand;
 import net.larry1123.util.commands.bungeecord.BungeeCordReloadCommand;
 import net.larry1123.util.commands.bungeecord.BungeeCordSetCommand;
+import net.larry1123.util.config.UtilCommandsConfig;
+import net.larry1123.util.config.UtilConfigManager;
 import org.slf4j.MarkerFactory;
 
 import java.util.LinkedList;
 
 public class UtilCommands {
 
-
+    protected Command repair;
     protected final CanaryUtil plugin;
 
     public UtilCommands(CanaryUtil plugin) {
@@ -52,7 +54,7 @@ public class UtilCommands {
                     commands.add(new BungeeCordSetCommand(this, bungeeCordBase));
                 }
             }
-            commands.add(new RepairCommand(this, new String[] { "repair" }));
+            commands.add(repair = new RepairCommand(this));
         }
         for (Command command : commands) {
             regCommand(command);
@@ -74,8 +76,26 @@ public class UtilCommands {
         }
     }
 
+    private void unRegCommand(Command command) {
+        CanaryUtil.commands().unregisterCommand(command);
+        command.setLoaded(false);
+    }
+
     public void reloadUtilCommandRepair() {
-        // TODO
+        if (getUtilCommandsConfig().isRepairEnable()) {
+            if (!repair.isLoaded()) {
+                regCommand(repair = new RepairCommand(this));
+            }
+        }
+        else {
+            if (repair.isLoaded()) {
+                unRegCommand(repair);
+            }
+        }
+    }
+
+    protected UtilCommandsConfig getUtilCommandsConfig() {
+        return UtilConfigManager.getConfig().getUtilCommandsConfig();
     }
 
     public CanaryUtil getPlugin() {

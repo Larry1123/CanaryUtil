@@ -26,6 +26,8 @@ import net.larry1123.util.api.permissions.PermissionsManager;
 import net.larry1123.util.api.permissions.UtilPermission;
 import net.larry1123.util.api.plugin.commands.Command;
 import net.larry1123.util.api.plugin.commands.CommandData;
+import net.larry1123.util.config.UtilCommandsConfig;
+import net.larry1123.util.config.UtilConfigManager;
 import net.visualillusionsent.utils.LocaleHelper;
 
 import java.util.ArrayList;
@@ -43,8 +45,10 @@ public class RepairCommand implements Command {
     private final UtilCommands utilcommands;
     private boolean loaded = false;
 
-    public RepairCommand(UtilCommands utilCommands, String[] aliases) {
+    public RepairCommand(UtilCommands utilCommands) {
         utilcommands = utilCommands;
+        ArrayList<String> repairAliases = getUtilCommandsConfig().getRepairAliases();
+        String[] aliases = repairAliases.toArray(new String[repairAliases.size()]);
         command = new CommandData(aliases, //
                 new String[] {getUtilPermissions().REPAIR.getPermissionString()}, //
                 aliases[0] + "[Player] [all]", //
@@ -233,6 +237,10 @@ public class RepairCommand implements Command {
 
     protected UtilPermission getUtilPermissions() {
         return PermissionsManager.getManager().getUtilPermissions();
+    }
+
+    protected UtilCommandsConfig getUtilCommandsConfig() {
+        return UtilConfigManager.getConfig().getUtilCommandsConfig();
     }
 
 }

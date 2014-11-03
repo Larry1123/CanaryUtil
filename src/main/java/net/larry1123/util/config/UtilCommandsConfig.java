@@ -15,10 +15,10 @@
  */
 package net.larry1123.util.config;
 
-import net.canarymod.plugin.Plugin;
 import net.larry1123.elec.util.config.ConfigBase;
 import net.larry1123.elec.util.config.ConfigField;
 import net.larry1123.elec.util.config.ConfigFile;
+import net.larry1123.util.CanaryUtil;
 import net.visualillusionsent.utils.PropertiesFile;
 
 import java.util.ArrayList;
@@ -30,17 +30,19 @@ import java.util.ArrayList;
 public class UtilCommandsConfig implements ConfigBase {
 
     protected ConfigFile configManager;
-    protected Plugin plugin;
+    protected CanaryUtil plugin;
     @ConfigField(name = "Repair-Aliases", comments = "")
     protected ArrayList<String> repairAliases = new ArrayList<String>();
     @ConfigField(name = "Repair-Enabled", comments = "")
-    private boolean repairEnable = false;
+    protected boolean repairEnable = false;
 
-    public UtilCommandsConfig() {
-        repairAliases.add("repair");
+    {
+        getRepairAliases().add("repair");
     }
 
-    public void postInt(Plugin plugin) {
+    public UtilCommandsConfig() {}
+
+    public void postInt(CanaryUtil plugin) {
         if (configManager == null) {
             this.plugin = plugin;
             configManager = UtilConfigManager.getConfig().getPluginConfig(this);
@@ -51,16 +53,32 @@ public class UtilCommandsConfig implements ConfigBase {
      * Will update everything with any changes in Config file
      */
     void reload() {
-        ArrayList<String> temp = repairAliases;
+        ArrayList<String> temp = getRepairAliases();
         configManager.reload();
-        if (!temp.containsAll(repairAliases) && !repairAliases.containsAll(temp)) {
-            // TODO Reload Command
+        if (!temp.containsAll(getRepairAliases()) && !getRepairAliases().containsAll(temp)) {
+            plugin.getCommandsManager().reloadUtilCommandRepair();
         }
     }
 
     @Override
     public PropertiesFile getPropertiesFile() {
         return plugin == null ? null : plugin.getModuleConfig("Commands");
+    }
+
+    public ArrayList<String> getRepairAliases() {
+        return repairAliases;
+    }
+
+    public void setRepairAliases(ArrayList<String> repairAliases) {
+        this.repairAliases = repairAliases;
+    }
+
+    public boolean isRepairEnable() {
+        return repairEnable;
+    }
+
+    public void setRepairEnable(boolean repairEnable) {
+        this.repairEnable = repairEnable;
     }
 
 }

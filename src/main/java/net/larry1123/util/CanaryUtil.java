@@ -100,4 +100,8 @@ public class CanaryUtil extends UtilPlugin implements TaskOwner, CommandOwner {
         return fileSpliterUpdater;
     }
 
+    public UtilCommands getCommandsManager() {
+        return commandsManager;
+    }
+
 }

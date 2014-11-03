@@ -22,6 +22,7 @@ import net.canarymod.commandsys.CommandDependencyException;
 import net.canarymod.commandsys.CommandOwner;
 import net.visualillusionsent.utils.LocaleHelper;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class Commands {
@@ -37,12 +38,22 @@ public class Commands {
      *
      * @throws CommandDependencyException
      */
-    public void registerCommand(CommandData data, CommandOwner owner, LocaleHelper translator, final CommandExecute execute, boolean force) throws CommandDependencyException {
+    public void registerCommand(final CommandData data, CommandOwner owner, LocaleHelper translator, final CommandExecute execute, boolean force) throws CommandDependencyException {
         CanaryCommand ccommand = new CanaryCommand(new CommandCommand(data), owner, translator) {
 
             @Override
+            protected boolean hasTabComplete() {
+                return true;
+            }
+
+            @Override
             protected List<String> tabComplete(MessageReceiver messageReceiver, String[] args) {
-                return execute.tabComplete(messageReceiver, args);
+                if (meta.version() == 1) {
+                    return execute.tabComplete(messageReceiver, args);
+                }
+                else {
+                    return execute.tabComplete(messageReceiver, Arrays.copyOfRange(args, 1, args.length));
+                }
             }
 
             @Override
