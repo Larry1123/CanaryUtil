@@ -136,7 +136,7 @@ public class CommandCommand implements Command {
      */
     @Override
     public int version() {
-        return 0;
+        return this.version;
     }
 
 
