@@ -48,7 +48,7 @@ public class CommandCommand implements Command {
         this.searchTerms = data.getSearchTerms();
         this.min = data.getMin();
         this.max = data.getMax();
-        this.version = 1;
+        this.version = data.getVersion();
     }
 
     /**
