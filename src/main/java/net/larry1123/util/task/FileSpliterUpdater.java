@@ -19,12 +19,13 @@ import net.canarymod.tasks.ServerTask;
 import net.canarymod.tasks.ServerTaskManager;
 import net.canarymod.tasks.TaskOwner;
 import net.larry1123.elec.util.logger.FileManager;
-import net.larry1123.elec.util.logger.FileSplits;
 import net.larry1123.util.CanaryUtil;
 import net.larry1123.util.api.task.TaskHandler;
 import net.larry1123.util.config.LoggerConfig;
 import net.larry1123.util.config.UtilConfigManager;
 import org.apache.commons.lang3.time.DateUtils;
+
+import java.io.IOException;
 
 public class FileSpliterUpdater implements TaskHandler {
 
@@ -42,12 +43,17 @@ public class FileSpliterUpdater implements TaskHandler {
         public void run() {
             if (isSplitng()) {
                 if (isNotCurrent()) {
-                    FileManager.updateFileHandlers();
+                    try {
+                        FileManager.updateFileHandlers();
+                    }
+                    catch (IOException e) {
+                        getPlugin().getLogger("Log Updater").error("Unable to update all or any log files", e);
+                    }
                 }
             }
             else {
                 if (hasCurrentSplit()) {
-                    getLoggerConfig().setCurrentSplit("");
+                    getLoggerConfig().setCurrentSplit(0);
                 }
             }
         }
@@ -106,15 +112,15 @@ public class FileSpliterUpdater implements TaskHandler {
     }
 
     protected boolean isSplitng() {
-        return !getLoggerConfig().getSplit().equals(FileSplits.NONE);
+        return FileManager.isSplitng();
     }
 
     protected boolean hasCurrentSplit() {
-        return !(getLoggerConfig().getCurrentSplit() == null || getLoggerConfig().getCurrentSplit().equals(""));
+        return FileManager.hasCurrentSplit();
     }
 
     protected boolean isNotCurrent() {
-        return !hasCurrentSplit() || !getLoggerConfig().getCurrentSplit().equals(FileManager.dateTime());
+        return FileManager.isNotCurrent();
     }
 
     protected LoggerConfig getLoggerConfig() {

@@ -34,7 +34,7 @@ public class LoggerConfig implements ConfigBase, LoggerSettings {
     protected String logSplit = "None";
 
     @ConfigField(name = "Logger-CurrentSplit", comments = "Do not change this, used to keep track of splits over reloads and restarts")
-    protected String currentSplit = "";
+    protected long currentSplit = 0;
 
     @ConfigField(name = "Paste-Enabled", comments = "Allows plugins to post errors to https://paste.larry1123.net/")
     protected boolean pasteSend = true;
@@ -106,16 +106,16 @@ public class LoggerConfig implements ConfigBase, LoggerSettings {
      * {@inheritDoc}
      */
     @Override
-    public String getCurrentSplit() {
-        return configManager == null ? "" : currentSplit;
+    public long getCurrentSplit() {
+        return configManager == null ? 0 : currentSplit;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setCurrentSplit(String current) {
-        boolean change = !currentSplit.equals(current);
+    public void setCurrentSplit(long current) {
+        boolean change = currentSplit != current;
         currentSplit = current;
         if (configManager != null) {
             configManager.save(); // Time to Save
