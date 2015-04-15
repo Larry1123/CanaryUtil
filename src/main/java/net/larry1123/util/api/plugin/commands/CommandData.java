@@ -32,11 +32,7 @@ public class CommandData {
     protected int max = -1;
 
     public CommandData(String[] aliases, String[] permissions, String description, String toolTip) {
-        this.aliases = aliases;
-        this.permissions = permissions;
-        this.description = description;
-        this.toolTip = toolTip;
-        this.setVersion(1);
+        this(aliases, permissions, description, toolTip, 1);
     }
 
     public CommandData(String[] aliases, String[] permissions, String description, String toolTip, int version) {

@@ -25,7 +25,7 @@ import net.larry1123.util.commands.UtilCommands;
 import net.larry1123.util.config.LoggerConfig;
 import net.larry1123.util.config.UtilConfigManager;
 import net.larry1123.util.customPacket.CustomPacket;
-import net.larry1123.util.task.FileSpliterUpdater;
+import net.larry1123.util.task.FileSplittingUpdater;
 
 public class CanaryUtil extends UtilPlugin implements TaskOwner, CommandOwner {
 
@@ -38,11 +38,11 @@ public class CanaryUtil extends UtilPlugin implements TaskOwner, CommandOwner {
     private static CanaryUtil plugin;
     private static CustomPacket customPacket;
     private UtilCommands commandsManager;
-    protected FileSpliterUpdater fileSpliterUpdater;
+    protected FileSplittingUpdater fileSpliterUpdater;
 
     public CanaryUtil() {
         plugin = this;
-        fileSpliterUpdater = new FileSpliterUpdater(this);
+        fileSpliterUpdater = new FileSplittingUpdater(this);
     }
 
     /**
@@ -71,7 +71,7 @@ public class CanaryUtil extends UtilPlugin implements TaskOwner, CommandOwner {
     @Override
     public boolean enable() {
         // Start checker for splitting logging files
-        getFileSpliterUpdater().startUpdater();
+        getFileSpliterUpdater().startTask();
         // Make the custom packet manager object
         customPacket = new CustomPacket(this);
         // Start up the Command manager
@@ -96,7 +96,7 @@ public class CanaryUtil extends UtilPlugin implements TaskOwner, CommandOwner {
         getLogger().info("Plugin Disabled");
     }
 
-    public FileSpliterUpdater getFileSpliterUpdater() {
+    public FileSplittingUpdater getFileSpliterUpdater() {
         return fileSpliterUpdater;
     }
 

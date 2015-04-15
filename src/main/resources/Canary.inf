@@ -1,4 +1,4 @@
 main-class=${main.class}
 name=${project.name}
-author=${author}
+author=${project.organization.name}
 version=${project.version}

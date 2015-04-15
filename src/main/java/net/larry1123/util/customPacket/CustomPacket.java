@@ -32,7 +32,7 @@ public class CustomPacket {
         updateBungeeInfo = new UpdateBungeeInfo(this.plugin);
         if (getBungeeCordConfig().isEnabled()) {
             setBungeeCord(new BungeeCordHandler(getPlugin()));
-            updateBungeeInfo.startUpdater();
+            updateBungeeInfo.startTask();
         }
         else {
             setBungeeCord(new BungeeCordless());
@@ -57,13 +57,13 @@ public class CustomPacket {
                 ((BungeeCordHandler) getBungeeCord()).unregChannelListener();
             }
             setBungeeCord(new BungeeCordHandler(getPlugin()));
-            updateBungeeInfo.reloadUpdater();
+            updateBungeeInfo.reloadTask();
         }
         else {
             if (getBungeeCord() == null || getBungeeCord() instanceof BungeeCordHandler) {
                 setBungeeCord(new BungeeCordless());
             }
-            updateBungeeInfo.endUpdater();
+            updateBungeeInfo.endTask();
         }
     }
 

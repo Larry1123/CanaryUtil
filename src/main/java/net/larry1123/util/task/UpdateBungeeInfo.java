@@ -86,7 +86,7 @@ public class UpdateBungeeInfo implements TaskHandler {
     /**
      * Starts the updater polling if the config will allow
      */
-    public boolean startUpdater() {
+    public boolean startTask() {
         if (getBungeeCordConfig().isEnabled() && getPlugin() != null) {
             if (task == null) {
                 task = new BungeeCordTask(getPlugin(), getBungeeCordConfig().getPollTime());
@@ -100,7 +100,7 @@ public class UpdateBungeeInfo implements TaskHandler {
     /**
      * Stops the updater polling
      */
-    public void endUpdater() {
+    public void endTask() {
         if (task != null) {
             ServerTaskManager.removeTask(task);
             task = null;
@@ -110,13 +110,13 @@ public class UpdateBungeeInfo implements TaskHandler {
     /**
      * Will start the updater if the config allows or stops the updater if running and needed to be
      */
-    public boolean reloadUpdater() {
+    public boolean reloadTask() {
         if (getBungeeCordConfig().isEnabled()) {
-            endUpdater();
-            return startUpdater();
+            endTask();
+            return startTask();
         }
         else {
-            endUpdater();
+            endTask();
             return false;
         }
     }

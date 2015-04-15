@@ -12,11 +12,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <build.number/>
         <main.class>${project.groupId}.util.${project.name}</main.class>
-        <author>Larry1123</author>
         <EEutil.groupID>${project.groupId}</EEutil.groupID>
         <EEutil.name>EEUtils</EEutil.name>
         <EEutil.version>1.4.0-SNAPSHOT</EEutil.version>
-        <canary.lib.version>1.2.0-SNAPSHOT</canary.lib.version>
+        <canary.lib.version>1.2.0</canary.lib.version>
     </properties>
 
     <organization>

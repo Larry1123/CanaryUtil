@@ -118,12 +118,12 @@ public abstract class UtilPlugin extends Plugin {
     /**
      * Get a sub logger of this plugin
      *
-     * @param sub Name of the sub logger you want
+     * @param subLogger Name of the sub logger you want
      *
      * @return The sub logger you wanted
      */
-    public EELogger getLogger(String sub) {
-        return getEELoggerFactory().getSubLogger(getLogger(), sub);
+    public EELogger getLogger(String subLogger) {
+        return getEELoggerFactory().getSubLogger(getLogger(), subLogger);
     }
 
 }

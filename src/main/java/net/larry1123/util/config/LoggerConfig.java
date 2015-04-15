@@ -150,7 +150,7 @@ public class LoggerConfig implements ConfigBase, LoggerSettings {
 
     protected void reloadUpdater() {
         if (getPlugin() != null) {
-            getPlugin().getFileSpliterUpdater().reloadUpdater();
+            getPlugin().getFileSpliterUpdater().reloadTask();
         }
     }
 

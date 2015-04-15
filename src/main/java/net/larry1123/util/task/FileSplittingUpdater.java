@@ -18,6 +18,8 @@ package net.larry1123.util.task;
 import net.canarymod.tasks.ServerTask;
 import net.canarymod.tasks.ServerTaskManager;
 import net.canarymod.tasks.TaskOwner;
+import net.larry1123.elec.util.factorys.EELoggerFactory;
+import net.larry1123.elec.util.factorys.FactoryManager;
 import net.larry1123.elec.util.logger.FileManager;
 import net.larry1123.util.CanaryUtil;
 import net.larry1123.util.api.task.TaskHandler;
@@ -27,7 +29,7 @@ import org.apache.commons.lang3.time.DateUtils;
 
 import java.io.IOException;
 
-public class FileSpliterUpdater implements TaskHandler {
+public class FileSplittingUpdater implements TaskHandler {
 
     public class FileSplitTask extends ServerTask {
 
@@ -41,10 +43,10 @@ public class FileSpliterUpdater implements TaskHandler {
 
         @Override
         public void run() {
-            if (isSplitng()) {
+            if (isSplitting()) {
                 if (isNotCurrent()) {
                     try {
-                        FileManager.updateFileHandlers();
+                        getFileManager().updateFileHandlers();
                     }
                     catch (IOException e) {
                         getPlugin().getLogger("Log Updater").error("Unable to update all or any log files", e);
@@ -66,7 +68,7 @@ public class FileSpliterUpdater implements TaskHandler {
     protected FileSplitTask task = null;
     protected final CanaryUtil plugin;
 
-    public FileSpliterUpdater(CanaryUtil plugin) {
+    public FileSplittingUpdater(CanaryUtil plugin) {
         this.plugin = plugin;
     }
 
@@ -74,8 +76,8 @@ public class FileSpliterUpdater implements TaskHandler {
      * Starts the updater polling if the config will allow
      */
     @Override
-    public boolean startUpdater() {
-        if (isSplitng()) {
+    public boolean startTask() {
+        if (isSplitting()) {
             if (task == null) {
                 task = new FileSplitTask(getPlugin(), DateUtils.MILLIS_PER_HOUR);
                 ServerTaskManager.addTask(task);
@@ -89,7 +91,7 @@ public class FileSpliterUpdater implements TaskHandler {
      * Stops the updater polling
      */
     @Override
-    public void endUpdater() {
+    public void endTask() {
         if (task != null) {
             ServerTaskManager.removeTask(task);
             task = null;
@@ -100,27 +102,29 @@ public class FileSpliterUpdater implements TaskHandler {
      * Will start the updater if the config allows or stops the updater if running and needed to be
      */
     @Override
-    public boolean reloadUpdater() {
-        if (isSplitng()) {
-            endUpdater();
-            return startUpdater();
-        }
-        else {
-            endUpdater();
-            return false;
-        }
+    public boolean reloadTask() {
+        endTask();
+        return startTask();
     }
 
-    protected boolean isSplitng() {
-        return FileManager.isSplitng();
+    protected boolean isSplitting() {
+        return getFileManager().isSplitting();
     }
 
     protected boolean hasCurrentSplit() {
-        return FileManager.hasCurrentSplit();
+        return getFileManager().hasCurrentSplit();
     }
 
     protected boolean isNotCurrent() {
-        return FileManager.isNotCurrent();
+        return getFileManager().isNotCurrent();
+    }
+
+    protected EELoggerFactory getLoggerFactory() {
+        return FactoryManager.getFactoryManager().getEELoggerFactory();
+    }
+
+    protected FileManager getFileManager() {
+        return getLoggerFactory().getFileManager();
     }
 
     protected LoggerConfig getLoggerConfig() {

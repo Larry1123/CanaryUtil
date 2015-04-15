@@ -48,7 +48,7 @@ public class PermissionNode implements Comparable<PermissionNode>, Serializable,
      * Gets just the name of the permission
      */
     public String getName() {
-        return isRoot() ? getFullPath() : getFullPath().substring(getIndexOfLastDot() + 1);
+        return isRoot() ? getFullPath() : isWildCard() ? getParent().getName() + ".*" : getFullPath().substring(getIndexOfLastDot() + 1);
     }
 
     /**
@@ -63,7 +63,7 @@ public class PermissionNode implements Comparable<PermissionNode>, Serializable,
      * Checks to see if this Node is a WildCard permission
      */
     public boolean isWildCard() {
-        return getName().equals("*");
+        return getFullPath().substring(getIndexOfLastDot() + 1).equals("*");
     }
 
     /**
@@ -71,7 +71,7 @@ public class PermissionNode implements Comparable<PermissionNode>, Serializable,
      * <code>canary.derp.herp</code>
      * This is a child of
      * <code>canary.derp</code>
-     * and the next would be the parent of the last one also
+     * and that would be the parent of
      * <code>canary.*</code>
      */
     public boolean isParentOf(PermissionNode permissionNode) {
@@ -93,7 +93,8 @@ public class PermissionNode implements Comparable<PermissionNode>, Serializable,
     /**
      * Will return the root
      * <code>canary.derp.herp</code>
-     * would return canary
+     * would return
+     * <code>canary</code>
      */
     public PermissionNode getRoot() {
         PermissionNode ret = new PermissionNode(this);

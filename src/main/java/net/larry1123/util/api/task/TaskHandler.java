@@ -24,16 +24,16 @@ public interface TaskHandler {
     /**
      * Starts the task if it should be started
      */
-    public boolean startUpdater();
+    public boolean startTask();
 
     /**
      * Stop the task
      */
-    public void endUpdater();
+    public void endTask();
 
     /**
      * Will stop the task and restart the task if it can
      */
-    public boolean reloadUpdater();
+    public boolean reloadTask();
 
 }
