@@ -30,8 +30,6 @@ public class EtoBLib {
      * One Block Back
      *
      * @param eLocation
-     *
-     * @return
      */
     public Block blokeB(Location eLocation) {
 
@@ -50,8 +48,6 @@ public class EtoBLib {
      * One Block in front
      *
      * @param eLocation
-     *
-     * @return
      */
     public Block blokey(Location eLocation) {
 

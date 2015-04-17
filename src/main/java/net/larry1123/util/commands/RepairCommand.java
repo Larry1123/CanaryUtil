@@ -33,7 +33,8 @@ import net.visualillusionsent.utils.LocaleHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-import static net.larry1123.util.api.inventory.item.Repair.*;
+import static net.larry1123.util.api.inventory.item.Repair.canRepairItem;
+import static net.larry1123.util.api.inventory.item.Repair.repairItem;
 
 /**
  * @author Larry1123
@@ -190,7 +191,9 @@ public class RepairCommand implements Command {
         int itemsRepaired = 0;
         int levelsCost = 0;
         for (Item item : itemsToRepair) {
-            if (item == null) continue;
+            if (item == null) {
+                continue;
+            }
             String cost = "";
             if (!free) {
                 int repairCost = item.getRepairCost() * 2;

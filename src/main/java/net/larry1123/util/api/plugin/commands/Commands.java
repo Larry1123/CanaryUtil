@@ -30,11 +30,11 @@ public class Commands {
     /**
      * Will Register a Command with different parts
      *
-     * @param data       Replacement for @Command
-     * @param owner      Command owner
+     * @param data Replacement for @Command
+     * @param owner Command owner
      * @param translator localehelper for translating meta info
-     * @param execute    Class holding method to execute Command when called
-     * @param force      If Command will override an other command
+     * @param execute Class holding method to execute Command when called
+     * @param force If Command will override an other command
      *
      * @throws CommandDependencyException
      */
@@ -69,7 +69,7 @@ public class Commands {
      * Will Register a Command that has all given data in one Command Class
      *
      * @param command Command pack
-     * @param owner   Command owner
+     * @param owner Command owner
      *
      * @throws CommandDependencyException
      */

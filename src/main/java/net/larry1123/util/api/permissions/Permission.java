@@ -36,7 +36,7 @@ public class Permission implements Comparable<Permission> {
      * Used only for creating a root perm
      *
      * @param tracker What tracker is tracking this root
-     * @param node    The Node for this Permission
+     * @param node The Node for this Permission
      */
     public Permission(PermissionTracker tracker, PermissionNode node) {
         permissionTracker = tracker;
@@ -128,7 +128,7 @@ public class Permission implements Comparable<Permission> {
      * Gives the player this permission with the given fieldValue
      *
      * @param player What player to give this permission to
-     * @param value  pass false if this perm should take and not give
+     * @param value pass false if this perm should take and not give
      */
     public void givePermission(Player player, boolean value) {
         player.getPermissionProvider().addPermission(getPermissionString(), value);

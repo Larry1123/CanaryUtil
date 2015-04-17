@@ -127,7 +127,7 @@ public class StringTime {
      * Decodes the given string(s) and looks to check if that amount of time has passed
      *
      * @param lastTime Time to compare to current time in milliseconds
-     * @param string   Whole String to decode
+     * @param string Whole String to decode
      *
      * @return true if that amount of time has passed
      */
@@ -139,7 +139,7 @@ public class StringTime {
      * Decodes the given string(s) and looks to check if that amount of time has passed
      *
      * @param lastTime Time to compare to current time in milliseconds
-     * @param strings  Array of Strings to be decoded
+     * @param strings Array of Strings to be decoded
      *
      * @return true if that amount of time has passed
      */

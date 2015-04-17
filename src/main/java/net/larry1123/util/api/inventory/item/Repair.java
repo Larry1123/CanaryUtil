@@ -31,7 +31,9 @@ public class Repair {
      * @param player The player to have an item repaired for
      */
     public static void repairItemInHand(Player player) {
-        if (player == null) return;
+        if (player == null) {
+            return;
+        }
         Item item = player.getItemHeld();
         repairItem(item);
     }
@@ -43,7 +45,9 @@ public class Repair {
      * @param amount How much to repair the item by
      */
     public static void repairItemInHand(Player player, int amount) {
-        if (player == null) return;
+        if (player == null) {
+            return;
+        }
         Item item = player.getItemHeld();
         repairItem(item, amount);
     }
@@ -56,9 +60,15 @@ public class Repair {
      * @param item What item to be repaired
      */
     public static void repairItem(Item item) {
-        if (item == null) return;
-        if (item.getId() == 0) return;
-        if (item.getAmount() == 0) return;
+        if (item == null) {
+            return;
+        }
+        if (item.getId() == 0) {
+            return;
+        }
+        if (item.getAmount() == 0) {
+            return;
+        }
         repairItem(item, getMaxDamage(item));
     }
 
@@ -67,13 +77,19 @@ public class Repair {
      * Will not do anything if the item is not damaged.
      * Will not set the damage above the max damage that the item can have.
      *
-     * @param item   What item to be repaired
+     * @param item What item to be repaired
      * @param amount How much to repair the item by
      */
     public static void repairItem(Item item, int amount) {
-        if (item == null) return;
-        if (item.getId() == 0) return;
-        if (item.getAmount() == 0) return;
+        if (item == null) {
+            return;
+        }
+        if (item.getId() == 0) {
+            return;
+        }
+        if (item.getAmount() == 0) {
+            return;
+        }
         BaseItem baseItem = item.getBaseItem();
         repairItem(item, baseItem, amount);
     }
@@ -107,7 +123,7 @@ public class Repair {
     /**
      * Checks if this item is able to be repaired
      *
-     * @param item     Item to check
+     * @param item Item to check
      * @param baseItem BaseItem that is to this Item
      *
      * @return {@code true} if item can be repaired, {@code false} item can not be repaired, or is not damaged

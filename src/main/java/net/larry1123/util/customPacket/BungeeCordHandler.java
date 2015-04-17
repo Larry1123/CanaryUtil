@@ -51,9 +51,9 @@ public class BungeeCordHandler implements BungeeCord {
     /**
      * For use from the Listener only
      *
-     * @param server  Server to update
+     * @param server Server to update
      * @param players Number of Players
-     * @param liss    The Object of the Listener
+     * @param liss The Object of the Listener
      */
     void setPlayerCountForServer(RemoteServer server, int players, BungeeCordListener liss) {
         if (lis == liss) {
@@ -68,9 +68,9 @@ public class BungeeCordHandler implements BungeeCord {
      * For use from the Listener only
      * This Method handles the server name ALL, when ALL is handled it will remove from all other Server list missing players
      *
-     * @param server  Server to update
+     * @param server Server to update
      * @param players List of Players on Given Server
-     * @param liss    The Object of the Listener
+     * @param liss The Object of the Listener
      */
     void setPlayerList(RemoteServer server, LinkedList<String> players, BungeeCordListener liss) {
         if (lis == liss) {
@@ -111,7 +111,7 @@ public class BungeeCordHandler implements BungeeCord {
      * For use from the Listener only
      *
      * @param servers String LinkedList of Server Names
-     * @param liss    The Object of the Listener
+     * @param liss The Object of the Listener
      */
     void setServerList(LinkedList<RemoteServer> servers, BungeeCordListener liss) {
         if (lis == liss) {
@@ -128,7 +128,7 @@ public class BungeeCordHandler implements BungeeCord {
      * For use from the Listener only
      *
      * @param server Server to update
-     * @param liss   The Object of the Listener
+     * @param liss The Object of the Listener
      */
     void setCurrentServerName(RemoteServer server, BungeeCordListener liss) {
         if (lis == liss) {
@@ -255,9 +255,9 @@ public class BungeeCordHandler implements BungeeCord {
      * Will also return false if you are trying to send to the current server;
      * Will return false if no players are online or if no players that are online are connected to the BungeeCord Server
      *
-     * @param server     What server to send to.
+     * @param server What server to send to.
      * @param subCnannel What channel to send over
-     * @param data       What data to pass
+     * @param data What data to pass
      *
      * @return true if the packet was sent, false if the packet was not sent
      */
@@ -297,8 +297,6 @@ public class BungeeCordHandler implements BungeeCord {
      * @param server
      * @param subCnannel
      * @param data
-     *
-     * @return
      */
     @Override
     public boolean sendMessageToServerAsAllPlayers(RemoteServer server, String subCnannel, String data) {
@@ -340,8 +338,6 @@ public class BungeeCordHandler implements BungeeCord {
      * @param subCnannel
      * @param data
      * @param player
-     *
-     * @return
      */
     @Override
     public boolean sendMessageToServerAsPlayer(RemoteServer server, String subCnannel, String data, Player player) {

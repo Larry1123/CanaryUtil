@@ -109,7 +109,7 @@ public class RemoteServer {
      * Will return false if no players are online or if no players that are online are connected to the BungeeCord Server
      *
      * @param subChannel What channel to send data over
-     * @param data       What data to pass
+     * @param data What data to pass
      *
      * @return {@code true} if the packet was sent, {@code false} if the packet was not sent
      */
@@ -124,7 +124,7 @@ public class RemoteServer {
      * Will return false if no players are online or if no players that are online are connected to the BungeeCord Server
      *
      * @param subChannel What channel to send data over
-     * @param data       What data to pass
+     * @param data What data to pass
      *
      * @return {@code true} if the packet was sent, {@code false} if the packet was not sent
      */
@@ -138,8 +138,8 @@ public class RemoteServer {
      * Will return false if the player is not connected to the BungeeCord Server
      *
      * @param subChannel What channel to send data over
-     * @param data       What data to pass
-     * @param player     What player to send this data over with
+     * @param data What data to pass
+     * @param player What player to send this data over with
      *
      * @return {@code true} if the packet was sent, {@code false} if the packet was not sent
      */
