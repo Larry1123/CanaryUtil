@@ -25,6 +25,7 @@ import java.util.Random;
  *
  * @author Larry1123
  */
+@Deprecated
 public class FontTools extends TextFormat {
 
     public static final char colorChar = '\u00A7';
@@ -82,10 +83,9 @@ public class FontTools extends TextFormat {
     /**
      * Adds a random color to each character in a string.
      *
-     * @param string
-     *
      * @return Randomly Colored String
      */
+    @Deprecated
     public static String CharRandomColor(String string) {
         char[] str = string.toCharArray();
         StringBuilder ret = new StringBuilder();
@@ -95,6 +95,7 @@ public class FontTools extends TextFormat {
         return ret.toString();
     }
 
+    @Deprecated
     public static String charToColorChar(char replacement, String phrase) {
         char[] charString = phrase.toCharArray();
         int index = 0;
@@ -115,6 +116,7 @@ public class FontTools extends TextFormat {
     /**
      * Gets a RandomColor Code
      */
+    @Deprecated
     public static String RandomColor() {
         Random random = new Random();
         return colorChar + "" + colorList.get(random.nextInt(colorList.size() - 1));

@@ -49,8 +49,8 @@ public class UpdateBungeeInfo implements TaskHandler {
          */
         @Override
         public void run() {
+            Canary.getServer().message("Updating BungeeCord Info");
             // Update Player IPs
-            updateIPs();
             for (Player player : Canary.getServer().getPlayerList()) {
                 // Update Server List
                 updateServerList(player);
@@ -121,20 +121,6 @@ public class UpdateBungeeInfo implements TaskHandler {
         }
     }
 
-    protected void updateIPs() {
-        for (Player player : Canary.getServer().getPlayerList()) {
-            b = new ByteArrayOutputStream();
-            out = new DataOutputStream(b);
-            try {
-                out.writeUTF("IP");
-            }
-            catch (IOException e) {
-                // Can't happen man
-            }
-            Canary.channels().sendCustomPayloadToPlayer("BungeeCord", b.toByteArray(), player);
-        }
-    }
-
     protected void updateServerList(Player player) {
         b = new ByteArrayOutputStream();
         out = new DataOutputStream(b);
@@ -144,7 +130,7 @@ public class UpdateBungeeInfo implements TaskHandler {
         catch (IOException e) {
             // Can't happen man
         }
-        Canary.channels().sendCustomPayloadToPlayer("BungeeCord", b.toByteArray(), player);
+        sendCustomPayloadToPlayer(b, player);
     }
 
     protected void updatePlayerList(Player player, RemoteServer server) {
@@ -157,7 +143,7 @@ public class UpdateBungeeInfo implements TaskHandler {
         catch (IOException e) {
             // Can't happen man
         }
-        Canary.channels().sendCustomPayloadToPlayer("BungeeCord", b.toByteArray(), player);
+        sendCustomPayloadToPlayer(b, player);
     }
 
     protected void updatePlayerCount(Player player, RemoteServer server) {
@@ -170,7 +156,7 @@ public class UpdateBungeeInfo implements TaskHandler {
         catch (IOException e) {
             // Can't happen man
         }
-        Canary.channels().sendCustomPayloadToPlayer("BungeeCord", b.toByteArray(), player);
+        sendCustomPayloadToPlayer(b, player);
     }
 
     protected void updateCurrentServer(Player player) {
@@ -182,7 +168,11 @@ public class UpdateBungeeInfo implements TaskHandler {
         catch (IOException e) {
             // Can't happen man
         }
-        Canary.channels().sendCustomPayloadToPlayer("BungeeCord", b.toByteArray(), player);
+        sendCustomPayloadToPlayer(b, player);
+    }
+
+    protected boolean sendCustomPayloadToPlayer(ByteArrayOutputStream byteArrayOutputStream, Player player) {
+        return Canary.channels().sendCustomPayloadToPlayer("BungeeCord", byteArrayOutputStream.toByteArray(), player);
     }
 
     protected BungeeCordConfig getBungeeCordConfig() {

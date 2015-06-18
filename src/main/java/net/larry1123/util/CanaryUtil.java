@@ -18,6 +18,7 @@ package net.larry1123.util;
 import net.canarymod.commandsys.CommandOwner;
 import net.canarymod.tasks.ServerTaskManager;
 import net.canarymod.tasks.TaskOwner;
+import net.larry1123.elec.util.factorys.EELoggerFactory;
 import net.larry1123.elec.util.factorys.FactoryManager;
 import net.larry1123.util.api.plugin.UtilPlugin;
 import net.larry1123.util.api.plugin.commands.Commands;
@@ -32,7 +33,7 @@ public class CanaryUtil extends UtilPlugin implements TaskOwner, CommandOwner {
     private static final Commands commands = new Commands();
 
     static {
-        FactoryManager.getFactoryManager().getEELoggerFactory().setLoggerSettings(new LoggerConfig());
+        FactoryManager.getFactoryManager().get(EELoggerFactory.class, "default", new EELoggerFactory.EELoggerFactorySetup(new LoggerConfig()));
     }
 
     private static CanaryUtil plugin;
@@ -70,15 +71,15 @@ public class CanaryUtil extends UtilPlugin implements TaskOwner, CommandOwner {
      */
     @Override
     public boolean enable() {
+        // Give that ConfigManager something to think about!
+        UtilConfigManager.getConfig().setPlugin(this);
+        getEELoggerFactory().setLoggerSettings(UtilConfigManager.getConfig().getLoggerConfig());
         // Start checker for splitting logging files
         getFileSpliterUpdater().startTask();
         // Make the custom packet manager object
         customPacket = new CustomPacket(this);
         // Start up the Command manager
         commandsManager = new UtilCommands(this);
-        // Give that ConfigManager something to think about!
-        UtilConfigManager.getConfig().setPlugin(this);
-        getEELoggerFactory().setLoggerSettings(UtilConfigManager.getConfig().getLoggerConfig());
         // Log that the Plugin was Enabled
         enabled();
         // Hey everything worked lets return true so Canary knows that too

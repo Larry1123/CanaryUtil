@@ -17,7 +17,6 @@ package net.larry1123.util.commands;
 
 import net.canarymod.commandsys.CommandDependencyException;
 import net.canarymod.commandsys.DuplicateCommandException;
-import net.larry1123.elec.util.factorys.FactoryManager;
 import net.larry1123.util.CanaryUtil;
 import net.larry1123.util.api.plugin.commands.Command;
 import net.larry1123.util.commands.bungeecord.BungeeCordCommand;
@@ -63,15 +62,14 @@ public class UtilCommands {
 
     private void regCommand(Command command) {
         try {
-            CanaryUtil.commands().registerCommand(command, getPlugin());
-            command.setLoaded(true);
+            getPlugin().registerCommand(command);
         }
         catch (CommandDependencyException e) {
-            FactoryManager.getFactoryManager().getEELoggerFactory().getLogger("CanaryUtil").error(MarkerFactory.getMarker("Commands"), "Failed to add command: " + command.getCommandData().getAliases()[0], e);
+            getPlugin().getLogger().error(MarkerFactory.getMarker("Commands"), "Failed to add command: " + command.getCommandData().getAliases()[0], e);
             command.setLoaded(false);
         }
         catch (DuplicateCommandException e) {
-            FactoryManager.getFactoryManager().getEELoggerFactory().getLogger("CanaryUtil").error(MarkerFactory.getMarker("Commands"), "Failed to add command: " + command.getCommandData().getAliases()[0], e);
+            getPlugin().getLogger("CanaryUtil").error(MarkerFactory.getMarker("Commands"), "Failed to add command: " + command.getCommandData().getAliases()[0], e);
             command.setLoaded(false);
         }
     }

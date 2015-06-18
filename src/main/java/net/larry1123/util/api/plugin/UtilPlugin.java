@@ -123,7 +123,7 @@ public abstract class UtilPlugin extends Plugin {
      * @return The sub logger you wanted
      */
     public EELogger getLogger(String subLogger) {
-        return getEELoggerFactory().getSubLogger(getLogger(), subLogger);
+        return getEELoggerFactory().getLogger(getLogger(), subLogger);
     }
 
 }

@@ -74,7 +74,7 @@
         <repository>
             <id>repo1123</id>
             <name>Larry1123's Repo</name>
-            <url>http://repo.larry1123.net/content/groups/public/</url>
+            <url>http://public.repo.larry1123.net/</url>
         </repository>
     </repositories>
 
@@ -126,7 +126,7 @@
             </testResource>
         </testResources>
 
-        <finalName>${project.name}-${project.version}${build.number}</finalName>
+        <finalName>${project.name}-${project.version}-c${canary.lib.version}${build.number}</finalName>
 
         <plugins>
             <plugin>
@@ -274,6 +274,7 @@
                 </plugins>
             </build>
         </profile>
+
         <!-- Add Build number to a Jenkins build -->
         <profile>
             <id>jenkins</id>
@@ -283,7 +284,7 @@
                 </property>
             </activation>
             <properties>
-                <build.number>-${BUILD_NUMBER}</build.number>
+                <build.number>-b${BUILD_NUMBER}</build.number>
             </properties>
         </profile>
     </profiles>

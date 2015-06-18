@@ -17,34 +17,30 @@ package net.larry1123.util.api.abstracts;
 
 import net.canarymod.api.OfflinePlayer;
 import net.canarymod.api.entity.living.humanoid.Player;
+import net.larry1123.elec.util.factorys.FactoryManager;
 import net.larry1123.util.CanaryUtil;
+import net.larry1123.util.factory.RemoteServerFactory;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class RemoteServer {
 
-    private static ArrayList<RemoteServer> servers = new ArrayList<RemoteServer>();
-
     private String serverName;
 
-    private RemoteServer(String name) {
+    public RemoteServer(String name) {
         serverName = name;
     }
 
     public static RemoteServer getServer(String name) {
-        for (RemoteServer server : servers) {
-            if (server.serverName.equals(name)) {
-                return server;
-            }
-        }
-        RemoteServer ret = new RemoteServer(name);
-        servers.add(ret);
-        return ret;
+        return getRemoteServerFactory().getServer(name);
     }
 
     public static RemoteServer getALLServerObject() {
         return getServer("ALL");
+    }
+
+    private static RemoteServerFactory getRemoteServerFactory() {
+        return FactoryManager.getFactoryManager().get(RemoteServerFactory.class);
     }
 
     public String getServerName() {
@@ -165,6 +161,5 @@ public class RemoteServer {
     public String toString() {
         return getServerName();
     }
-
 
 }
